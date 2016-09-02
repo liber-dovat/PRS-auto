@@ -42,15 +42,25 @@ for line in ultima_procesada:
 print rcv_split
 print prs_split
 
-# rcv_split[1] y prs_split[1] es el año
-# si prs[año] es menor estricto que rcv[año]
-#   genero los años que faltan entre medio
-#   desde prs[año] hasta rcv[año] voy metiendo los valores en un arreglo
-#   pj prs[año]=2011, rcv[año]=2015, años = [2011, 2012, 2013, 2014, 2015]
+years = []
+
+print int(rcv_split[0])
+print int(prs_split[0])
+
+for y in range(int(prs_split[0]), int(rcv_split[0])+1):
+  years.append(y)
+
+print years
+
+# rcv_split[1] y prs_split[1] es el ano
+# si prs[ano] es menor estricto que rcv[ano]
+#   genero los anos que faltan entre medio
+#   desde prs[ano] hasta rcv[ano] voy metiendo los valores en un arreglo
+#   pj prs[ano]=2011, rcv[ano]=2015, anos = [2011, 2012, 2013, 2014, 2015]
 
 # Luego repito para el mes
 
-# y por ultimo hago un for doble anidado, por año y mes, para generar los paths
+# y por ultimo hago un for doble anidado, por ano y mes, para generar los paths
 
 # luego, para cada path ...
 
@@ -58,8 +68,8 @@ pattern = re.compile(".*prs.*")
 
 # listo solo los archivos del path elegido y que cumplen la expresion regular
 files_in_dir = [f for f in listdir(abs_file_path)
-                if isfile(join(abs_file_path, f)) and
-                pattern.match(f)
+                 if isfile(join(abs_file_path, f)) and
+                 pattern.match(f)
                ] # for f in
 
 print files_in_dir
