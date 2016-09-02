@@ -25,13 +25,34 @@ ultima_procesada = open(prs_path, 'r+')
 # para cada linea del archivo, la imprimo
 for line in ultima_recibida:
   print line
+  # tomo la linea y genero un arreglo con sus palabras
+  rcv_split = line.split(".")
+# for
 
 # para cada linea del archivo, la imprimo
 for line in ultima_procesada:
   print line
+  # tomo la linea y genero un arreglo con sus palabras
+  prs_split = line.split(".")
+# for
 
 # 2016.09.245.163507
 # 2016.09.244.163507
+
+print rcv_split
+print prs_split
+
+# rcv_split[1] y prs_split[1] es el año
+# si prs[año] es menor estricto que rcv[año]
+#   genero los años que faltan entre medio
+#   desde prs[año] hasta rcv[año] voy metiendo los valores en un arreglo
+#   pj prs[año]=2011, rcv[año]=2015, años = [2011, 2012, 2013, 2014, 2015]
+
+# Luego repito para el mes
+
+# y por ultimo hago un for doble anidado, por año y mes, para generar los paths
+
+# luego, para cada path ...
 
 pattern = re.compile(".*prs.*")
 
@@ -39,6 +60,6 @@ pattern = re.compile(".*prs.*")
 files_in_dir = [f for f in listdir(abs_file_path)
                 if isfile(join(abs_file_path, f)) and
                 pattern.match(f)
-               ]
+               ] # for f in
 
 print files_in_dir
