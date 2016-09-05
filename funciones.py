@@ -56,9 +56,6 @@ def months(start_month, start_year, end_month, end_year):
 def datespan(startDate, endDate):
     delta = timedelta(days=1)
     currentDate = startDate
-    while currentDate < endDate:
+    while currentDate <= endDate:
         yield currentDate.year, currentDate.month, doy(currentDate.year, currentDate.month, currentDate.day)
         currentDate += delta
-
-# for day in datespan(date(2007, 3, 30), date(2007, 4, 3), delta=timedelta(days=1)):
-#   print day
