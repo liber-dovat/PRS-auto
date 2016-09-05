@@ -2,6 +2,7 @@
 # http://stackoverflow.com/questions/620305/convert-year-month-day-to-day-of-year-in-python
 
 import calendar
+from datetime import date, datetime, timedelta
 
 def doy(Y,M,D):
   """ given year, month, day return day of year
@@ -29,3 +30,35 @@ def ymd(Y,N):
       M = 1
   D = N - int((275 * M) / 9.0) + K * int((M + 9) / 12.0) + 30
   return Y, M, D
+
+# ---------------------------------------
+# ---------------------------------------
+# ---------------------------------------
+# http://stackoverflow.com/questions/5734438/how-to-create-a-month-iterator
+# Iterador de meses
+
+def months(start_month, start_year, end_month, end_year):
+    month, year = start_month, start_year
+    while True:
+        yield month, year
+        if (month, year) == (end_month, end_year):
+            return
+        month += 1
+        if (month > 12):
+            month = 1
+            year += 1
+
+# ---------------------------------------
+# ---------------------------------------
+# ---------------------------------------
+# http://stackoverflow.com/questions/153584/how-to-iterate-over-a-timespan-after-days-hours-weeks-and-months-in-python
+
+def datespan(startDate, endDate):
+    delta = timedelta(days=1)
+    currentDate = startDate
+    while currentDate < endDate:
+        yield currentDate.year, currentDate.month, doy(currentDate.year, currentDate.month, currentDate.day)
+        currentDate += delta
+
+# for day in datespan(date(2007, 3, 30), date(2007, 4, 3), delta=timedelta(days=1)):
+#   print day

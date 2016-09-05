@@ -2,6 +2,7 @@
 
 # importo el modulo funciones
 import funciones
+from datetime import date
 
 # importo rutinas para trabajar con el sistema operativo
 import os
@@ -87,7 +88,26 @@ for y in range(int(prs_split[0]), int(rcv_split[0])+1):
 
 print years
 
-print funciones.ymd(rcv_year,rcv_doy)
+start_ymd = funciones.ymd(prs_year,prs_doy)
+starting_year  = prs_year
+starting_month = start_ymd[1]
+starting_day   = start_ymd[2] + 1
+starting_doy   = prs_doy - starting_day
+starting_date  = date(starting_year, starting_month,starting_day)
+
+ending_ymd = funciones.ymd(rcv_year,rcv_doy)
+ending_year  = rcv_year
+ending_month = ending_ymd[1]
+ending_day   = ending_ymd[2]
+ending_doy   = rcv_doy - ending_day
+ending_date  = date(ending_year, ending_month, ending_day)
+
+print starting_year
+print starting_month
+print starting_doy
+
+for day in funciones.datespan(starting_date, ending_date):
+  print day
 
 # rcv_split[1] y prs_split[1] es el ano
 # si prs[ano] es menor estricto que rcv[ano]
