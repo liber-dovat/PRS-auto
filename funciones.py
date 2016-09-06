@@ -2,7 +2,7 @@
 # http://stackoverflow.com/questions/620305/convert-year-month-day-to-day-of-year-in-python
 
 import calendar
-from datetime import date, datetime, timedelta
+from datetime import date, datetime
 
 def doy(Y,M,D):
   """ given year, month, day return day of year
@@ -53,9 +53,9 @@ def months(start_month, start_year, end_month, end_year):
 # ---------------------------------------
 # http://stackoverflow.com/questions/153584/how-to-iterate-over-a-timespan-after-days-hours-weeks-and-months-in-python
 
-def datespan(startDate, endDate):
-    delta = timedelta(days=1)
+def datespan(startDate, endDate, delta):
+    
     currentDate = startDate
     while currentDate <= endDate:
-        yield currentDate.year, currentDate.month, doy(currentDate.year, currentDate.month, currentDate.day)
+        yield currentDate.year, currentDate.month, doy(currentDate.year, currentDate.month, currentDate.day), currentDate.hour, currentDate.minute, currentDate.second 
         currentDate += delta

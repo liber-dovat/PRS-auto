@@ -2,7 +2,7 @@
 
 # importo el modulo funciones
 import funciones
-from datetime import date
+from datetime import date, timedelta, datetime
 
 # importo rutinas para trabajar con el sistema operativo
 import os
@@ -64,70 +64,42 @@ print prs_split
 rcv_year = int(rcv_split[0]) # la primer palabra del arreglo es el ano
 prs_year = int(prs_split[0]) # la primer palabra del arreglo es el ano
 
-rcv_month = int(rcv_split[1]) # la segunda palabra del arreglo es el mes
-prs_month = int(prs_split[1]) # la segunda palabra del arreglo es el mes
-
 rcv_doy = int(rcv_split[2]) # la tercera palabra del arreglo es el doy
 prs_doy = int(prs_split[2]) # la tercera palabra del arreglo es el doy
 
-print rcv_year
-print prs_year
-print str(rcv_month).zfill(2) # lleno con ceros el integer correspondiente al numero
-print str(prs_month).zfill(2) # lleno con ceros el integer correspondiente al numero
-print rcv_doy
-print prs_doy
+#########################################
+#########################################
+# Genero los datatypes date para iterar entre ellos y leo las carpetas
+#########################################
 
-years = []
-for y in range(int(prs_split[0]), int(rcv_split[0])+1):
-  years.append(y)
+start_ymd     = funciones.ymd(prs_year,prs_doy)
+starting_date = datetime(prs_year, start_ymd[1],start_ymd[2] + 1, 16, 35, 07)
 
-  # Returns weekday of first day of the month and number of days in month, for the specified year and month.
-  # calendar.monthrange(year, month)
+ending_ymd  = funciones.ymd(rcv_year,rcv_doy)
+ending_date = datetime(rcv_year, ending_ymd[1], ending_ymd[2], 18, 25, 05)
 
-# doy = yday = d.toordinal() - date(d.year, 1, 1).toordinal() + 1
+delta = timedelta(seconds=1)
+rango_fechas = funciones.datespan(starting_date, ending_date, delta)
 
-print years
+# for f in rango_fechas:
+#   print f
 
-start_ymd = funciones.ymd(prs_year,prs_doy)
-starting_year  = prs_year
-starting_month = start_ymd[1]
-starting_day   = start_ymd[2] + 1
-starting_doy   = prs_doy - starting_day
-starting_date  = date(starting_year, starting_month,starting_day)
+for day in rango_fechas:
 
-ending_ymd = funciones.ymd(rcv_year,rcv_doy)
-ending_year  = rcv_year
-ending_month = ending_ymd[1]
-ending_day   = ending_ymd[2]
-ending_doy   = rcv_doy - ending_day
-ending_date  = date(ending_year, ending_month, ending_day)
+  # Path a los raw
+  path_string = "/sat/raw-sat/" + str(day[0]) + "/" + str(day[1]).zfill(2) + "/"
+  data_path   = os.path.abspath(path_string)
 
-print starting_year
-print starting_month
-print starting_doy
+  # day[0] se corresponde con el ano, y day[2] corresponde al doy
+  # el patron queda .*year\.doy.*\.nc
+  string_patron = ".*" + str(day[0]) + "\." + str(day[2]).zfill(3) + ".*" + "\.nc$"
+  pattern       = re.compile(string_patron)
 
-for day in funciones.datespan(starting_date, ending_date):
-  print day
+  # listo solo los archivos del path elegido y que cumplen la expresion regular
+  files_in_dir = [f for f in listdir(data_path)
+                   if isfile(join(data_path, f)) and pattern.match(f)
+                 ] # for f in
 
-# rcv_split[1] y prs_split[1] es el ano
-# si prs[ano] es menor estricto que rcv[ano]
-#   genero los anos que faltan entre medio
-#   desde prs[ano] hasta rcv[ano] voy metiendo los valores en un arreglo
-#   pj prs[ano]=2011, rcv[ano]=2015, anos = [2011, 2012, 2013, 2014, 2015]
-
-# Luego repito para el mes
-
-# y por ultimo hago un for doble anidado, por ano y mes, para generar los paths
-
-# luego, para cada path ...
-
-pattern = re.compile(".*prs.*")
-
-# listo solo los archivos del path elegido y que cumplen la expresion regular
-files_in_dir = [f for f in listdir(abs_file_path)
-                 if isfile(join(abs_file_path, f)) and
-                 pattern.match(f)
-               ] # for f in
-
-print files_in_dir
-
+  for f in files_in_dir:
+    print path_string + f
+# for day in rango_fechas 
