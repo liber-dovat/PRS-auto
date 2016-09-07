@@ -89,6 +89,8 @@ starting_date = datetime(prs_year, st_month, st_day, st_hour, st_min, st_scnd)
 # segundo para obtener el proximo posible. Si cambio de dia la operacion es correcta
 starting_date += timedelta(seconds=1)
 
+print starting_date 
+
 ending_ymd = funciones.ymd(rcv_year,rcv_doy)
 en_month   = ending_ymd[1]
 en_day     = ending_ymd[2]
@@ -106,6 +108,8 @@ rango_fechas = funciones.datespan(starting_date, ending_date, delta)
 #   print f
 
 path_list = []
+
+# iterar por mes o dia, listar los archivos, y de ahi filtrar los que cumplen el patron
 
 for day in rango_fechas:
 
