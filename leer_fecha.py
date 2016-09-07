@@ -84,7 +84,10 @@ st_day    = start_ymd[2]
 st_hour   = int(prs_hms[0:2])
 st_min    = int(prs_hms[2:4])
 st_scnd   = int(prs_hms[4:6])
-starting_date = datetime(prs_year, st_month, st_day + 1, st_hour, st_min, st_scnd)
+starting_date = datetime(prs_year, st_month, st_day, st_hour, st_min, st_scnd)
+# starting_date corresponde al ultimo archivo procesado, asi que incremento en un
+# segundo para obtener el proximo posible. Si cambio de dia la operacion es correcta
+starting_date += timedelta(seconds=1)
 
 ending_ymd = funciones.ymd(rcv_year,rcv_doy)
 en_month   = ending_ymd[1]
