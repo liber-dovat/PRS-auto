@@ -18,8 +18,8 @@ import re
 #########################################
 
 # genero los paths para los directorios base
-script_dir = os.path.dirname(__file__)
-data_path  = "data"
+script_dir    = os.path.dirname(__file__)
+data_path     = "data"
 abs_file_path = os.path.join(script_dir, data_path)
 
 # declaro los paths para los dos archivos
@@ -67,18 +67,35 @@ prs_year = int(prs_split[0]) # la primer palabra del arreglo es el ano
 rcv_doy = int(rcv_split[2]) # la tercera palabra del arreglo es el doy
 prs_doy = int(prs_split[2]) # la tercera palabra del arreglo es el doy
 
+rcv_hms = rcv_split[3] # la cuarta palabra del arreglo es la hora-minuto-segundo
+prs_hms = prs_split[3] # la cuarta palabra del arreglo es la hora-minuto-segundo
+
 #########################################
 #########################################
 # Genero los datatypes date para iterar entre ellos y leo las carpetas
 #########################################
 
-start_ymd     = funciones.ymd(prs_year,prs_doy)
-starting_date = datetime(prs_year, start_ymd[1],start_ymd[2] + 1, 16, 35, 07)
+print rcv_hms
+print prs_hms
 
-ending_ymd  = funciones.ymd(rcv_year,rcv_doy)
-ending_date = datetime(rcv_year, ending_ymd[1], ending_ymd[2], 18, 25, 05)
+start_ymd = funciones.ymd(prs_year,prs_doy)
+st_month  = start_ymd[1]
+st_day    = start_ymd[2]
+st_hour   = int(prs_hms[0:2])
+st_min    = int(prs_hms[2:4])
+st_scnd   = int(prs_hms[4:6])
+starting_date = datetime(prs_year, st_month, st_day + 1, st_hour, st_min, st_scnd)
 
-delta = timedelta(seconds=1)
+ending_ymd = funciones.ymd(rcv_year,rcv_doy)
+en_month   = ending_ymd[1]
+en_day     = ending_ymd[2]
+en_hour    = int(rcv_hms[0:2])
+en_min     = int(rcv_hms[2:4])
+en_scnd    = int(rcv_hms[4:6])
+ending_date = datetime(rcv_year, en_month, en_day, en_hour, en_min, en_scnd)
+
+# delta = timedelta(seconds=1)
+delta = timedelta(days=1)
 rango_fechas = funciones.datespan(starting_date, ending_date, delta)
 
 # for f in rango_fechas:
@@ -86,13 +103,16 @@ rango_fechas = funciones.datespan(starting_date, ending_date, delta)
 
 for day in rango_fechas:
 
-  # Path a los raw
+  print day
+
+  # Path a los raw: day[0] = year, day[1] = month (completado con ceros hasta tener dos char)
   path_string = "/sat/raw-sat/" + str(day[0]) + "/" + str(day[1]).zfill(2) + "/"
   data_path   = os.path.abspath(path_string)
 
   # day[0] se corresponde con el ano, y day[2] corresponde al doy
   # el patron queda .*year\.doy.*\.nc
   string_patron = ".*" + str(day[0]) + "\." + str(day[2]).zfill(3) + ".*" + "\.nc$"
+  # string_patron = ".*" + str(day[0]) + "\." + str(day[2]).zfill(3) + "\." + str(day[3]).zfill(2) + str(day[5]).zfill(2) + str(day[5]).zfill(2) + ".*" + "\.nc$"
   pattern       = re.compile(string_patron)
 
   # listo solo los archivos del path elegido y que cumplen la expresion regular
@@ -100,6 +120,6 @@ for day in rango_fechas:
                    if isfile(join(data_path, f)) and pattern.match(f)
                  ] # for f in
 
-  for f in files_in_dir:
+  for f in sorted(files_in_dir):
     print path_string + f
 # for day in rango_fechas 

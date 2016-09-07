@@ -38,15 +38,15 @@ def ymd(Y,N):
 # Iterador de meses
 
 def months(start_month, start_year, end_month, end_year):
-    month, year = start_month, start_year
-    while True:
-        yield month, year
-        if (month, year) == (end_month, end_year):
-            return
-        month += 1
-        if (month > 12):
-            month = 1
-            year += 1
+  month, year = start_month, start_year
+  while True:
+    yield month, year
+    if (month, year) == (end_month, end_year):
+        return  
+    month += 1
+    if (month > 12):
+        month = 1
+        year += 1
 
 # ---------------------------------------
 # ---------------------------------------
@@ -54,8 +54,9 @@ def months(start_month, start_year, end_month, end_year):
 # http://stackoverflow.com/questions/153584/how-to-iterate-over-a-timespan-after-days-hours-weeks-and-months-in-python
 
 def datespan(startDate, endDate, delta):
-    
-    currentDate = startDate
-    while currentDate <= endDate:
-        yield currentDate.year, currentDate.month, doy(currentDate.year, currentDate.month, currentDate.day), currentDate.hour, currentDate.minute, currentDate.second 
-        currentDate += delta
+  
+  # C = currentDate
+  C = startDate
+  while C <= endDate:
+    yield C.year, C.month, doy(C.year, C.month, C.day), C.hour, C.minute, C.second 
+    C += delta
