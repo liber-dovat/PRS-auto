@@ -107,6 +107,9 @@ rango_fechas = funciones.datespan(starting_date, ending_date, delta)
 # for f in rango_fechas:
 #   print f
 
+start_hms  = starting_date.hour * 10000 + starting_date.minute * 100 + starting_date.second
+ending_hms = int(rcv_hms)
+
 path_list = []
 
 # iterar por mes o dia, listar los archivos, y de ahi filtrar los que cumplen el patron
@@ -119,14 +122,23 @@ for day in rango_fechas:
 
   # day[0] = year, day[2] = doy
   # el patron queda .*year\.doy.*\.nc
-  # string_patron = ".*" + str(day[0]) + "\." + str(day[2]).zfill(3) + "\." + str(day[3]).zfill(2) + str(day[5]).zfill(2) + str(day[5]).zfill(2) + ".*" + "\.nc$"
-  # string_patron = ".*" + str(day[0]) + "\." + str(day[2]).zfill(3) + "\." + str(day[3]).zfill(2) + str(day[5]).zfill(2) + ".*" + "\.nc$"
   string_patron = ".*" + str(day[0]) + "\." + str(day[2]).zfill(3) + ".*" + "\.nc$"
   pattern       = re.compile(string_patron)
 
   # listo solo los archivos del path elegido y que cumplen la expresion regular
+
+  # files_in_dir = []
+
+  # for f in listdir(data_path):
+  #   if isfile(join(data_path, f)) and pattern.match(f):
+  #     files_in_dir.extend(f)
+  #     print f
+  #   # if
+  # # for
+
   files_in_dir = [ path_string + f for f in listdir(data_path)
                    if isfile(join(data_path, f)) and pattern.match(f)
+                   # and dentro de los rangos
                  ] # for f in
 
   path_list.extend(files_in_dir)
