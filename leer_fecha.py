@@ -82,11 +82,12 @@ en_scnd    = int(rcv_hms[4:6])
 #########################################
 
 # genero los numeros enteros para realizar el chequeo de archivos que quiero
-start_hms  = int(prs_split[0] + prs_split[1] + prs_split[2] + prs_hms)
-ending_hms = int(rcv_split[0] + rcv_split[1] + rcv_split[2] + rcv_hms)
+#            ano                mes            doy            hora+minuto+segundo
+start_timestamp = int(prs_split[0] + prs_split[1] + prs_split[2] + prs_hms)
+end_timestamp   = int(rcv_split[0] + rcv_split[1] + rcv_split[2] + rcv_hms)
 
-print start_hms
-print ending_hms
+print start_timestamp
+print end_timestamp
 
 path_list = []
 
@@ -124,13 +125,18 @@ for year in range(prs_year, rcv_year + 1):
 
     for f in listdir(data_path):
       if isfile(join(data_path, f)) and pattern.match(f):
-        nombre = f.split(".")
-        ano    = int(nombre[1])
-        mes    = funciones.ymd(int(nombre[1]),int(nombre[2]))[1]
-        doy    = int(nombre[2])
-        hms    = int(nombre[3])
-        print nombre
-        # path_list.extend([f])
+        nombre  = f.split(".")
+        ano     = nombre[1]
+        mes     = funciones.ymd(int(nombre[1]),int(nombre[2]))[1]
+        mes_str = str(mes).zfill(2)
+        doy     = nombre[2]
+        hms     = nombre[3]
+        timestamp = int( ano + mes_str + doy + hms )
+
+        if timestamp > start_timestamp and timestamp <= end_timestamp:
+          path_list.extend([f])
+        # if
+
       # if
     # for
 
@@ -140,40 +146,3 @@ for year in range(prs_year, rcv_year + 1):
 
 for f in sorted(path_list):
   print f
-
-
-# 'read this short text'.translate(None, 'aeiou')
-
-# for day in rango_fechas:
-
-#   # Path a los raw: day[0] = year, day[1] = month (completado con ceros hasta tener dos char)
-#   path_string = "/sat/raw-sat/" + str(day[0]) + "/" + str(day[1]).zfill(2) + "/"
-#   data_path   = os.path.abspath(path_string)
-
-#   # day[0] = year, day[2] = doy
-#   # el patron queda .*year\.doy.*\.nc
-#   string_patron = ".*" + str(day[0]) + "\." + str(day[2]).zfill(3) + ".*" + "\.nc$"
-#   pattern       = re.compile(string_patron)
-
-#   # listo solo los archivos del path elegido y que cumplen la expresion regular
-
-#   # files_in_dir = []
-
-#   # for f in listdir(data_path):
-#   #   if isfile(join(data_path, f)) and pattern.match(f):
-#   #     files_in_dir.extend(f)
-#   #     print f
-#   #   # if
-#   # # for
-
-#   files_in_dir = [ path_string + f for f in listdir(data_path)
-#                    if isfile(join(data_path, f)) and pattern.match(f)
-#                    # and dentro de los rangos
-#                  ] # for f in
-
-#   path_list.extend(files_in_dir)
-
-# # for day in rango_fechas 
-
-# for f in sorted(path_list):
-#   print f
