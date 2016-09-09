@@ -72,9 +72,9 @@ rcv_month = int(rcv_split[1]) # la segunda palabra del arreglo es el mes
 rcv_doy   = int(rcv_split[2]) # la tercera palabra del arreglo es el doy
 rcv_hms   = rcv_split[3]      # la cuarta palabra del arreglo es la hora-minuto-segundo
 
-en_hour    = int(rcv_hms[0:2])
-en_min     = int(rcv_hms[2:4])
-en_scnd    = int(rcv_hms[4:6])
+en_hour   = int(rcv_hms[0:2])
+en_min    = int(rcv_hms[2:4])
+en_scnd   = int(rcv_hms[4:6])
 
 #########################################
 #########################################
@@ -82,7 +82,7 @@ en_scnd    = int(rcv_hms[4:6])
 #########################################
 
 # genero los numeros enteros para realizar el chequeo de archivos que quiero
-#            ano                mes            doy            hora+minuto+segundo
+#                 ano                mes            doy            hora+minuto+segundo
 start_timestamp = int(prs_split[0] + prs_split[1] + prs_split[2] + prs_hms)
 end_timestamp   = int(rcv_split[0] + rcv_split[1] + rcv_split[2] + rcv_hms)
 
@@ -108,33 +108,34 @@ for year in range(prs_year, rcv_year + 1):
     ultimo_mes = rcv_month
   # if
 
+  # range no considera el ultimo elemento en el rango, por eso para incluirlo usamos el +1
   for month in range(primer_mes, ultimo_mes + 1):
 
     # Path a los raw: day[0] = year, day[1] = month (completado con ceros hasta tener dos char)
     path_string = "/sat/raw-sat/" + str(year) + "/" + str(month).zfill(2) + "/"
     data_path   = os.path.abspath(path_string)
 
-    print data_path
-
     # day[0] = year, day[2] = doy
     # el patron queda .*year\.doy.*\.nc
     string_patron = ".*" + str(year) + "\." + ".*" + "\.nc$"
     pattern       = re.compile(string_patron)
 
-    print string_patron
-
     for f in listdir(data_path):
       if isfile(join(data_path, f)) and pattern.match(f):
-        nombre  = f.split(".")
+        nombre  = f.split(".") # separo el nombre del archivo en palabras separadas
         ano     = nombre[1]
-        mes     = funciones.ymd(int(nombre[1]),int(nombre[2]))[1]
-        mes_str = str(mes).zfill(2)
         doy     = nombre[2]
         hms     = nombre[3]
+
+        mes     = funciones.ymd(int(ano),int(doy))[1] # combierto ano y doy a ano mes y dia, y me quedo con el mes
+        mes_str = str(mes).zfill(2) # lo combierto a string y lo relleno de ceros en el frente
+
+        # genero su timestamp a partir de su nombre
         timestamp = int( ano + mes_str + doy + hms )
 
+        # si el timestamp esta dentro de los rangos definidos por los archivos lo agrego a la lista
         if timestamp > start_timestamp and timestamp <= end_timestamp:
-          path_list.extend([f])
+          path_list.extend([data_path + "/" + f])
         # if
 
       # if
