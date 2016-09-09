@@ -23,25 +23,18 @@ data_path     = "data"
 abs_file_path = os.path.join(script_dir, data_path)
 
 # declaro los paths para los dos archivos
-rcv_path = os.path.join(abs_file_path, 'last-image-rcv')
 prs_path = os.path.join(abs_file_path, 'last-image-prs')
+rcv_path = os.path.join(abs_file_path, 'last-image-rcv')
 
 # abro los dos archivos para trabajar con ellos
 # el primero es de solo lectura, y el segundo es de lectura escritura
-ultima_recibida  = open(rcv_path, 'r')
 ultima_procesada = open(prs_path, 'r+')
+ultima_recibida  = open(rcv_path, 'r')
 
 #########################################
 #########################################
 # Recorro las lineas de los documentos y las imprimo
 #########################################
-
-# para cada linea del archivo, la imprimo
-for line in ultima_recibida:
-  print line
-  # tomo la linea y genero un arreglo con sus palabras
-  rcv_split = line.split(".")
-# for
 
 # para cada linea del archivo, la imprimo
 for line in ultima_procesada:
@@ -50,100 +43,142 @@ for line in ultima_procesada:
   prs_split = line.split(".")
 # for
 
-# 2016.09.245.163507
-# 2016.09.244.163507
+# para cada linea del archivo, la imprimo
+for line in ultima_recibida:
+  print line
+  # tomo la linea y genero un arreglo con sus palabras
+  rcv_split = line.split(".")
+# for
 
 #########################################
 #########################################
 # Realizo operaciones de impresion en pantalla para ver los parametros
 #########################################
 
-print rcv_split
 print prs_split
+print rcv_split
 
-rcv_year = int(rcv_split[0]) # la primer palabra del arreglo es el ano
-prs_year = int(prs_split[0]) # la primer palabra del arreglo es el ano
+prs_year  = int(prs_split[0]) # la primer palabra del arreglo es el ano
+prs_month = int(prs_split[1]) # la segunda palabra del arreglo es el mes
+prs_doy   = int(prs_split[2]) # la tercera palabra del arreglo es el doy
+prs_hms   = prs_split[3]      # la cuarta palabra del arreglo es la hora-minuto-segundo
 
-rcv_doy = int(rcv_split[2]) # la tercera palabra del arreglo es el doy
-prs_doy = int(prs_split[2]) # la tercera palabra del arreglo es el doy
+st_hour   = int(prs_hms[0:2])
+st_min    = int(prs_hms[2:4])
+st_scnd   = int(prs_hms[4:6])
 
-rcv_hms = rcv_split[3] # la cuarta palabra del arreglo es la hora-minuto-segundo
-prs_hms = prs_split[3] # la cuarta palabra del arreglo es la hora-minuto-segundo
+rcv_year  = int(rcv_split[0]) # la primer palabra del arreglo es el ano
+rcv_month = int(rcv_split[1]) # la segunda palabra del arreglo es el mes
+rcv_doy   = int(rcv_split[2]) # la tercera palabra del arreglo es el doy
+rcv_hms   = rcv_split[3]      # la cuarta palabra del arreglo es la hora-minuto-segundo
+
+en_hour    = int(rcv_hms[0:2])
+en_min     = int(rcv_hms[2:4])
+en_scnd    = int(rcv_hms[4:6])
 
 #########################################
 #########################################
 # Genero los datatypes date para iterar entre ellos y leo las carpetas
 #########################################
 
-print rcv_hms
-print prs_hms
+# genero los numeros enteros para realizar el chequeo de archivos que quiero
+start_hms  = prs_year*100000000000 + prs_month*1000000000 + prs_doy*1000000 + st_hour*10000 + st_min*100 + st_scnd
+ending_hms = rcv_year*100000000000 + rcv_month*1000000000 + rcv_doy*1000000 + en_hour*10000 + en_min*100 + en_scnd
 
-start_ymd = funciones.ymd(prs_year,prs_doy)
-st_month  = start_ymd[1]
-st_day    = start_ymd[2]
-st_hour   = int(prs_hms[0:2])
-st_min    = int(prs_hms[2:4])
-st_scnd   = int(prs_hms[4:6])
-starting_date = datetime(prs_year, st_month, st_day, st_hour, st_min, st_scnd)
-# starting_date corresponde al ultimo archivo procesado, asi que incremento en un
-# segundo para obtener el proximo posible. Si cambio de dia la operacion es correcta
-starting_date += timedelta(seconds=1)
+int_srt = int(prs_split[0] + prs_split[1] + prs_split[2] + prs_hms)
+int_end = int(rcv_split[0] + rcv_split[1] + rcv_split[2] + rcv_hms)
 
-print starting_date 
-
-ending_ymd = funciones.ymd(rcv_year,rcv_doy)
-en_month   = ending_ymd[1]
-en_day     = ending_ymd[2]
-en_hour    = int(rcv_hms[0:2])
-en_min     = int(rcv_hms[2:4])
-en_scnd    = int(rcv_hms[4:6])
-ending_date = datetime(rcv_year, en_month, en_day, en_hour, en_min, en_scnd)
-
-# delta = timedelta(seconds=1)
-# delta = timedelta(minutes=1)
-delta = timedelta(days=1)
-rango_fechas = funciones.datespan(starting_date, ending_date, delta)
-
-# for f in rango_fechas:
-#   print f
-
-start_hms  = starting_date.hour * 10000 + starting_date.minute * 100 + starting_date.second
-ending_hms = int(rcv_hms)
+print start_hms
+print int_srt
+print ending_hms
+print int_end
 
 path_list = []
 
-# iterar por mes o dia, listar los archivos, y de ahi filtrar los que cumplen el patron
+# hago un doble for de anos y meses
+# los anos iteran desde el primero hasta el ultimo
+for year in range(prs_year, rcv_year + 1):
 
-for day in rango_fechas:
+  primer_mes = 1
+  ultimo_mes = 12
 
-  # Path a los raw: day[0] = year, day[1] = month (completado con ceros hasta tener dos char)
-  path_string = "/sat/raw-sat/" + str(day[0]) + "/" + str(day[1]).zfill(2) + "/"
-  data_path   = os.path.abspath(path_string)
+  # para el primer ano solo debo iterar desde el mes del archivo
+  # y para el ultimo ano solo debo iterar hasta el mes del archivo
+  if year == prs_year:
+    primer_mes = prs_month
+  # if
 
-  # day[0] = year, day[2] = doy
-  # el patron queda .*year\.doy.*\.nc
-  string_patron = ".*" + str(day[0]) + "\." + str(day[2]).zfill(3) + ".*" + "\.nc$"
-  pattern       = re.compile(string_patron)
+  if year == rcv_year:
+    ultimo_mes = rcv_month
+  # if
 
-  # listo solo los archivos del path elegido y que cumplen la expresion regular
+  for month in range(primer_mes, ultimo_mes + 1):
 
-  # files_in_dir = []
+    # Path a los raw: day[0] = year, day[1] = month (completado con ceros hasta tener dos char)
+    path_string = "/sat/raw-sat/" + str(year) + "/" + str(month).zfill(2) + "/"
+    data_path   = os.path.abspath(path_string)
 
-  # for f in listdir(data_path):
-  #   if isfile(join(data_path, f)) and pattern.match(f):
-  #     files_in_dir.extend(f)
-  #     print f
-  #   # if
-  # # for
+    print data_path
 
-  files_in_dir = [ path_string + f for f in listdir(data_path)
-                   if isfile(join(data_path, f)) and pattern.match(f)
-                   # and dentro de los rangos
-                 ] # for f in
+    # day[0] = year, day[2] = doy
+    # el patron queda .*year\.doy.*\.nc
+    string_patron = ".*" + str(year) + "\." + ".*" + "\.nc$"
+    pattern       = re.compile(string_patron)
 
-  path_list.extend(files_in_dir)
+    print string_patron
 
-# for day in rango_fechas 
+    for f in listdir(data_path):
+      if isfile(join(data_path, f)) and pattern.match(f):
+        nombre = f.split(".")
+        ano    = int(nombre[1])
+        mes    = funciones.ymd(int(nombre[1]),int(nombre[2]))[1]
+        doy    = int(nombre[2])
+        hms    = int(nombre[3])
+        print nombre
+        # path_list.extend([f])
+      # if
+    # for
+
+  # for month
+
+# for year
 
 for f in sorted(path_list):
   print f
+
+
+# 'read this short text'.translate(None, 'aeiou')
+
+# for day in rango_fechas:
+
+#   # Path a los raw: day[0] = year, day[1] = month (completado con ceros hasta tener dos char)
+#   path_string = "/sat/raw-sat/" + str(day[0]) + "/" + str(day[1]).zfill(2) + "/"
+#   data_path   = os.path.abspath(path_string)
+
+#   # day[0] = year, day[2] = doy
+#   # el patron queda .*year\.doy.*\.nc
+#   string_patron = ".*" + str(day[0]) + "\." + str(day[2]).zfill(3) + ".*" + "\.nc$"
+#   pattern       = re.compile(string_patron)
+
+#   # listo solo los archivos del path elegido y que cumplen la expresion regular
+
+#   # files_in_dir = []
+
+#   # for f in listdir(data_path):
+#   #   if isfile(join(data_path, f)) and pattern.match(f):
+#   #     files_in_dir.extend(f)
+#   #     print f
+#   #   # if
+#   # # for
+
+#   files_in_dir = [ path_string + f for f in listdir(data_path)
+#                    if isfile(join(data_path, f)) and pattern.match(f)
+#                    # and dentro de los rangos
+#                  ] # for f in
+
+#   path_list.extend(files_in_dir)
+
+# # for day in rango_fechas 
+
+# for f in sorted(path_list):
+#   print f
