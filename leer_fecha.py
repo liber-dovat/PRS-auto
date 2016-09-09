@@ -82,16 +82,11 @@ en_scnd    = int(rcv_hms[4:6])
 #########################################
 
 # genero los numeros enteros para realizar el chequeo de archivos que quiero
-start_hms  = prs_year*100000000000 + prs_month*1000000000 + prs_doy*1000000 + st_hour*10000 + st_min*100 + st_scnd
-ending_hms = rcv_year*100000000000 + rcv_month*1000000000 + rcv_doy*1000000 + en_hour*10000 + en_min*100 + en_scnd
-
-int_srt = int(prs_split[0] + prs_split[1] + prs_split[2] + prs_hms)
-int_end = int(rcv_split[0] + rcv_split[1] + rcv_split[2] + rcv_hms)
+start_hms  = int(prs_split[0] + prs_split[1] + prs_split[2] + prs_hms)
+ending_hms = int(rcv_split[0] + rcv_split[1] + rcv_split[2] + rcv_hms)
 
 print start_hms
-print int_srt
 print ending_hms
-print int_end
 
 path_list = []
 
