@@ -18,9 +18,12 @@ import re
 #########################################
 
 # genero los paths para los directorios base
-script_dir    = os.path.dirname(__file__)
-data_path     = "data"
-abs_file_path = os.path.join(script_dir, data_path)
+data_path     = "/sat/PRS/libs/PRS-auto/data/"
+abs_file_path = os.path.abspath(data_path)
+
+# declaro los paths para los dos archivos
+prs_path = os.path.join(abs_file_path, 'last-image-prs')
+rcv_path = os.path.join(abs_file_path, 'last-image-rcv')
 
 # declaro los paths para los dos archivos
 prs_path = os.path.join(abs_file_path, 'last-image-prs')
@@ -38,14 +41,12 @@ ultima_recibida  = open(rcv_path, 'r')
 
 # para cada linea del archivo, la imprimo
 for line in ultima_procesada:
-  print line
   # tomo la linea y genero un arreglo con sus palabras
   prs_split = line.split(".")
 # for
 
 # para cada linea del archivo, la imprimo
 for line in ultima_recibida:
-  print line
   # tomo la linea y genero un arreglo con sus palabras
   rcv_split = line.split(".")
 # for
@@ -54,9 +55,6 @@ for line in ultima_recibida:
 #########################################
 # Realizo operaciones de impresion en pantalla para ver los parametros
 #########################################
-
-print prs_split
-print rcv_split
 
 prs_year  = int(prs_split[0]) # la primer palabra del arreglo es el ano
 prs_month = int(prs_split[1]) # la segunda palabra del arreglo es el mes
@@ -85,9 +83,6 @@ en_scnd   = int(rcv_hms[4:6])
 #                 ano                mes            doy            hora+minuto+segundo
 start_timestamp = int(prs_split[0] + prs_split[1] + prs_split[2] + prs_hms)
 end_timestamp   = int(rcv_split[0] + rcv_split[1] + rcv_split[2] + rcv_hms)
-
-print start_timestamp
-print end_timestamp
 
 path_list = []
 
