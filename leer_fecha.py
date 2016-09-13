@@ -1,8 +1,7 @@
 #!/usr/bin/python
 
-# importo el modulo funciones
-import funciones
-from datetime import date, timedelta, datetime
+# importo el modulo funciones y dateime
+from funciones import ymd
 
 # importo rutinas para trabajar con el sistema operativo
 import os
@@ -122,8 +121,8 @@ for year in range(prs_year, rcv_year + 1):
         doy     = nombre[2]
         hms     = nombre[3]
 
-        mes     = funciones.ymd(int(ano),int(doy))[1] # combierto ano y doy a ano mes y dia, y me quedo con el mes
-        mes_str = str(mes).zfill(2) # lo combierto a string y lo relleno de ceros en el frente
+        mes     = ymd(int(ano),int(doy))[1] # convierto ano y doy a ano mes y dia, y me quedo con el mes
+        mes_str = str(mes).zfill(2) # lo convierto a string y lo relleno de ceros en el frente
 
         # genero su timestamp a partir de su nombre
         timestamp = int( ano + mes_str + doy + hms )
