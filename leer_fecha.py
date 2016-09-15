@@ -87,6 +87,7 @@ path_list = []
 
 # hago un doble for de anos y meses
 # los anos iteran desde el primero hasta el ultimo
+# range no considera el ultimo elemento en el rango, por eso para incluirlo usamos el +1
 for year in range(prs_year, rcv_year + 1):
 
   primer_mes = 1
@@ -144,3 +145,6 @@ for f in sorted(path_list):
 
 # http://schubert.atmos.colostate.edu/~cslocum/netcdf_example.html
 # http://stackoverflow.com/questions/8864599/convert-netcdf-to-image
+# http://www.unidata.ucar.edu/software/netcdf/software.html
+
+netcdf2png('./imagen/goes13.2016.251.190734.BAND_06.nc')
