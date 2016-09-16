@@ -179,6 +179,4 @@ print lons[-1][-1]
 # plt.savefig(archivo+'.png', bbox_inches=0)
 
 for i in range (0,10):
-  # for j in range (0,10):
-    print data[i][j]
-    
+  print data[i]
