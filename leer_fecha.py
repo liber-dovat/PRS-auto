@@ -146,5 +146,3 @@ for f in sorted(path_list):
 # http://schubert.atmos.colostate.edu/~cslocum/netcdf_example.html
 # http://stackoverflow.com/questions/8864599/convert-netcdf-to-image
 # http://www.unidata.ucar.edu/software/netcdf/software.html
-
-netcdf2png('./imagen/goes13.2016.251.190734.BAND_06.nc')
