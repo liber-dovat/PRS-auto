@@ -156,40 +156,4 @@ data = nc_fid.variables['data'][:]
 nc_fid.close()
 
 plt.plot(data)
-plt.ylabel('some numbers')
 plt.show()
-
-# Get some parameters for the Stereographic Projection
-lon_0 = lons.mean()
-lat_0 = lats.mean()
-
-# print lon_0
-# print lat_0
-
-# m = Basemap(resolution='l',projection='merc',lat_0=lat_0,lon_0=lon_0)
-
-# Because our lon and lat variables are 1D, 
-# use meshgrid to create 2D arrays 
-# Not necessary if coordinates are already in 2D arrays.
-# lon, lat = numpy.meshgrid(lons, lats, sparse=True)
-# xi, yi   = m(lon, lat)
-
-# Plot Data
-# cs = m.pcolor(xi,yi,data)
-
-# Add Grid Lines
-# m.drawparallels(numpy.arange(-80., 81., 10.), labels=[1,0,0,0], fontsize=10)
-# m.drawmeridians(numpy.arange(-180., 181., 10.), labels=[0,0,0,1], fontsize=10)
-
-# Add Coastlines, States, and Country Boundaries
-# m.drawcoastlines()
-# m.drawstates()
-# m.drawcountries()
-
-# Add Colorbar
-# cbar = m.colorbar(cs, location='bottom', pad="10%")
-
-# Add Title
-# plt.title('NetCDF Data')
-# plt.figure(figsize=(5,5))
-# plt.show()
