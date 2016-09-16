@@ -141,7 +141,7 @@ def netcdf2png(url):
 # https://code.google.com/archive/p/netcdf4-python/wikis/UbuntuInstall.wiki
 # http://www.hydro.washington.edu/~jhamman/hydro-logic/blog/2013/10/12/plot-netcdf-data/
 
-archivo = './imagen/goes13.2016.251.190734.BAND_01.nc'
+archivo = './imagen/goes13.2016.251.190734.BAND_04.nc'
 
 # Dataset is the class behavior to open the file
 # and create an instance of the ncCDF4 class
@@ -155,6 +155,25 @@ data = nc_fid.variables['data'][:]
 
 nc_fid.close()
 
+lon_0 = lons.mean()
+lat_0 = lats.mean()
+print lats[0][0]
+print lats[-1][-1]
+print lons[0][0]
+print lons[-1][-1]
+
+# create polar stereographic Basemap instance.
+m = Basemap(projection='merc',lon_0=lon_0,lat_0=lat_0,\
+            llcrnrlat=lats[-1][-1],urcrnrlat=lats[0][0],\
+            llcrnrlon=lons[0][0],urcrnrlon=lons[-1][-1],\
+            resolution='l')
+m.drawcoastlines()
+m.drawstates()
+m.drawcountries()
+
+# m.pcolor(lats.tolist,lons.tolist,numpy.squeeze(data))
+
 plt.imshow(numpy.squeeze(data))
+plt.axis('off')
 # plt.show()
-plt.savefig('./imagen/image.png', bbox_inches=0)
+plt.savefig(archivo+'.png', bbox_inches=0)
