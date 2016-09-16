@@ -163,17 +163,22 @@ print lons[0][0]
 print lons[-1][-1]
 
 # create polar stereographic Basemap instance.
-m = Basemap(projection='merc',lon_0=lon_0,lat_0=lat_0,\
-            llcrnrlat=lats[-1][-1],urcrnrlat=lats[0][0],\
-            llcrnrlon=lons[0][0],urcrnrlon=lons[-1][-1],\
-            resolution='l')
-m.drawcoastlines()
-m.drawstates()
-m.drawcountries()
+# m = Basemap(projection='merc',lon_0=lon_0,lat_0=lat_0,\
+#             llcrnrlat=lats[-1][-1],urcrnrlat=lats[0][0],\
+#             llcrnrlon=lons[0][0],urcrnrlon=lons[-1][-1],\
+#             resolution='l')
+# m.drawcoastlines()
+# m.drawstates()
+# m.drawcountries()
 
 # m.pcolor(lats.tolist,lons.tolist,numpy.squeeze(data))
 
-plt.imshow(numpy.squeeze(data))
-plt.axis('off')
-# plt.show()
-plt.savefig(archivo+'.png', bbox_inches=0)
+# plt.imshow(data)
+# plt.axis('off')
+# # plt.show()
+# plt.savefig(archivo+'.png', bbox_inches=0)
+
+for i in range (0,10):
+  # for j in range (0,10):
+    print data[i][j]
+    
