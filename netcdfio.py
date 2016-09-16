@@ -155,5 +155,6 @@ data = nc_fid.variables['data'][:]
 
 nc_fid.close()
 
-plt.plot(data)
-plt.show()
+plt.imshow(numpy.squeeze(data))
+# plt.show()
+plt.savefig('./imagen/image.png', bbox_inches=0)
