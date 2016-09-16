@@ -142,7 +142,3 @@ for year in range(prs_year, rcv_year + 1):
 
 for f in sorted(path_list):
   print f
-
-# http://schubert.atmos.colostate.edu/~cslocum/netcdf_example.html
-# http://stackoverflow.com/questions/8864599/convert-netcdf-to-image
-# http://www.unidata.ucar.edu/software/netcdf/software.html

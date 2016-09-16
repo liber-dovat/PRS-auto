@@ -1,7 +1,9 @@
 #!/usr/bin/python
 
 import matplotlib.pyplot as plt
+from mpl_toolkits.basemap import Basemap
 import netCDF4
+import numpy
 
 def ncdump(nc_fid, verb=True):
     '''
@@ -42,6 +44,7 @@ def ncdump(nc_fid, verb=True):
                       repr(nc_fid.variables[key].getncattr(ncattr))
         except KeyError:
             print "\t\tWARNING: %s does not contain variable attributes" % key
+    # def print_ncattr
 
     # NetCDF global attributes
     nc_attrs = nc_fid.ncattrs()
@@ -50,6 +53,7 @@ def ncdump(nc_fid, verb=True):
         for nc_attr in nc_attrs:
             print '\t%s:' % nc_attr, repr(nc_fid.getncattr(nc_attr))
     nc_dims = [dim for dim in nc_fid.dimensions]  # list of nc dimensions
+
     # Dimension shape information.
     if verb:
         print "NetCDF dimension information:"
@@ -57,6 +61,7 @@ def ncdump(nc_fid, verb=True):
             print "\tName:", dim 
             print "\t\tsize:", len(nc_fid.dimensions[dim])
             print_ncattr(dim)
+
     # Variable information.
     nc_vars = [var for var in nc_fid.variables]  # list of nc variables
     if verb:
@@ -68,6 +73,8 @@ def ncdump(nc_fid, verb=True):
                 print "\t\tsize:", nc_fid.variables[var].size
                 print_ncattr(var)
     return nc_attrs, nc_dims, nc_vars
+
+# def ncdump
 
 #########################################
 #########################################
@@ -107,7 +114,7 @@ def netcdf2png(url):
   print lon.size
   print lon.shape
 
-  print lat.size
+  print lat_u.size
   print lat.shape
 
   # # sample every 10th point of the 'z' variable
@@ -121,6 +128,13 @@ def netcdf2png(url):
 
   file.close()
 
+# def netcdf2png
+
+#########################################
+#########################################
+#########################################
+#################################### Main
+
 # http://stackoverflow.com/questions/8864599/convert-netcdf-to-image
 # http://stackoverflow.com/questions/8864599/convert-netcdf-to-image
 # http://www.unidata.ucar.edu/software/netcdf/software.html
@@ -128,6 +142,54 @@ def netcdf2png(url):
 # http://www.hydro.washington.edu/~jhamman/hydro-logic/blog/2013/10/12/plot-netcdf-data/
 
 archivo = './imagen/goes13.2016.251.190734.BAND_01.nc'
-nc_fid = netCDF4.Dataset(archivo, 'r')  # Dataset is the class behavior to open the file
-                                        # and create an instance of the ncCDF4 class
+
+# Dataset is the class behavior to open the file
+# and create an instance of the ncCDF4 class
+nc_fid = netCDF4.Dataset(archivo, 'r')
+                                        
 nc_attrs, nc_dims, nc_vars = ncdump(nc_fid)
+
+lats = nc_fid.variables['lat'][:]  # extract/copy the data
+lons = nc_fid.variables['lon'][:]
+data = nc_fid.variables['data'][:]
+
+nc_fid.close()
+
+plt.plot(data)
+plt.ylabel('some numbers')
+plt.show()
+
+# Get some parameters for the Stereographic Projection
+lon_0 = lons.mean()
+lat_0 = lats.mean()
+
+# print lon_0
+# print lat_0
+
+# m = Basemap(resolution='l',projection='merc',lat_0=lat_0,lon_0=lon_0)
+
+# Because our lon and lat variables are 1D, 
+# use meshgrid to create 2D arrays 
+# Not necessary if coordinates are already in 2D arrays.
+# lon, lat = numpy.meshgrid(lons, lats, sparse=True)
+# xi, yi   = m(lon, lat)
+
+# Plot Data
+# cs = m.pcolor(xi,yi,data)
+
+# Add Grid Lines
+# m.drawparallels(numpy.arange(-80., 81., 10.), labels=[1,0,0,0], fontsize=10)
+# m.drawmeridians(numpy.arange(-180., 181., 10.), labels=[0,0,0,1], fontsize=10)
+
+# Add Coastlines, States, and Country Boundaries
+# m.drawcoastlines()
+# m.drawstates()
+# m.drawcountries()
+
+# Add Colorbar
+# cbar = m.colorbar(cs, location='bottom', pad="10%")
+
+# Add Title
+# plt.title('NetCDF Data')
+# plt.figure(figsize=(5,5))
+# plt.show()
