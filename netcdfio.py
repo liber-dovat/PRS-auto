@@ -145,6 +145,7 @@ def netcdf2png(url):
 # http://matplotlib.org/basemap/users/examples.html
 # http://stackoverflow.com/questions/33523589/python-overlaying-netcdf-data-on-a-basemap-contourf
 # http://basemaptutorial.readthedocs.io/en/latest/backgrounds.html
+# http://www.idlcoyote.com/map_tips/badmercator.html
 
 archivo = './imagen/goes13.2016.015.140733.BAND_04.nc'
 
@@ -163,8 +164,9 @@ nc_fid.close()
 lon_0 = lons.mean()
 lat_0 = lats.mean()
 
+#                low left                  upper right
 print "Lats: " + str(lats[-1][-1]) + "," + str(lats[0][0])
-print "Lons: " + str(lons[0][0]) + "," + str(lons[-1][-1])
+print "Lons: " + str(lons[0][0])   + "," + str(lons[-1][-1])
 
 # create polar stereographic Basemap instance.
 m = Basemap(projection='merc',lon_0=lon_0,lat_0=lat_0,\
