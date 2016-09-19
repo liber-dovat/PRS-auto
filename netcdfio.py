@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import matplotlib.pyplot as plt
-from mpl_toolkits.basemap import Basemap
+from mpl_toolkits.basemap import Basemap, cm
 import netCDF4
 import numpy
 
@@ -141,6 +141,10 @@ def netcdf2png(url):
 # https://code.google.com/archive/p/netcdf4-python/wikis/UbuntuInstall.wiki
 # http://www.hydro.washington.edu/~jhamman/hydro-logic/blog/2013/10/12/plot-netcdf-data/
 
+# http://matplotlib.org/basemap/users/examples.html
+# http://stackoverflow.com/questions/33523589/python-overlaying-netcdf-data-on-a-basemap-contourf
+# http://basemaptutorial.readthedocs.io/en/latest/backgrounds.html
+
 archivo = './imagen/goes13.2016.251.190734.BAND_04.nc'
 
 # Dataset is the class behavior to open the file
@@ -157,35 +161,25 @@ nc_fid.close()
 
 lon_0 = lons.mean()
 lat_0 = lats.mean()
-print lats[0][0]
-print lats[-1][-1]
-print lons[0][0]
-print lons[-1][-1]
 
 # create polar stereographic Basemap instance.
 m = Basemap(projection='merc',lon_0=lon_0,lat_0=lat_0,\
             llcrnrlat=lats[-1][-1],urcrnrlat=lats[0][0],\
             llcrnrlon=lons[0][0],urcrnrlon=lons[-1][-1],\
             resolution='l')
+
+img = data[0]
+
+# plt.contourf(lats, lons, img)
+m.imshow(img,cm.GMT_haxby)
+
+plt.plot(lats, lons)
+
 m.drawcoastlines()
 m.drawstates()
 m.drawcountries()
 
-img = data[0]
-
-# m.pcolor(lats.tolist,lons.tolist,img)
-cs = m.contourf(lats, lons, img)
-
-
-
-plt.plot(lats, lons)
-# plt.imshow(img)
 plt.axis('off')
-# plt.show()
-cbar = plt.colorbar(cs, orientation='horizontal', shrink=0.5)
-
+# cbar = plt.colorbar(cs, orientation='horizontal', shrink=0.5)
 plt.savefig(archivo+'.png', bbox_inches=0)
-
-# for i in range (0,10):
-#   for j in range (0,10):
-#     print data[0][i][j]
+# plt.show()
