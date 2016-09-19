@@ -160,13 +160,16 @@ data = nc_fid.variables['data'][:]
 
 nc_fid.close()
 
+lon_0 = lons.mean()
+lat_0 = lats.mean()
+
 print "Lats: " + str(lats[-1][-1]) + "," + str(lats[0][0])
 print "Lons: " + str(lons[0][0]) + "," + str(lons[-1][-1])
 
 # create polar stereographic Basemap instance.
-m = Basemap(projection='merc',\
-            llcrnrlat=lats[-1][-1],urcrnrlat=lats[0][0],\
-            llcrnrlon=lons[0][0],urcrnrlon=lons[-1][-1],\
+m = Basemap(projection='merc',lon_0=lon_0,lat_0=lat_0,\
+            llcrnrlat=-39.90974,urcrnrlat=-27.3,\
+            llcrnrlon=-65.54443,urcrnrlon=-49.9,\
             resolution='l')
 
 img = data[0]
