@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.basemap import Basemap, cm
 import netCDF4
 import numpy
+import datetime
 
 def ncdump(nc_fid, verb=True):
     '''
@@ -145,7 +146,7 @@ def netcdf2png(url):
 # http://stackoverflow.com/questions/33523589/python-overlaying-netcdf-data-on-a-basemap-contourf
 # http://basemaptutorial.readthedocs.io/en/latest/backgrounds.html
 
-archivo = './imagen/goes13.2016.251.190734.BAND_04.nc'
+archivo = './imagen/goes13.2016.015.140733.BAND_04.nc'
 
 # Dataset is the class behavior to open the file
 # and create an instance of the ncCDF4 class
@@ -159,27 +160,24 @@ data = nc_fid.variables['data'][:]
 
 nc_fid.close()
 
-lon_0 = lons.mean()
-lat_0 = lats.mean()
+print "Lats: " + str(lats[-1][-1]) + "," + str(lats[0][0])
+print "Lons: " + str(lons[0][0]) + "," + str(lons[-1][-1])
 
 # create polar stereographic Basemap instance.
-m = Basemap(projection='merc',lon_0=lon_0,lat_0=lat_0,\
+m = Basemap(projection='merc',\
             llcrnrlat=lats[-1][-1],urcrnrlat=lats[0][0],\
             llcrnrlon=lons[0][0],urcrnrlon=lons[-1][-1],\
             resolution='l')
 
 img = data[0]
 
-# plt.contourf(lats, lons, img)
-m.imshow(img,cm.GMT_haxby)
-
-plt.plot(lats, lons)
+# cm le define el esquema de colores
+m.imshow(img,cm.GMT_haxby,origin='upper')
 
 m.drawcoastlines()
 m.drawstates()
 m.drawcountries()
 
 plt.axis('off')
-# cbar = plt.colorbar(cs, orientation='horizontal', shrink=0.5)
-plt.savefig(archivo+'.png', bbox_inches=0)
+plt.savefig(archivo+str(datetime.datetime.now())+'.png', bbox_inches=0, dpi=200)
 # plt.show()
