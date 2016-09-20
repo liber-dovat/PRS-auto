@@ -187,11 +187,14 @@ m = Basemap(projection='merc',lon_0=lon_0,lat_0=lat_0,\
 
 img = data[0]
 
+# dadas las lat y lon del archivo, obtengo las coordenadas x y para
+# la ventana seleccionada como proyeccion
 x,y = m(lons,lats)
 
 # cm le define el esquema de colores
-# m.imshow(img, cm.GMT_haxby, origin='upper')
-m.contourf(x, y, img)
+# m.imshow(img, cm.GMT_haxby)
+cmap = plt.get_cmap('PiYG')
+m.pcolormesh(x, y, img, cmap=cmap)
 
 m.drawcoastlines()
 m.drawstates()
