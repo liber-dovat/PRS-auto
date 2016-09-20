@@ -158,26 +158,50 @@ nc_attrs, nc_dims, nc_vars = ncdump(nc_fid)
 lats = nc_fid.variables['lat'][:]  # extract/copy the data
 lons = nc_fid.variables['lon'][:]
 data = nc_fid.variables['data'][:]
+lineRes = nc_fid.variables['lineRes'][:]
+elemRes = nc_fid.variables['elemRes'][:]
 
 nc_fid.close()
 
 lon_0 = lons.mean()
 lat_0 = lats.mean()
 
+print lineRes
+print elemRes
+
 #                low left                  upper right
 print "Lats: " + str(lats[-1][-1]) + "," + str(lats[0][0])
 print "Lons: " + str(lons[0][0])   + "," + str(lons[-1][-1])
 
 # create polar stereographic Basemap instance.
+# voy a usar las coordenadas que se ven en el ncview
+# Lats:  -40.2073 -27.7527
+# Longs: -66.8611 -48.9735
 m = Basemap(projection='merc',lon_0=lon_0,lat_0=lat_0,\
-            llcrnrlat=-39.90974,urcrnrlat=-27.3,\
-            llcrnrlon=-65.54443,urcrnrlon=-49.9,\
+            llcrnrlat=-40.2073,urcrnrlat=-27.7527,\
+            llcrnrlon=-66.8611,urcrnrlon=-48.9735,\
             resolution='l')
 
 img = data[0]
 
+re_lons = numpy.reshape(lons,(1,165240))[0]
+re_lats = numpy.reshape(lats,(1,165240))[0][::-1]
+
+print re_lons
+print re_lats
+
+# transform to nx x ny regularly spaced 4km native projection grid
+nx = int((m.xmax-m.xmin)/4000.) + 1
+ny = int((m.ymax-m.ymin)/4000.) + 1
+
+topodat = m.transform_scalar(img,\
+                             re_lons,\
+                             re_lats,\
+                             nx,\
+                             ny)
+
 # cm le define el esquema de colores
-m.imshow(img,cm.GMT_haxby,origin='upper')
+m.imshow(topodat, cm.GMT_haxby, origin='upper')
 
 m.drawcoastlines()
 m.drawstates()
