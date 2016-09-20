@@ -98,7 +98,6 @@ def netcdf2png(url):
   lon_u      = file.variables['lon'].units
   lat_u      = file.variables['lat'].units
   time_u     = file.variables['time'].units
-  # dataWidth_u = file.variables['dataWidth'].units
   lineRes_u  = file.variables['lineRes'].units
 
   print lon
@@ -108,7 +107,6 @@ def netcdf2png(url):
   print time
   print time_u
   print dataWidth
-  # print dataWidth_u
   print lineRes
   print lineRes_u
 
@@ -117,15 +115,6 @@ def netcdf2png(url):
 
   print lat_u.size
   print lat.shape
-
-  # # sample every 10th point of the 'z' variable
-  # topo = file.variables['z'][::10,::10]
-
-  # # make image
-  # plt.figure(figsize=(10,10))
-  # plt.imshow(topo,origin='lower') 
-  # plt.title(file.title)
-  # plt.savefig('./imagen/image.png', bbox_inches=0)
 
   file.close()
 
@@ -136,18 +125,7 @@ def netcdf2png(url):
 #########################################
 #################################### Main
 
-# http://stackoverflow.com/questions/8864599/convert-netcdf-to-image
-# http://stackoverflow.com/questions/8864599/convert-netcdf-to-image
-# http://www.unidata.ucar.edu/software/netcdf/software.html
-# https://code.google.com/archive/p/netcdf4-python/wikis/UbuntuInstall.wiki
-# http://www.hydro.washington.edu/~jhamman/hydro-logic/blog/2013/10/12/plot-netcdf-data/
-
-# http://matplotlib.org/basemap/users/examples.html
-# http://stackoverflow.com/questions/33523589/python-overlaying-netcdf-data-on-a-basemap-contourf
-# http://basemaptutorial.readthedocs.io/en/latest/backgrounds.html
-# http://www.idlcoyote.com/map_tips/badmercator.html
-
-archivo = './imagen/goes13.2016.015.140733.BAND_04.nc'
+archivo = './imagen/goes13.2016.251.140733.BAND_04.nc'
 
 # Dataset is the class behavior to open the file
 # and create an instance of the ncCDF4 class
@@ -173,16 +151,15 @@ print lat_0
 print "Lats: " + str(lats[-1][-1]) + "," + str(lats[0][0])
 print "Lons: " + str(lons[0][0])   + "," + str(lons[-1][-1])
 
-# create polar stereographic Basemap instance.
-# voy a usar las coordenadas que se ven en el ncview
-# Lats:  -40.2073 -27.7527
-# Longs: -66.8611 -48.9735
-# Ventana usada por el les:
-# Lats: -40 -28
-# Longs: -66 -51
+            # llcrnrlat=-48.45835,urcrnrlat=-13.9234,\
+            # llcrnrlon=-71.10352,urcrnrlon=-40.16602,\
+            # llcrnrlat=-41.260204,urcrnrlat=-27.534344,\
+            # llcrnrlon=-67.620302,urcrnrlon=-45.384947,\
+            # llcrnrlat=-45.783816,urcrnrlat=-21.476581,\
+            # llcrnrlon=-65.811160,urcrnrlon=-30.840110,\
 m = Basemap(projection='merc',lon_0=lon_0,lat_0=lat_0,\
-            llcrnrlat=-41.260204,urcrnrlat=-27.534344,\
-            llcrnrlon=-67.620302,urcrnrlon=-45.384947,\
+            llcrnrlat=-45.783816,urcrnrlat=-21.476581,\
+            llcrnrlon=-65.811160,urcrnrlon=-30.840110,\
             resolution='h')
 
 img = data[0]
