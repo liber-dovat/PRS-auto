@@ -166,8 +166,8 @@ nc_fid.close()
 lon_0 = lons.mean()
 lat_0 = lats.mean()
 
-print lineRes
-print elemRes
+print lon_0
+print lat_0
 
 #                low left                  upper right
 print "Lats: " + str(lats[-1][-1]) + "," + str(lats[0][0])
@@ -182,7 +182,7 @@ print "Lons: " + str(lons[0][0])   + "," + str(lons[-1][-1])
 # Longs: -66 -51
 m = Basemap(projection='merc',lon_0=lon_0,lat_0=lat_0,\
             llcrnrlat=-40.2073,urcrnrlat=-27.7527,\
-            llcrnrlon=-65,urcrnrlon=-50,\
+            llcrnrlon=-66.8611,urcrnrlon=-48.9735,\
             resolution='l')
 
 img = data[0]
@@ -193,8 +193,8 @@ x,y = m(lons,lats)
 
 # cm le define el esquema de colores
 # m.imshow(img, cm.GMT_haxby)
-cmap = plt.get_cmap('PiYG')
-m.pcolormesh(x, y, img, cmap=cmap)
+# https://gist.github.com/endolith/2719900
+m.pcolormesh(x, y, img)
 
 m.drawcoastlines()
 m.drawstates()
