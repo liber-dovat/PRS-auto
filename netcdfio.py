@@ -184,28 +184,8 @@ m = Basemap(projection='merc',lon_0=lon_0,lat_0=lat_0,\
 
 img = data[0]
 
-re_lons = numpy.reshape(lons,(1,165240))[0]
-re_lats = numpy.reshape(lats,(1,165240))[0]
-
-print numpy.sort(re_lons)
-print numpy.sort(re_lats)
-
-# transform to nx x ny regularly spaced 4km native projection grid
-nx = int((m.xmax-m.xmin)/4000.) + 1
-ny = int((m.ymax-m.ymin)/4000.) + 1
-
-print nx
-print ny
-re_img = numpy.reshape(img,(1,165240))[0]
-
-topodat = m.transform_scalar(re_img,\
-                             numpy.sort(re_lons),\
-                             numpy.sort(re_lats),\
-                             648,\
-                             255)
-
 # cm le define el esquema de colores
-m.imshow(topodat, cm.GMT_haxby, origin='upper')
+m.imshow(img, cm.GMT_haxby, origin='upper')
 
 m.drawcoastlines()
 m.drawstates()
