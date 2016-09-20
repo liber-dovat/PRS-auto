@@ -178,6 +178,9 @@ m.drawcoastlines()
 m.drawstates()
 m.drawcountries()
 
+# http://code.activestate.com/recipes/362879-watermark-with-pil/
+# https://gist.github.com/snay2/876425
+
 plt.axis('off')
 # plt.title(basename(archivo))
 plt.savefig(archivo+str(datetime.datetime.now())+'.png', bbox_inches='tight', dpi=200)
