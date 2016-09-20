@@ -177,15 +177,21 @@ print "Lons: " + str(lons[0][0])   + "," + str(lons[-1][-1])
 # voy a usar las coordenadas que se ven en el ncview
 # Lats:  -40.2073 -27.7527
 # Longs: -66.8611 -48.9735
+# Ventana usada por el les:
+# Lats: -40 -28
+# Longs: -66 -51
 m = Basemap(projection='merc',lon_0=lon_0,lat_0=lat_0,\
             llcrnrlat=-40.2073,urcrnrlat=-27.7527,\
-            llcrnrlon=-66.8611,urcrnrlon=-48.9735,\
+            llcrnrlon=-65,urcrnrlon=-50,\
             resolution='l')
 
 img = data[0]
 
+x,y = m(lons,lats)
+
 # cm le define el esquema de colores
-m.imshow(img, cm.GMT_haxby, origin='upper')
+# m.imshow(img, cm.GMT_haxby, origin='upper')
+m.contourf(x, y, img)
 
 m.drawcoastlines()
 m.drawstates()
