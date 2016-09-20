@@ -180,6 +180,7 @@ m.drawcountries()
 
 # http://code.activestate.com/recipes/362879-watermark-with-pil/
 # https://gist.github.com/snay2/876425
+# http://stackoverflow.com/questions/32034160/creating-a-watermark-in-python
 
 plt.axis('off')
 # plt.title(basename(archivo))
