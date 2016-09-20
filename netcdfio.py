@@ -5,6 +5,8 @@ from mpl_toolkits.basemap import Basemap, cm
 import netCDF4
 import numpy
 import datetime
+import os
+from os.path import basename
 
 def ncdump(nc_fid, verb=True):
     '''
@@ -125,7 +127,7 @@ def netcdf2png(url):
 #########################################
 #################################### Main
 
-archivo = './imagen/goes13.2016.251.140733.BAND_04.nc'
+archivo = './imagen/goes13.2016.251.140733.BAND_06.nc'
 
 # Dataset is the class behavior to open the file
 # and create an instance of the ncCDF4 class
@@ -155,11 +157,11 @@ print "Lons: " + str(lons[0][0])   + "," + str(lons[-1][-1])
             # llcrnrlon=-71.10352,urcrnrlon=-40.16602,\
             # llcrnrlat=-41.260204,urcrnrlat=-27.534344,\
             # llcrnrlon=-67.620302,urcrnrlon=-45.384947,\
-            # llcrnrlat=-45.783816,urcrnrlat=-21.476581,\
-            # llcrnrlon=-65.811160,urcrnrlon=-30.840110,\
+            # llcrnrlat=-44.871129,urcrnrlat=-21.476581,\
+            # llcrnrlon=-69.358537,urcrnrlon=-30.840110,\
 m = Basemap(projection='merc',lon_0=lon_0,lat_0=lat_0,\
-            llcrnrlat=-45.783816,urcrnrlat=-21.476581,\
-            llcrnrlon=-65.811160,urcrnrlon=-30.840110,\
+            llcrnrlat=-44.871129,urcrnrlat=-21.476581,\
+            llcrnrlon=-69.358537,urcrnrlon=-30.840110,\
             resolution='h')
 
 img = data[0]
@@ -169,7 +171,6 @@ img = data[0]
 x,y = m(lons,lats)
 
 # cm le define el esquema de colores
-# m.imshow(img, cm.GMT_haxby)
 # https://gist.github.com/endolith/2719900
 m.pcolormesh(x, y, img)
 
@@ -178,5 +179,6 @@ m.drawstates()
 m.drawcountries()
 
 plt.axis('off')
-plt.savefig(archivo+str(datetime.datetime.now())+'.png', bbox_inches=0, dpi=200)
+# plt.title(basename(archivo))
+plt.savefig(archivo+str(datetime.datetime.now())+'.png', bbox_inches='tight', dpi=200)
 # plt.show()
