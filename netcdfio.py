@@ -181,9 +181,9 @@ print "Lons: " + str(lons[0][0])   + "," + str(lons[-1][-1])
 # Lats: -40 -28
 # Longs: -66 -51
 m = Basemap(projection='merc',lon_0=lon_0,lat_0=lat_0,\
-            llcrnrlat=-40.2073,urcrnrlat=-27.7527,\
-            llcrnrlon=-66.8611,urcrnrlon=-48.9735,\
-            resolution='l')
+            llcrnrlat=-41.260204,urcrnrlat=-27.534344,\
+            llcrnrlon=-67.620302,urcrnrlon=-45.384947,\
+            resolution='h')
 
 img = data[0]
 
