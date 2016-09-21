@@ -6,7 +6,7 @@ from netcdfio  import netcdf2png
 # importo rutinas para trabajar con el sistema operativo
 import os
 from   os      import listdir
-from   os.path import isfile, join
+from   os.path import isfile, join, basename
 
 # importo rutinas de expresiones regulares
 import re
@@ -149,3 +149,11 @@ arreglo = getDateArray()
 
 for file in arreglo:
   netcdf2png(file,'./png/')
+
+  filename   = basename(file)
+  name_split = filename.split(".")
+  name_split = name_split[1:4]
+  print name_split
+  month = ymd(int(name_split[0]), int(name_split[1]))
+  name_split.insert(1, str(month[1]).zfill(2))
+  print name_split[0]+'.'+name_split[1]+'.'+name_split[2]+'.'+name_split[3]+'\n'
