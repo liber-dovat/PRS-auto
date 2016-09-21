@@ -129,7 +129,7 @@ def netcdf2png(url, dirDest):
   plt.axis('off')
   # plt.title(basename(url))
 
-  watermark = plt.imread('./imagen/watermark-logo.png')
+  watermark = plt.imread('./imgs/watermark-logo.png')
   plt.figimage(watermark, 900, 844)
 
   destFile = dirDest+basename(url)+'.png'
