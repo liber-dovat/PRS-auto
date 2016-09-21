@@ -7,6 +7,7 @@ import numpy
 import datetime
 import os
 from os.path import basename
+from PIL import Image, ImageDraw
 
 def ncdump(nc_fid, verb=True):
     '''
@@ -83,42 +84,60 @@ def ncdump(nc_fid, verb=True):
 #########################################
 #########################################
 
-def netcdf2png(url):
+def netcdf2png(url, dirDest):
 
-  file = netCDF4.Dataset(url,'r')
+  # Dataset is the class behavior to open the file
+  # and create an instance of the ncCDF4 class
+  nc_fid = netCDF4.Dataset(url, 'r')
+                                          
+  # extract/copy the data
+  lats    = nc_fid.variables['lat'][:]
+  lons    = nc_fid.variables['lon'][:]
+  data    = nc_fid.variables['data'][:]
 
-  # examine the variables
-  print file.variables.keys()
-  # print file.variables['z']
+  nc_fid.close()
 
-  lon        = file.variables['lon'][:]
-  lat        = file.variables['lat'][:]
-  time       = file.variables['time'][:]
-  dataWidth  = file.variables['dataWidth'][:]
-  lineRes    = file.variables['lineRes'][:]
+  lon_0 = lons.mean()
+  lat_0 = lats.mean()
 
-  lon_u      = file.variables['lon'].units
-  lat_u      = file.variables['lat'].units
-  time_u     = file.variables['time'].units
-  lineRes_u  = file.variables['lineRes'].units
+              # llcrnrlat=-48.45835,urcrnrlat=-13.9234,\
+              # llcrnrlon=-71.10352,urcrnrlon=-40.16602,\
+              # llcrnrlat=-41.260204,urcrnrlat=-27.534344,\
+              # llcrnrlon=-67.620302,urcrnrlon=-45.384947,\
+              # llcrnrlat=-44.871129,urcrnrlat=-21.476581,\
+              # llcrnrlon=-69.358537,urcrnrlon=-30.840110,\
+  m = Basemap(projection='merc',lon_0=lon_0,lat_0=lat_0,\
+              llcrnrlat=-44.871129,urcrnrlat=-21.476581,\
+              llcrnrlon=-69.358537,urcrnrlon=-30.840110,\
+              resolution='h')
 
-  print lon
-  print lon_u
-  print lat
-  print lat_u
-  print time
-  print time_u
-  print dataWidth
-  print lineRes
-  print lineRes_u
+  img = data[0]
 
-  print lon.size
-  print lon.shape
+  # dadas las lat y lon del archivo, obtengo las coordenadas x y para
+  # la ventana seleccionada como proyeccion
+  x,y = m(lons,lats)
 
-  print lat_u.size
-  print lat.shape
+  # cm le define el esquema de colores
+  # https://gist.github.com/endolith/2719900
+  m.pcolormesh(x, y, img)
 
-  file.close()
+  m.drawcoastlines()
+  m.drawstates()
+  m.drawcountries()
+
+  # http://code.activestate.com/recipes/362879-watermark-with-pil/
+  # https://gist.github.com/snay2/876425
+  # http://stackoverflow.com/questions/32034160/creating-a-watermark-in-python
+
+  plt.axis('off')
+  # plt.title(basename(url))
+  destFile = dirDest+basename(url)+str(datetime.datetime.now())+'.png'
+  plt.savefig(destFile, bbox_inches='tight', dpi=200)
+
+  main_img  = Image.open(destFile)
+  watermark = Image.open("./imagen/watermark-logo.png")
+  main_img.paste(watermark, (900,0), watermark)
+  main_img.save(destFile, "PNG")
 
 # def netcdf2png
 
@@ -127,62 +146,4 @@ def netcdf2png(url):
 #########################################
 #################################### Main
 
-archivo = './imagen/goes13.2016.251.140733.BAND_06.nc'
-
-# Dataset is the class behavior to open the file
-# and create an instance of the ncCDF4 class
-nc_fid = netCDF4.Dataset(archivo, 'r')
-                                        
-nc_attrs, nc_dims, nc_vars = ncdump(nc_fid)
-
-lats = nc_fid.variables['lat'][:]  # extract/copy the data
-lons = nc_fid.variables['lon'][:]
-data = nc_fid.variables['data'][:]
-lineRes = nc_fid.variables['lineRes'][:]
-elemRes = nc_fid.variables['elemRes'][:]
-
-nc_fid.close()
-
-lon_0 = lons.mean()
-lat_0 = lats.mean()
-
-print lon_0
-print lat_0
-
-#                low left                  upper right
-print "Lats: " + str(lats[-1][-1]) + "," + str(lats[0][0])
-print "Lons: " + str(lons[0][0])   + "," + str(lons[-1][-1])
-
-            # llcrnrlat=-48.45835,urcrnrlat=-13.9234,\
-            # llcrnrlon=-71.10352,urcrnrlon=-40.16602,\
-            # llcrnrlat=-41.260204,urcrnrlat=-27.534344,\
-            # llcrnrlon=-67.620302,urcrnrlon=-45.384947,\
-            # llcrnrlat=-44.871129,urcrnrlat=-21.476581,\
-            # llcrnrlon=-69.358537,urcrnrlon=-30.840110,\
-m = Basemap(projection='merc',lon_0=lon_0,lat_0=lat_0,\
-            llcrnrlat=-44.871129,urcrnrlat=-21.476581,\
-            llcrnrlon=-69.358537,urcrnrlon=-30.840110,\
-            resolution='h')
-
-img = data[0]
-
-# dadas las lat y lon del archivo, obtengo las coordenadas x y para
-# la ventana seleccionada como proyeccion
-x,y = m(lons,lats)
-
-# cm le define el esquema de colores
-# https://gist.github.com/endolith/2719900
-m.pcolormesh(x, y, img)
-
-m.drawcoastlines()
-m.drawstates()
-m.drawcountries()
-
-# http://code.activestate.com/recipes/362879-watermark-with-pil/
-# https://gist.github.com/snay2/876425
-# http://stackoverflow.com/questions/32034160/creating-a-watermark-in-python
-
-plt.axis('off')
-# plt.title(basename(archivo))
-plt.savefig(archivo+str(datetime.datetime.now())+'.png', bbox_inches='tight', dpi=200)
-# plt.show()
+netcdf2png('./imagen/goes13.2016.251.140733.BAND_06.nc','./png/')
