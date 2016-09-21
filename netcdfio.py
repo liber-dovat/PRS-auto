@@ -125,19 +125,16 @@ def netcdf2png(url, dirDest):
   m.drawstates()
   m.drawcountries()
 
-  # http://code.activestate.com/recipes/362879-watermark-with-pil/
-  # https://gist.github.com/snay2/876425
-  # http://stackoverflow.com/questions/32034160/creating-a-watermark-in-python
+  # http://ramiro.org/notebook/matplotlib-branding/
 
   plt.axis('off')
   # plt.title(basename(url))
+
+  watermark = plt.imread('./imagen/watermark-logo.png')
+  plt.figimage(logo, 900, 0)
+
   destFile = dirDest+basename(url)+str(datetime.datetime.now())+'.png'
   plt.savefig(destFile, bbox_inches='tight', dpi=200)
-
-  main_img  = Image.open(destFile)
-  watermark = Image.open("./imagen/watermark-logo.png")
-  main_img.paste(watermark, (900,0), watermark)
-  main_img.save(destFile, "PNG")
 
 # def netcdf2png
 
