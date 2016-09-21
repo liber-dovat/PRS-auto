@@ -7,7 +7,6 @@ import numpy
 import datetime
 import os
 from os.path import basename
-from PIL import Image, ImageDraw
 
 def ncdump(nc_fid, verb=True):
     '''
@@ -104,10 +103,10 @@ def netcdf2png(url, dirDest):
               # llcrnrlon=-71.10352,urcrnrlon=-40.16602,\
               # llcrnrlat=-41.260204,urcrnrlat=-27.534344,\
               # llcrnrlon=-67.620302,urcrnrlon=-45.384947,\
-              # llcrnrlat=-44.871129,urcrnrlat=-21.476581,\
+              # llcrnrlat=-45.500000,urcrnrlat=-21.476581,\
               # llcrnrlon=-69.358537,urcrnrlon=-30.840110,\
   m = Basemap(projection='merc',lon_0=lon_0,lat_0=lat_0,\
-              llcrnrlat=-44.871129,urcrnrlat=-21.476581,\
+              llcrnrlat=-45.500000,urcrnrlat=-21.476581,\
               llcrnrlon=-69.358537,urcrnrlon=-30.840110,\
               resolution='h')
 
@@ -131,16 +130,9 @@ def netcdf2png(url, dirDest):
   # plt.title(basename(url))
 
   watermark = plt.imread('./imagen/watermark-logo.png')
-  plt.figimage(logo, 900, 0)
+  plt.figimage(watermark, 900, 844)
 
-  destFile = dirDest+basename(url)+str(datetime.datetime.now())+'.png'
+  destFile = dirDest+basename(url)+'.png'
   plt.savefig(destFile, bbox_inches='tight', dpi=200)
 
 # def netcdf2png
-
-#########################################
-#########################################
-#########################################
-#################################### Main
-
-netcdf2png('./imagen/goes13.2016.251.140733.BAND_06.nc','./png/')
