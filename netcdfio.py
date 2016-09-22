@@ -112,9 +112,9 @@ def netcdf2png(url, dirDest):
               # llcrnrlat=-42.962770,urcrnrlat=-21.898679,\
               # llcrnrlon=-66.826158,urcrnrlon=-44.968092,\
   ax1 = Basemap(projection='merc',lon_0=lon_0,lat_0=lat_0,\
-                llcrnrlat=-42.962770,urcrnrlat=-22.039758,\
-                llcrnrlon=-66.900000,urcrnrlon=-44.968092,\
-                resolution='h')
+              llcrnrlat=-42.962770,urcrnrlat=-22.039758,\
+              llcrnrlon=-66.900000,urcrnrlon=-44.968092,\
+              resolution='h')
 
   img = data[0]
 
@@ -139,9 +139,9 @@ def netcdf2png(url, dirDest):
   # http://ramiro.org/notebook/matplotlib-branding/
   watermark = plt.imread('./imgs/les-logo.png')
   # plt.figimage(watermark, 0, 0)
-  img = ax2.imshow(watermark)
+
   ax2 = plt.subplot(gs[1])
-  # ax2 = ts.plot(figsize=(14, 8))
+  img = ax2.imshow(watermark)
   ax2.axis('off')
 
   destFile = dirDest+basename(url)+'.png'

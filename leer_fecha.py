@@ -25,14 +25,10 @@ def getDateArray():
   prs_path = os.path.join(abs_file_path, 'last-image-prs')
   rcv_path = os.path.join(abs_file_path, 'last-image-rcv')
 
-  # declaro los paths para los dos archivos
-  prs_path = os.path.join(abs_file_path, 'last-image-prs')
-  rcv_path = os.path.join(abs_file_path, 'last-image-rcv')
-
   # abro los dos archivos para trabajar con ellos
   # el primero es de solo lectura, y el segundo es de lectura escritura
-  ultima_procesada = open(prs_path, 'r+')
-  ultima_recibida  = open(rcv_path, 'r')
+  ultima_procesada = open(prs_path, 'r')
+  ultima_recibida  = open(rcv_path, 'r+')
 
   #########################################
   #########################################
@@ -50,6 +46,9 @@ def getDateArray():
     # tomo la linea y genero un arreglo con sus palabras
     rcv_split = line.split(".")
   # for
+
+  ultima_procesada.close()
+  ultima_recibida.close()
 
   #########################################
   #########################################
@@ -141,19 +140,45 @@ def getDateArray():
 
   # for year
 
-  return sorted(path_list)
+  lista_retorno = sorted(path_list)
+
+  if len(lista_retorno) > 0:
+    ultimo_elem   = lista_retorno[-1]
+    elemen_split  = ultimo_elem.split(".")[1:4]
+    month         = ymd(int(elemen_split[0]), int(elemen_split[1]))
+    elemen_split.insert(1, str(month[1]).zfill(2))
+    ultima_recibida = open(rcv_path, 'w')
+    ultima_recibida.write(elemen_split[0]+'.'+elemen_split[1]+'.'+elemen_split[2]+'.'+elemen_split[3]+'\n')
+    ultima_recibida.close()
+
+  return lista_retorno
 
 # getDateArray
 
 arreglo = getDateArray()
 
 for file in arreglo:
+
+  print file
   netcdf2png(file,'./png/')
 
-  filename   = basename(file)
-  name_split = filename.split(".")
-  name_split = name_split[1:4]
-  print name_split
-  month = ymd(int(name_split[0]), int(name_split[1]))
-  name_split.insert(1, str(month[1]).zfill(2))
-  print name_split[0]+'.'+name_split[1]+'.'+name_split[2]+'.'+name_split[3]+'\n'
+  if file == arreglo[-1]:
+    filename   = basename(file)
+    name_split = filename.split(".")
+    name_split = name_split[1:4]
+    # print name_split
+    month = ymd(int(name_split[0]), int(name_split[1]))
+    name_split.insert(1, str(month[1]).zfill(2))
+    # print name_split[0]+'.'+name_split[1]+'.'+name_split[2]+'.'+name_split[3]+'\n'
+
+    # genero los paths para los directorios base
+    data_path     = "/sat/PRS/libs/PRS-auto/data/"
+    abs_file_path = os.path.abspath(data_path)
+
+    # declaro los paths para los dos archivos
+    prs_path = os.path.join(abs_file_path, 'last-image-prs')
+
+    # abro los dos archivos para trabajar con ellos
+    # el primero es de solo lectura, y el segundo es de lectura escritura
+    ultima_procesada = open(prs_path, 'w')
+    ultima_procesada.write(name_split[0]+'.'+name_split[1]+'.'+name_split[2]+'.'+name_split[3]+'\n')
