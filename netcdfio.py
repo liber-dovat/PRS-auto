@@ -105,9 +105,11 @@ def netcdf2png(url, dirDest):
               # llcrnrlon=-67.620302,urcrnrlon=-45.384947,\
               # llcrnrlat=-45.500000,urcrnrlat=-21.476581,\
               # llcrnrlon=-69.358537,urcrnrlon=-30.840110,\
+              # llcrnrlat=-42.962770,urcrnrlat=-21.898679,\
+              # llcrnrlon=-66.826158,urcrnrlon=-44.968092,\
   m = Basemap(projection='merc',lon_0=lon_0,lat_0=lat_0,\
-              llcrnrlat=-45.500000,urcrnrlat=-21.476581,\
-              llcrnrlon=-69.358537,urcrnrlon=-30.840110,\
+              llcrnrlat=-42.962770,urcrnrlat=-22.039758,\
+              llcrnrlon=-66.900000,urcrnrlon=-44.968092,\
               resolution='h')
 
   img = data[0]
