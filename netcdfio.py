@@ -100,7 +100,7 @@ def netcdf2png(url, dirDest):
   lon_0 = lons.mean()
   lat_0 = lats.mean()
 
-  gs = gridspec.GridSpec(2, 1, height_ratios=[12,1])
+  gs = gridspec.GridSpec(2, 1, height_ratios=[6,1])
   ax1 = plt.subplot(gs[0])
 
               # llcrnrlat=-48.45835,urcrnrlat=-13.9234,\
@@ -140,8 +140,12 @@ def netcdf2png(url, dirDest):
   watermark = plt.imread('./imgs/les-logo.png')
   # plt.figimage(watermark, 0, 0)
 
+# subplots(figsize=(18, 2))
+# http://stackoverflow.com/questions/13384653/imshow-extent-and-aspect
+# http://stackoverflow.com/questions/24185083/change-resolution-of-imshow-in-ipython
+
   ax2 = plt.subplot(gs[1])
-  img = ax2.imshow(watermark)
+  ax2.imshow(watermark)
   ax2.axis('off')
 
   destFile = dirDest+basename(url)+'.png'
