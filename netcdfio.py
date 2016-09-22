@@ -7,6 +7,7 @@ import numpy
 import datetime
 import os
 from os.path import basename
+import matplotlib.gridspec as gridspec
 
 def ncdump(nc_fid, verb=True):
     '''
@@ -99,6 +100,9 @@ def netcdf2png(url, dirDest):
   lon_0 = lons.mean()
   lat_0 = lats.mean()
 
+  gs = gridspec.GridSpec(2, 1, height_ratios=[12,1])
+  ax1 = plt.subplot(gs[0])
+
               # llcrnrlat=-48.45835,urcrnrlat=-13.9234,\
               # llcrnrlon=-71.10352,urcrnrlon=-40.16602,\
               # llcrnrlat=-41.260204,urcrnrlat=-27.534344,\
@@ -107,32 +111,38 @@ def netcdf2png(url, dirDest):
               # llcrnrlon=-69.358537,urcrnrlon=-30.840110,\
               # llcrnrlat=-42.962770,urcrnrlat=-21.898679,\
               # llcrnrlon=-66.826158,urcrnrlon=-44.968092,\
-  m = Basemap(projection='merc',lon_0=lon_0,lat_0=lat_0,\
-              llcrnrlat=-42.962770,urcrnrlat=-22.039758,\
-              llcrnrlon=-66.900000,urcrnrlon=-44.968092,\
-              resolution='h')
+  ax1 = Basemap(projection='merc',lon_0=lon_0,lat_0=lat_0,\
+                llcrnrlat=-42.962770,urcrnrlat=-22.039758,\
+                llcrnrlon=-66.900000,urcrnrlon=-44.968092,\
+                resolution='h')
 
   img = data[0]
 
   # dadas las lat y lon del archivo, obtengo las coordenadas x y para
   # la ventana seleccionada como proyeccion
-  x,y = m(lons,lats)
+  x,y = ax1(lons,lats)
 
   # cm le define el esquema de colores
   # https://gist.github.com/endolith/2719900
-  m.pcolormesh(x, y, img)
+  ax1.pcolormesh(x, y, img)
 
-  m.drawcoastlines()
-  m.drawstates()
-  m.drawcountries()
+  ax1.drawcoastlines()
+  ax1.drawstates()
+  ax1.drawcountries()
 
   # http://ramiro.org/notebook/matplotlib-branding/
 
   plt.axis('off')
   # plt.title(basename(url))
 
-  watermark = plt.imread('./imgs/watermark-logo.png')
-  plt.figimage(watermark, 900, 844)
+  # Probar la marca de agua como un subplot 
+  # http://ramiro.org/notebook/matplotlib-branding/
+  watermark = plt.imread('./imgs/les-logo.png')
+  # plt.figimage(watermark, 0, 0)
+  img = ax2.imshow(watermark)
+  ax2 = plt.subplot(gs[1])
+  # ax2 = ts.plot(figsize=(14, 8))
+  ax2.axis('off')
 
   destFile = dirDest+basename(url)+'.png'
   plt.savefig(destFile, bbox_inches='tight', dpi=200)
