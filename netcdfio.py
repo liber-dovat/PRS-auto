@@ -8,6 +8,7 @@ import datetime
 import os
 from os.path import basename
 import matplotlib.gridspec as gridspec
+from funciones import ymd
 
 def ncdump(nc_fid, verb=True):
     '''
@@ -101,7 +102,6 @@ def netcdf2png(url, dirDest):
   lat_0 = lats.mean()
 
   gs = gridspec.GridSpec(2, 1, height_ratios=[18,1])
-  gs.axis('off')
   ax1 = plt.subplot(gs[0])
 
               # llcrnrlat=-48.45835,urcrnrlat=-13.9234,\
@@ -131,23 +131,32 @@ def netcdf2png(url, dirDest):
   ax1.drawstates()
   ax1.drawcountries()
 
+  plt.axis('off')
+
   # Probar la marca de agua como un subplot 
   # http://ramiro.org/notebook/matplotlib-branding/
   watermark = plt.imread('./imgs/les-logo.png')
   # plt.figimage(watermark, 0, 0)
 
-# subplots(figsize=(18, 2))
-# http://stackoverflow.com/questions/13384653/imshow-extent-and-aspect
-# http://stackoverflow.com/questions/24185083/change-resolution-of-imshow-in-ipython
+  # subplots(figsize=(18, 2))
+  # http://stackoverflow.com/questions/13384653/imshow-extent-and-aspect
+  # http://stackoverflow.com/questions/24185083/change-resolution-of-imshow-in-ipython
 
-  # ax2 = plt.subplot(gs[1])
-  # ax2.imshow(watermark)
-  # ax2.axis('off')
+  ax2 = plt.subplot(gs[1])
+  ax2.imshow(watermark)
+  ax2.axis('off')
   # ax2.figure.set_figheight(4)
 
-  destFile = dirDest+basename(url)+'.png'
+  plt.axis('off')
+
+  name = basename(url)
+  destFile = dirDest+name+'.png'
+  name_split = name.split(".")[1:4]
+  month = ymd(int(name_split[0]), int(name_split[1]))
+  name_split.insert(1, str(month[1]).zfill(2))
+  ax2.set_title('.'.join(name_split), fontsize=10)
   plt.savefig(destFile, bbox_inches='tight', dpi=200)
 
 # def netcdf2png
 
-netcdf2png('./imagen/goes13.2016.265.160732.BAND_06.nc','./png/')
+# netcdf2png('./imagen/goes13.2016.265.160732.BAND_06.nc','./png/')
