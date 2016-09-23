@@ -136,7 +136,7 @@ def netcdf2png(url, dirDest):
   # Probar la marca de agua como un subplot 
   # http://ramiro.org/notebook/matplotlib-branding/
   watermark = plt.imread('./imgs/les-logo.png')
-  # plt.figimage(watermark, 0, 0)
+  plt.figimage(watermark, 6, 978)
 
   # subplots(figsize=(18, 2))
   # http://stackoverflow.com/questions/13384653/imshow-extent-and-aspect
@@ -149,10 +149,10 @@ def netcdf2png(url, dirDest):
 
   name = basename(url)
   destFile = dirDest+name+'.png'
-  # name_split = name.split(".")[1:4]
-  # month = ymd(int(name_split[0]), int(name_split[1]))
-  # name_split.insert(1, str(month[1]).zfill(2))
-  # ax2.set_title('.'.join(name_split), fontsize=10)
+  name_split = name.split(".")[1:4]
+  month = ymd(int(name_split[0]), int(name_split[1]))
+  name_split.insert(1, str(month[1]).zfill(2))
+  plt.title('.'.join(name_split), fontsize=10)
   plt.savefig(destFile, bbox_inches='tight', dpi=200)
 
 # def netcdf2png
