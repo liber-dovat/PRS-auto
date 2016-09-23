@@ -148,14 +148,15 @@ def netcdf2png(url, dirDest):
   # ax2.figure.set_figheight(4)
 
   name = basename(url)
-  destFile = dirDest+name+'.png'
+  destFile = dirDest + name + '.png'
   name_split = name.split(".")[1:4]
   month = ymd(int(name_split[0]), int(name_split[1]))
   name_split.insert(1, str(month[1]).zfill(2))
-  # plt.title('.'.join(name_split), fontsize=10)
   plt.annotate(name.split(".")[4] + ' ' + '.'.join(name_split), (0,0), (40, -10), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=10, family='monospace')
   plt.savefig(destFile, bbox_inches='tight', dpi=200)
+  plt.close()
 
 # def netcdf2png
 
+# netcdf2png('./imagen/goes13.2016.265.160732.BAND_04.nc','./png/')
 # netcdf2png('./imagen/goes13.2016.265.160732.BAND_06.nc','./png/')
