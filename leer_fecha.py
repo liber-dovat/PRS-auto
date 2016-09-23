@@ -7,6 +7,7 @@ from netcdfio  import netcdf2png
 import os
 from   os      import listdir
 from   os.path import isfile, join, basename
+from   shutil  import copyfile
 
 # importo rutinas de expresiones regulares
 import re
@@ -142,6 +143,7 @@ def getDateArray():
 
   lista_retorno = sorted(path_list)
 
+  # escribo en archivo rcv_path la fecha de la ultima imagen recibida
   if len(lista_retorno) > 0:
     ultimo_elem   = lista_retorno[-1]
     elemen_split  = ultimo_elem.split(".")[1:4]
@@ -182,3 +184,27 @@ for file in arreglo:
     # el primero es de solo lectura, y el segundo es de lectura escritura
     ultima_procesada = open(prs_path, 'w')
     ultima_procesada.write(name_split[0]+'.'+name_split[1]+'.'+name_split[2]+'.'+name_split[3]+'\n')
+
+  # BAND_01
+  root = "/sat/PRS/libs/PRS-auto/png/"
+
+  if file == arreglo[-5]:
+      pattern = re.compile(".*BAND_01\.nc$")
+      if pattern.match(file):
+        copyfile(root + basename(file) + ".png", root + "BAND_01.png")
+  elif file == arreglo[-4]:
+      pattern = re.compile(".*BAND_02\.nc$")
+      if pattern.match(file):
+        copyfile(root + basename(file) + ".png", root + "BAND_02.png")
+  elif file == arreglo[-3]:
+      pattern = re.compile(".*BAND_03\.nc$")
+      if pattern.match(file):
+        copyfile(root + basename(file) + ".png", root + "BAND_03.png")
+  elif file == arreglo[-2]:
+      pattern = re.compile(".*BAND_04\.nc$")
+      if pattern.match(file):
+        copyfile(root + basename(file) + ".png", root + "BAND_04.png")
+  elif file == arreglo[-1]:
+      pattern = re.compile(".*BAND_06\.nc$")
+      if pattern.match(file):
+        copyfile(root + basename(file) + ".png", root + "BAND_06.png")
