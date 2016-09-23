@@ -101,6 +101,7 @@ def netcdf2png(url, dirDest):
   lat_0 = lats.mean()
 
   gs = gridspec.GridSpec(2, 1, height_ratios=[18,1])
+  gs.axis('off')
   ax1 = plt.subplot(gs[0])
 
               # llcrnrlat=-48.45835,urcrnrlat=-13.9234,\
@@ -149,4 +150,4 @@ def netcdf2png(url, dirDest):
 
 # def netcdf2png
 
-# netcdf2png('./imagen/goes13.2016.265.160732.BAND_06.nc','./png/')
+netcdf2png('./imagen/goes13.2016.265.160732.BAND_06.nc','./png/')
