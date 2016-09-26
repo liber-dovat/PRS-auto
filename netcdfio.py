@@ -113,7 +113,7 @@ def netcdf2png(url, dirDest):
               # llcrnrlat=-42.962770,urcrnrlat=-21.898679,\
               # llcrnrlon=-66.826158,urcrnrlon=-44.968092,\
   ax1 = Basemap(projection='merc',lon_0=lon_0,lat_0=lat_0,\
-              llcrnrlat=-42.962770,urcrnrlat=-22.039758,\
+              llcrnrlat=-42.866693,urcrnrlat=-22.039758,\
               llcrnrlon=-66.800000,urcrnrlon=-44.968092,\
               resolution='h')
 
