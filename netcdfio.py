@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from mpl_toolkits.basemap import Basemap, cm
 import netCDF4
@@ -86,7 +88,7 @@ def ncdump(nc_fid, verb=True):
 #########################################
 
 def netcdf2png(url, dirDest):
-
+  
   # Dataset is the class behavior to open the file
   # and create an instance of the ncCDF4 class
   nc_fid = netCDF4.Dataset(url, 'r')
@@ -135,7 +137,7 @@ def netcdf2png(url, dirDest):
 
   # Probar la marca de agua como un subplot 
   # http://ramiro.org/notebook/matplotlib-branding/
-  watermark = plt.imread('./imgs/les-logo.png')
+  watermark = plt.imread('/sat/PRS/libs/PRS-auto/imgs/les-logo.png')
   plt.figimage(watermark, 6, 10)
 
   # subplots(figsize=(18, 2))

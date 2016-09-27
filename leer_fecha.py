@@ -198,7 +198,7 @@ arreglo = getDateArray()
 for file in arreglo:
 
   print file
-  netcdf2png(file,'./png/')
+  netcdf2png(file,'/sat/PRS/libs/PRS-auto/png/')
 
   if file == arreglo[-1]:
     filename   = basename(file)
