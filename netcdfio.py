@@ -146,7 +146,8 @@ def netcdf2png(url, dirDest):
 
   # cm le define el esquema de colores
   # https://gist.github.com/endolith/2719900
-  ax1.pcolormesh(x, y, img, cmap=cm.GMT_haxby)
+  # cm.GMT_haxby
+  ax1.pcolormesh(x, y, img, cmap='jet')
 
   ax1.drawcoastlines()
   ax1.drawstates()
@@ -156,9 +157,9 @@ def netcdf2png(url, dirDest):
   ax1.drawparallels(numpy.arange(-45, -20, 5), labels=[1,0,0,0], linewidth=0.0, fontsize=10)
   ax1.drawmeridians(numpy.arange(-70, -45, 5), labels=[0,0,1,0], linewidth=0.0, fontsize=10)
 
-  cs = ax1.contourf(lats,lons,img, cmap=cm.GMT_haxby)
+  cs = ax1.contourf(lats,lons,img, cmap='jet')
   # add colorbar.
-  cbar = ax1.colorbar(cs,location='bottom',pad="3%")
+  cbar = ax1.colorbar(cs, location='bottom', pad='3%')
 
   # Probar la marca de agua como un subplot 
   # http://ramiro.org/notebook/matplotlib-branding/
