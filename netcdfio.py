@@ -157,23 +157,36 @@ def netcdf2png(url, dirDest):
   # Probar la marca de agua como un subplot 
   # http://ramiro.org/notebook/matplotlib-branding/
   watermark = plt.imread('/sat/PRS/libs/PRS-auto/imgs/les-logo.png')
-  plt.figimage(watermark, 6, 10)
+  plt.figimage(watermark, 5, 10)
 
   # subplots(figsize=(18, 2))
   # http://stackoverflow.com/questions/13384653/imshow-extent-and-aspect
   # http://stackoverflow.com/questions/24185083/change-resolution-of-imshow-in-ipython
+
+# http://matplotlib.org/users/text_props.html
 
   # ax2 = plt.subplot(gs[1])
   # ax2.imshow(watermark)
   # ax2.axis('off')
   # ax2.figure.set_figheight(4)
 
-  name = basename(url)
-  destFile = dirDest + name + '.png'
+  name       = basename(url)
+  destFile   = dirDest + name + '.png'
+  
   name_split = name.split(".")[1:4]
-  month = ymd(int(name_split[0]), int(name_split[1]))
-  name_split.insert(1, str(month[1]).zfill(2))
-  plt.annotate(nameTag(name.split(".")[4]) + ' ' + '.'.join(name_split), (0,0), (40, -10), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=10, family='monospace')
+  year       = name_split[0]
+  doy        = name_split[1]
+  hms        = name_split[2]
+  month      = ymd(int(year), int(doy))[1]
+  day        = ymd(int(year), int(doy))[2]
+
+  str_day   = str(day).zfill(2)
+  str_month = str(month).zfill(2)
+  str_hm    = hms[0:2] + ":" +hms[2:4]
+  str_chnl  = nameTag(name.split(".")[4])
+
+  tag = str_chnl + " " + str_day + "-" + str_month + "-" + year + " " + str_hm + " UTC"
+  plt.annotate(tag, (0,0), (140, -10), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=10, family='monospace')
   plt.savefig(destFile, bbox_inches='tight', dpi=200)
   plt.close()
 
