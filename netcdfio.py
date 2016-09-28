@@ -87,6 +87,25 @@ def ncdump(nc_fid, verb=True):
 #########################################
 #########################################
 
+def nameTag(banda):
+
+  if banda == "BAND_01":
+    return "CH1 FR"
+  elif banda == "BAND_02":
+    return "CH2 T2"
+  elif banda == "BAND_03":
+    return "CH3 T3"
+  elif banda == "BAND_04":
+    return "CH4 T4"
+  elif banda == "BAND_06":
+    return "CH6 T6"
+
+# nameTag
+
+#########################################
+#########################################
+#########################################
+
 def netcdf2png(url, dirDest):
   
   # Dataset is the class behavior to open the file
@@ -154,11 +173,8 @@ def netcdf2png(url, dirDest):
   name_split = name.split(".")[1:4]
   month = ymd(int(name_split[0]), int(name_split[1]))
   name_split.insert(1, str(month[1]).zfill(2))
-  plt.annotate(name.split(".")[4] + ' ' + '.'.join(name_split), (0,0), (40, -10), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=10, family='monospace')
+  plt.annotate(nameTag(name.split(".")[4]) + ' ' + '.'.join(name_split), (0,0), (40, -10), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=10, family='monospace')
   plt.savefig(destFile, bbox_inches='tight', dpi=200)
   plt.close()
 
 # def netcdf2png
-
-# netcdf2png('./imagen/goes13.2016.265.160732.BAND_04.nc','./png/')
-# netcdf2png('./imagen/goes13.2016.265.160732.BAND_06.nc','./png/')
