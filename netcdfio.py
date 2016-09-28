@@ -136,7 +136,7 @@ def netcdf2png(url, dirDest):
   ax1 = Basemap(projection='merc',lon_0=lon_0,lat_0=lat_0,\
               llcrnrlat=-42.866693,urcrnrlat=-22.039758,\
               llcrnrlon=-66.800000,urcrnrlon=-44.968092,\
-              resolution='h')
+              resolution='l')
 
   img = data[0]
 
@@ -146,13 +146,19 @@ def netcdf2png(url, dirDest):
 
   # cm le define el esquema de colores
   # https://gist.github.com/endolith/2719900
-  ax1.pcolormesh(x, y, img)
+  ax1.pcolormesh(x, y, img, cmap=cm.GMT_haxby)
 
   ax1.drawcoastlines()
   ax1.drawstates()
   ax1.drawcountries()
 
-  plt.axis('off')
+  # plt.axis('off')
+  ax1.drawparallels(numpy.arange(-45, -20, 5), labels=[1,0,0,0], linewidth=0.0, fontsize=10)
+  ax1.drawmeridians(numpy.arange(-70, -45, 5), labels=[0,0,1,0], linewidth=0.0, fontsize=10)
+
+  cs = ax1.contourf(lats,lons,img, cmap=cm.GMT_haxby)
+  # add colorbar.
+  cbar = ax1.colorbar(cs,location='bottom',pad="3%")
 
   # Probar la marca de agua como un subplot 
   # http://ramiro.org/notebook/matplotlib-branding/
@@ -186,7 +192,7 @@ def netcdf2png(url, dirDest):
   str_chnl  = nameTag(name.split(".")[4])
 
   tag = str_chnl + " " + str_day + "-" + str_month + "-" + year + " " + str_hm + " UTC"
-  plt.annotate(tag, (0,0), (140, -10), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=10, family='monospace')
+  plt.annotate(tag, (0,0), (140, -60), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=10, family='monospace')
   plt.savefig(destFile, bbox_inches='tight', dpi=200)
   plt.close()
 
