@@ -141,6 +141,9 @@ def netcdf2png(url, dirDest):
               resolution='l')
 
   img = data[0]
+  img *= 1024.0/numpy.amax(img) # normalizo los datos desde cero hasta 1024
+
+  print img
 
   # http://matplotlib.org/users/colormapnorms.html
   print numpy.amin(img) # 4192.0
@@ -154,8 +157,8 @@ def netcdf2png(url, dirDest):
   # https://gist.github.com/endolith/2719900
   # http://scitools.org.uk/iris/docs/v1.7/examples/graphics/anomaly_log_colouring.html
   # cm.GMT_haxby
-  # ax1.pcolormesh(x, y, img, vmin=0., vmax=40000., cmap='jet')
-  ax1.pcolormesh(x, y, img, norm=colors.Normalize(vmin=numpy.amin(img), vmax=numpy.amax(img)), cmap='jet')
+  ax1.pcolormesh(x, y, img, vmin=0., vmax=1024., cmap='jet')
+  # ax1.pcolormesh(x, y, img, cmap='jet')
 
   ax1.drawcoastlines()
   ax1.drawstates()
@@ -167,7 +170,7 @@ def netcdf2png(url, dirDest):
 
   cs = ax1.contourf(lats,lons,img, cmap='jet')
   # add colorbar.
-  cbar = ax1.colorbar(cs, location='bottom', pad='3%', ticks=[-1, 0, 1])
+  cbar = ax1.colorbar(cs, location='bottom', pad='3%', ticks=[-1., 0., 1.])
   cbar.ax.set_xticklabels(['Low', 'Medium', 'High'])
   # cbar.set_label('Colorbar')
 
