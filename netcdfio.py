@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 import matplotlib
 matplotlib.use('Agg')
 from matplotlib import colors
@@ -10,7 +8,6 @@ import numpy
 import datetime
 import os
 from os.path import basename
-import matplotlib.gridspec as gridspec
 from funciones import ymd
 
 def ncdump(url, verb=True):
@@ -124,17 +121,6 @@ def netcdf2png(url, dirDest):
   lon_0 = lons.mean()
   lat_0 = lats.mean()
 
-  # gs = gridspec.GridSpec(2, 1, height_ratios=[18,1])
-  # ax1 = plt.subplot(gs[0])
-
-              # llcrnrlat=-48.45835,urcrnrlat=-13.9234,\
-              # llcrnrlon=-71.10352,urcrnrlon=-40.16602,\
-              # llcrnrlat=-41.260204,urcrnrlat=-27.534344,\
-              # llcrnrlon=-67.620302,urcrnrlon=-45.384947,\
-              # llcrnrlat=-45.500000,urcrnrlat=-21.476581,\
-              # llcrnrlon=-69.358537,urcrnrlon=-30.840110,\
-              # llcrnrlat=-42.962770,urcrnrlat=-21.898679,\
-              # llcrnrlon=-66.826158,urcrnrlon=-44.968092,\
   ax1 = Basemap(projection='merc',lon_0=lon_0,lat_0=lat_0,\
               llcrnrlat=-42.866693,urcrnrlat=-22.039758,\
               llcrnrlon=-66.800000,urcrnrlon=-44.968092,\
@@ -143,55 +129,36 @@ def netcdf2png(url, dirDest):
   img = data[0]
   img *= 1024.0/numpy.amax(img) # normalizo los datos desde cero hasta 1024
 
-  print img
-
   # http://matplotlib.org/users/colormapnorms.html
-  print numpy.amin(img) # 4192.0
-  print numpy.amax(img) # 26368.0
 
   # dadas las lat y lon del archivo, obtengo las coordenadas x y para
   # la ventana seleccionada como proyeccion
-  x,y = ax1(lons,lats)
+  x, y = ax1(lons,lats)
 
-  # cm le define el esquema de colores
-  # https://gist.github.com/endolith/2719900
-  # http://scitools.org.uk/iris/docs/v1.7/examples/graphics/anomaly_log_colouring.html
-  # cm.GMT_haxby
-  ax1.pcolormesh(x, y, img, vmin=0., vmax=1024., cmap='jet')
+  # dibujo img en las coordenadas x e y calculadas
+  cs = ax1.pcolormesh(x, y, img, vmin=0., vmax=1024., cmap='jet')
   # ax1.pcolormesh(x, y, img, cmap='jet')
 
+  # agrego los vectores de las costas, departamentos/estados/provincias y paises
   ax1.drawcoastlines()
   ax1.drawstates()
   ax1.drawcountries()
 
-  # plt.axis('off')
+  # dibujo los valores de latitudes y longitudes
   ax1.drawparallels(numpy.arange(-45, -20, 5), labels=[1,0,0,0], linewidth=0.0, fontsize=10)
   ax1.drawmeridians(numpy.arange(-70, -45, 5), labels=[0,0,1,0], linewidth=0.0, fontsize=10)
 
-  cs = ax1.contourf(lats,lons,img, cmap='jet')
-  # add colorbar.
-  cbar = ax1.colorbar(cs, location='bottom', pad='3%', ticks=[-1., 0., 1.])
-  cbar.ax.set_xticklabels(['Low', 'Medium', 'High'])
-  # cbar.set_label('Colorbar')
+  # agrego el colorbar
+  cbar = ax1.colorbar(cs, location='bottom', pad='3%', ticks=[0., 512., 1024.])
+  cbar.ax.set_xticklabels(['Low', 'Medium', 'High'], fontsize=10)
 
-  # Probar la marca de agua como un subplot 
-  # http://ramiro.org/notebook/matplotlib-branding/
-  watermark = plt.imread('/sat/PRS/libs/PRS-auto/imgs/les-logo.png')
-  plt.figimage(watermark, 5, 10)
+  # agrego el logo en el documento
+  logo = plt.imread('/sat/PRS/libs/PRS-auto/imgs/les-logo.png')
+  plt.figimage(logo, 5, 5)
 
-  # subplots(figsize=(18, 2))
-  # http://stackoverflow.com/questions/13384653/imshow-extent-and-aspect
-  # http://stackoverflow.com/questions/24185083/change-resolution-of-imshow-in-ipython
-
-# http://matplotlib.org/users/text_props.html
-
-  # ax2 = plt.subplot(gs[1])
-  # ax2.imshow(watermark)
-  # ax2.axis('off')
-  # ax2.figure.set_figheight(4)
-
-  name       = basename(url)
-  destFile   = dirDest + name + '.png'
+  # genero los datos para escribir el pie de pagina
+  name       = basename(url)           # obtengo el nombre base del archivo
+  destFile   = dirDest + name + '.png' # determino el nombre del archivo a escribir
   
   name_split = name.split(".")[1:4]
   year       = name_split[0]
@@ -206,7 +173,9 @@ def netcdf2png(url, dirDest):
   str_chnl  = nameTag(name.split(".")[4])
 
   tag = str_chnl + " " + str_day + "-" + str_month + "-" + year + " " + str_hm + " UTC"
-  plt.annotate(tag, (0,0), (140, -60), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=10, family='monospace')
+
+  # agego el pie de pagina usando annotate
+  plt.annotate(tag, (0,0), (140, -50), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=10, family='monospace')
   plt.savefig(destFile, bbox_inches='tight', dpi=200)
   plt.close()
 
