@@ -2,6 +2,7 @@
 
 import matplotlib
 matplotlib.use('Agg')
+from matplotlib import colors
 import matplotlib.pyplot as plt
 from mpl_toolkits.basemap import Basemap, cm
 import netCDF4
@@ -12,7 +13,7 @@ from os.path import basename
 import matplotlib.gridspec as gridspec
 from funciones import ymd
 
-def ncdump(nc_fid, verb=True):
+def ncdump(url, verb=True):
     '''
     http://schubert.atmos.colostate.edu/~cslocum/netcdf_example.html
     ncdump outputs dimensions, variables and their attribute information.
@@ -54,6 +55,7 @@ def ncdump(nc_fid, verb=True):
     # def print_ncattr
 
     # NetCDF global attributes
+    nc_fid = netCDF4.Dataset(url, 'r')
     nc_attrs = nc_fid.ncattrs()
     if verb:
         print "NetCDF Global Attributes:"
@@ -140,14 +142,20 @@ def netcdf2png(url, dirDest):
 
   img = data[0]
 
+  # http://matplotlib.org/users/colormapnorms.html
+  print numpy.amin(img) # 4192.0
+  print numpy.amax(img) # 26368.0
+
   # dadas las lat y lon del archivo, obtengo las coordenadas x y para
   # la ventana seleccionada como proyeccion
   x,y = ax1(lons,lats)
 
   # cm le define el esquema de colores
   # https://gist.github.com/endolith/2719900
+  # http://scitools.org.uk/iris/docs/v1.7/examples/graphics/anomaly_log_colouring.html
   # cm.GMT_haxby
-  ax1.pcolormesh(x, y, img, cmap='jet')
+  # ax1.pcolormesh(x, y, img, vmin=0., vmax=40000., cmap='jet')
+  ax1.pcolormesh(x, y, img, norm=colors.Normalize(vmin=numpy.amin(img), vmax=numpy.amax(img)), cmap='jet')
 
   ax1.drawcoastlines()
   ax1.drawstates()
@@ -159,7 +167,9 @@ def netcdf2png(url, dirDest):
 
   cs = ax1.contourf(lats,lons,img, cmap='jet')
   # add colorbar.
-  cbar = ax1.colorbar(cs, location='bottom', pad='3%')
+  cbar = ax1.colorbar(cs, location='bottom', pad='3%', ticks=[-1, 0, 1])
+  cbar.ax.set_xticklabels(['Low', 'Medium', 'High'])
+  # cbar.set_label('Colorbar')
 
   # Probar la marca de agua como un subplot 
   # http://ramiro.org/notebook/matplotlib-branding/
