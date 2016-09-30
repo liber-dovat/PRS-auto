@@ -9,6 +9,7 @@ import datetime
 import os
 from os.path import basename
 from funciones import ymd
+from math import log, pow
 
 def ncdump(url, verb=True):
     '''
@@ -88,18 +89,75 @@ def ncdump(url, verb=True):
 
 def nameTag(banda):
 
-  if banda == "BAND_01":
+  if banda == 1:
     return "CH1 FR"
-  elif banda == "BAND_02":
+  elif banda == 2:
     return "CH2 T2"
-  elif banda == "BAND_03":
+  elif banda == 3:
     return "CH3 T3"
-  elif banda == "BAND_04":
+  elif banda == 4:
     return "CH4 T4"
-  elif banda == "BAND_06":
+  elif banda == 6:
     return "CH6 T6"
 
 # nameTag
+
+#########################################
+#########################################
+#########################################
+
+def temperaturaReal(m,b,n,alfa,beta,dato):
+  c1 = 1.191066e-5
+  c2 = 1.438833
+
+  R = (dato - b)/m
+  Teff = (c2*n) / math.log(1 + (c1*math.pow(n, 3) / R))
+  Temp = alfa + beta * Teff
+  return Temp
+# temperaturaReal
+
+#########################################
+#########################################
+#########################################
+
+def normalizarData(banda, data):
+
+  if banda == 1:
+    m = 227.3889
+    b = 68.2167
+    new_data = [(dato - b)/m for dato in data]
+  elif banda == 2:
+    m = 227.3889
+    b = 68.2167
+    n = 2561.74
+    alfa = -1.437204
+    beta = 1.002562
+    new_data = [temperaturaReal(m,b,n,alfa,beta,dato) for dato in data]
+  elif banda == 3:
+    m = 38.8383
+    b = 29.1287
+    n = 1522.52
+    alfa = -3.625663
+    beta = 1.010018
+    new_data = [temperaturaReal(m,b,n,alfa,beta,dato) for dato in data]
+  elif banda == 4:
+    m = 5.2285
+    b = 15.6854
+    n = 937.23
+    alfa = -0.386043
+    beta = 1.001298
+    new_data = [temperaturaReal(m,b,n,alfa,beta,dato) for dato in data]
+  elif banda == 6:
+    m = 5.5297
+    b = 16.5892
+    n = 749.83
+    alfa = -0.134801
+    beta = 1.000482
+    new_data = [temperaturaReal(m,b,n,alfa,beta,dato) for dato in data]
+
+  return new_data
+
+# normalizarData
 
 #########################################
 #########################################
@@ -110,11 +168,12 @@ def netcdf2png(url, dirDest):
   # Dataset is the class behavior to open the file
   # and create an instance of the ncCDF4 class
   nc_fid = netCDF4.Dataset(url, 'r')
-                                          
+
   # extract/copy the data
-  lats    = nc_fid.variables['lat'][:]
-  lons    = nc_fid.variables['lon'][:]
-  data    = nc_fid.variables['data'][:]
+  lats = nc_fid.variables['lat'][:]
+  lons = nc_fid.variables['lon'][:]
+  data = nc_fid.variables['data'][:]
+  band = nc_fid.variables['bands'][:]
 
   nc_fid.close()
 
@@ -125,6 +184,8 @@ def netcdf2png(url, dirDest):
               llcrnrlat=-42.866693,urcrnrlat=-22.039758,\
               llcrnrlon=-66.800000,urcrnrlon=-44.968092,\
               resolution='l')
+
+  # tmp = normalizarData(band, data[0])
 
   img = data[0]
   img *= 1024.0/numpy.amax(img) # normalizo los datos desde cero hasta 1024
@@ -157,7 +218,7 @@ def netcdf2png(url, dirDest):
   plt.figimage(logo, 5, 5)
 
   # genero los datos para escribir el pie de pagina
-  name       = basename(url)           # obtengo el nombre base del archivo
+  name  = basename(url)                # obtengo el nombre base del archivo
   destFile   = dirDest + name + '.png' # determino el nombre del archivo a escribir
   
   name_split = name.split(".")[1:4]
@@ -170,7 +231,7 @@ def netcdf2png(url, dirDest):
   str_day   = str(day).zfill(2)
   str_month = str(month).zfill(2)
   str_hm    = hms[0:2] + ":" +hms[2:4]
-  str_chnl  = nameTag(name.split(".")[4])
+  str_chnl  = nameTag(band)
 
   tag = str_chnl + " " + str_day + "-" + str_month + "-" + year + " " + str_hm + " UTC"
 
