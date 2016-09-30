@@ -9,7 +9,7 @@ import datetime
 import os
 from os.path import basename
 from funciones import ymd
-from math import log, pow
+import math
 
 def ncdump(url, verb=True):
     '''
@@ -185,7 +185,13 @@ def netcdf2png(url, dirDest):
               llcrnrlon=-66.800000,urcrnrlon=-44.968092,\
               resolution='l')
 
-  # tmp = normalizarData(band, data[0])
+  # img = normalizarData(band, data[0])
+
+  # data = data[0]
+  # shape = numpy.shape(data)
+  # data_vector = numpy.reshape(data,numpy.size(data))
+  # data_vector = normalizarData(band, data_vector)
+  # img = numpy.reshape(data_vector, shape)
 
   img = data[0]
   img *= 1024.0/numpy.amax(img) # normalizo los datos desde cero hasta 1024
