@@ -17,10 +17,22 @@
 
 // Versión 1.0, 10/2016 -- Rodrigo Alonso Suárez.
 
-int mostrar_vector_double(double * vec){
+int mostrar_vector_double(double * vec, int cvec){
 
+	int		h1, h2, cmax;
+	
+	h2 = 1;
+	cmax = 11;
+	for (h1 = 0; h1 < cvec; h1++){
+		if (h2==cmax){
+			printf("%+06.2f\n", vec[h1]); h2=1;
+		}else{
+			printf("%+06.2f  ", vec[h1]); h2=h2+1;
+		}
+	}
 
-
+	if (h2 > 1){printf("\n");}
+	
 	// FIN
 	return 1;
 }

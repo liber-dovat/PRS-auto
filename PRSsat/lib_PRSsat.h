@@ -1,0 +1,1 @@
+int mostrar_vector_double(double *, int);

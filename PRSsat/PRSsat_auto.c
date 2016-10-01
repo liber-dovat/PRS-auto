@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include "lib_PRSsat.h"
 //#include "mpi.h"
 //#include "libASIcom.h"
 //#include "libPRS_T000loc_VIS.h"
@@ -68,6 +69,7 @@ int main(int argc, char *argv[]){
 	for (h1=0; h1 < Ci; h1++){LATvec[h1] = LATmin + dLATgri*h1;}
 	for (h1=0; h1 < Cj; h1++){LONvec[h1] = LONmin + dLONgri*h1;}
 
+	// MUESTRO VECTORES
 	printf("-----------------------------------------------------------------------------------\n");
 	printf("---- Archivos y Rutas -------------------------------------------------------------\n");
 	printf("%s\n", &PATH[0]);
@@ -79,5 +81,12 @@ int main(int argc, char *argv[]){
 	printf("LAT = [%+06.2f .. %+06.2f] --- GRILLA = [%+06.2f .. %+06.2f]\n", LATmax, LATmin, dLATgri, dLONgri);
 	printf("LON = [%+06.2f .. %+06.2f] --- CELDAS = [%+06.2f .. %+06.2f]\n", LONmax, LONmin, dLATcel, dLONcel);
 	printf("-----------------------------------------------------------------------------------\n");
+	printf("---- Vectores Regulares -----------------------------------------------------------\n");
+	printf("LATITUDES:\n");
+	mostrar_vector_double(LATvec, Ci);
+	printf("LONGITUDES:\n");
+	mostrar_vector_double(LONvec, Cj);
+	printf("-----------------------------------------------------------------------------------\n");
+
 	return 1;
 }
