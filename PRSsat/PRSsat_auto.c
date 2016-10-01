@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <dirent.h>
 #include <math.h>
 //#include "mpi.h"
 //#include "libASIcom.h"
@@ -12,8 +11,8 @@
 
 #define FALSE 0
 #define TRUE !FALSE
+#define CMAXstr 200
 //#define Csate 3
-//#define Cpath 200
 
 // SATELITES
 static int CS_sate[3]={8,12,13};
@@ -23,8 +22,8 @@ static int CS_sate[3]={8,12,13};
 int main(int argc, char *argv[]){
 
 	FILE * data;
-	char* PATH;
-	char* DATAspt;
+	char PATH[CMAXstr];
+	char DATAspt[CMAXstr];
 	char sptCOD[15];
 	int		h1, Ci, Cj, Ct;
 	double	LATmax, LATmin, LONmax, LONmin, dLATgri, dLONgri, dLATcel, dLONcel;
@@ -35,10 +34,10 @@ int main(int argc, char *argv[]){
 	double * LATvec; double * LONvec;
 
 	// IMAGEN A PROCESAR
-	PATH = "/rolo/WSolar/standalones/procesar_NetCDFs/data/goes13.2016.274.143507.BAND_01.nc";
+	strncpy(PATH, "/rolo/WSolar/standalones/procesar_NetCDFs/data/goes13.2016.274.143507.BAND_01.nc", CMAXstr);
 	
 	// ABRO ARCHIVO DE DATOS ESPACIAL
-	DATAspt = argv[1];
+	strncpy(DATAspt, argv[1], CMAXstr);
 	data = fopen(DATAspt, "ro"); if (data == NULL) {printf("No se encontro archivo de datos. Cerrando.\n"); return 0;}
 	fscanf(data, "%lf\n", &LATmax);
 	fscanf(data, "%lf\n", &LATmin);
@@ -48,7 +47,7 @@ int main(int argc, char *argv[]){
 	fscanf(data, "%lf\n", &dLONgri);
 	fscanf(data, "%lf\n", &dLATcel);
 	fscanf(data, "%lf\n", &dLONcel);
-	fscanf(data, "%s\n", &sptCOD);
+	fscanf(data, "%s\n", &sptCOD[0]);
 	fclose(data);
 
 	// TAMAÑO DE LA GRILLA ESPACIAL
@@ -71,9 +70,9 @@ int main(int argc, char *argv[]){
 
 	printf("-----------------------------------------------------------------------------------\n");
 	printf("---- Archivos y Rutas -------------------------------------------------------------\n");
-	printf("%s\n", PATH);
-	printf("%s\n", DATA);
-	printf("%s\n", sptCOD);
+	printf("%s\n", &PATH[0]);
+	printf("%s\n", &DATAspt[0]);
+	printf("%s\n", &sptCOD[0]);
 	printf("-----------------------------------------------------------------------------------\n");
 	printf("---- Resolucion Espacial ----------------------------------------------------------\n");
 	printf("[Ci, Cj] = [%d, %d] --- Ct = [%d]\n", Ci, Cj, Ct);
