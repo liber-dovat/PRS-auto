@@ -12,20 +12,23 @@
 
 #define FALSE 0
 #define TRUE !FALSE
- #define CMAXstr 200
-//#define Csate 3
+#define CMAXstr 200
+#define Cste 3
 
 // SATELITES
-static int CS_sate[3]={8,12,13};
+static int GOES[Cste]={8,12,13};
 
 // Versión 1.0, 09/2016 -- Rodrigo Alonso Suárez.
 
 int main(int argc, char *argv[]){
 
 	FILE * data;
-	char PATH[CMAXstr];
-	char DATAspt[CMAXstr];
-	char sptCOD[15];
+	char PATHimg[CMAXstr];
+	char RUTAcal[CMAXstr];
+	char RUTAsal[CMAXstr];
+	char DATAspatial[CMAXstr];
+	char DATAfolders[CMAXstr];
+	char CODEspatial[15];
 	int		h1, h2, h3, Ci, Cj, Ct;
 	double	LATmax, LATmin, LONmax, LONmin, dLATgri, dLONgri, dLATcel, dLONcel;
 	int * MSKmat;
@@ -36,13 +39,28 @@ int main(int argc, char *argv[]){
 	double * N1mat;
 	double * LATmat; double * LONmat;
 	double * LATvec; double * LONvec;
+	int * CALvis_iniYEA; int * CALvis_iniDOY;
+	double * CALvis_Xspace;
+	double * CALvis_M;
+	double * CALvis_K;
+	double * CALvis_alfa;
+	double * CALvis_beta;
 
 	// IMAGEN A PROCESAR
-	strncpy(PATH, "/rolo/WSolar/standalones/procesar_NetCDFs/data/goes13.2016.274.143507.BAND_01.nc", CMAXstr);
-	
-	// ABRO ARCHIVO DE DATOS ESPACIAL
-	strncpy(DATAspt, argv[1], CMAXstr);
-	data = fopen(DATAspt, "ro"); if (data == NULL) {printf("No se encontro archivo de datos. Cerrando.\n"); return 0;}
+	strncpy(PATHimg, "/rolo/WSolar/standalones/procesar_NetCDFs/data/goes13.2016.274.143507.BAND_01.nc", CMAXstr);
+	strncpy(DATAfolders, argv[1], CMAXstr);
+	strncpy(DATAspatial, argv[2], CMAXstr);
+
+	// ABRO ARCHIVO FOLDERS:
+	data = fopen(DATAfolders, "ro");
+	if (data == NULL) {printf("No se encontro archivo de datos. Cerrando.\n"); return 0;}
+	fscanf(data, "%s\n", &RUTAcal[0]);
+	fscanf(data, "%s\n", &RUTAsal[0]);
+	fclose(data);
+
+	// ABRO ARCHIVO SPATIAL:
+	data = fopen(DATAspatial, "ro");
+	if (data == NULL) {printf("No se encontro archivo de datos. Cerrando.\n"); return 0;}
 	fscanf(data, "%lf\n", &LATmax);
 	fscanf(data, "%lf\n", &LATmin);
 	fscanf(data, "%lf\n", &LONmax);
@@ -51,63 +69,31 @@ int main(int argc, char *argv[]){
 	fscanf(data, "%lf\n", &dLONgri);
 	fscanf(data, "%lf\n", &dLATcel);
 	fscanf(data, "%lf\n", &dLONcel);
-	fscanf(data, "%s\n", &sptCOD[0]);
+	fscanf(data, "%s\n",  &CODEspatial[0]);
 	fclose(data);
 
-	// TAMAÑO DE LA GRILLA ESPACIAL
-	Ci = (int) 1 + (LATmax - LATmin)/dLATgri;
-	Cj = (int) 1 + (LONmax - LONmin)/dLONgri;
-	Ct = Ci*Cj;
-
-	// ALOCO MEMORIA PARA LOS PROCESAMIENTOS
-	if (!(MSKmat = (int *) malloc(Ct * sizeof(int *)))){return 0;}
-	if (!(FRmat = (double *) malloc(Ct * sizeof(double *)))){return 0;}
-	if (!(RPmat = (double *) malloc(Ct * sizeof(double *)))){return 0;}
-	if (!(CNT1mat = (int *) malloc(Ct * sizeof(int *)))){return 0;}
-	if (!(CNT2mat = (int *) malloc(Ct * sizeof(int *)))){return 0;}
-	if (!(LATmat = (double *) malloc(Ct * sizeof(double *)))){return 0;}
-	if (!(LONmat = (double *) malloc(Ct * sizeof(double *)))){return 0;}
-	if (!(LATvec = (double *) malloc(Ci * sizeof(double *)))){return 0;}
-	if (!(LONvec = (double *) malloc(Cj * sizeof(double *)))){return 0;}
-
-	// VACIO DATASETS (inicializo en zero)
-	for (h1=0; h1<Ct; h1++){
-		FRmat[h1] = 0;
-		RPmat[h1] = 0;
-		MSKmat[h1] = 0;
-		CNT1mat[h1] = 0;
-		CNT2mat[h1] = 0;
-	}
-
-	// VECTORES DE LATITUD Y LONGITUD
-	for (h1=0; h1 < Ci; h1++){LATvec[h1] = LATmin + dLATgri*h1;}
-	for (h1=0; h1 < Cj; h1++){LONvec[h1] = LONmin + dLONgri*h1;}
-
-	// MATRICES DE LATITUD Y LONGITUD
-	for (h1=0; h1<Ci; h1++){
-		for (h2=0; h2<Cj; h2++){
-			h3 = (Ci - 1 - h1)*Cj + h2;
-			LATmat[h3] = LATvec[h1];
-			LONmat[h3] = LONvec[h2];
-		}
-	}
-
 	// PROCESAR IMAGEN
-	procesar_NetCDF_VIS(&FRmat[0], &RPmat[0], &MSKmat[0], &CNT1mat[0], &CNT2mat[0],
-		dLATgri, dLONgri, dLATcel, dLONcel, LATmax, LATmin, LONmax, LONmin,
-		Ct, Ci, Cj, PATH);
+	cargar_calibracion_VIS(RUTAcal, &CALvis_iniYEA, &CALvis_iniDOY, &CALvis_Xspace,
+		&CALvis_M, &CALvis_K, &CALvis_alfa, &CALvis_beta);
+	generar_grilla(&LATmat, &LONmat, &LATvec, &LONvec,
+		LATmax, LATmin, LONmax, LONmin, dLATgri, dLONgri, &Ci, &Cj, &Ct);
+	procesar_NetCDF_VIS_gri(&FRmat, &RPmat, &N1mat, &MSKmat, &CNT1mat, &CNT2mat,
+	 	dLATgri, dLONgri, dLATcel, dLONcel, LATmax, LATmin, LONmax, LONmin,
+	 	Ct, Ci, Cj, PATHimg);
+	mostrar_vector_double(FRmat, Ct, Cj);
+	mostrar_vector_double(N1mat, Ct, Cj);
 	mostrar_vector_double(LATmat, Ct, Cj);
 	mostrar_vector_double(LONmat, Ct, Cj);
-	
-	// INDICE DE NUBOSIDAD
-	if (!(N1mat = (double *) malloc(Ct * sizeof(double *)))){return 0;}
 
 	// MUESTRO VECTORES
 	printf("-----------------------------------------------------------------------------------\n");
 	printf("---- Archivos y Rutas -------------------------------------------------------------\n");
-	printf("%s\n", &PATH[0]);
-	printf("%s\n", &DATAspt[0]);
-	printf("%s\n", &sptCOD[0]);
+	printf("FOLDERS: %s\n", &DATAfolders[0]);
+	printf("SPATIAL: %s\n", &DATAspatial[0]);
+	printf("IMAGEN : %s\n", &PATHimg[0]);
+	printf("RUTAcal: %s\n", &RUTAcal[0]);
+	printf("RUTAsal: %s\n", &RUTAsal[0]);
+	printf("CODIGO : %s\n", &CODEspatial[0]);
 	printf("-----------------------------------------------------------------------------------\n");
 	printf("---- Resolucion Espacial ----------------------------------------------------------\n");
 	printf("[Ci, Cj] = [%d, %d] --- Ct = [%d]\n", Ci, Cj, Ct);
@@ -119,6 +105,14 @@ int main(int argc, char *argv[]){
 	mostrar_vector_double(LATvec, Ci, 10);
 	printf("LONGITUDES:\n");
 	mostrar_vector_double(LONvec, Cj, 10);
+	printf("CALIBRACION:\n");
+	mostrar_vector_int(CALvis_iniYEA, Cste, 10);
+	mostrar_vector_int(CALvis_iniDOY, Cste, 10);
+	mostrar_vector_double(CALvis_Xspace, Cste, 10);
+	mostrar_vector_double(CALvis_M, Cste, 10);
+	mostrar_vector_double(CALvis_K, Cste, 10);
+	mostrar_vector_double(CALvis_alfa, Cste, 10);
+	mostrar_vector_double(CALvis_beta, Cste, 10);
 	printf("-----------------------------------------------------------------------------------\n");
 
 	return 1;
