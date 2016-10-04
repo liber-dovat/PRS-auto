@@ -106,12 +106,19 @@ def nameTag(banda):
 #########################################
 #########################################
 
+def Radiance(m,b,dato):
+  return (dato - b)/m
+# Radiance
+
+#########################################
+#########################################
+#########################################
+
 def temperaturaReal(m,b,n,alfa,beta,dato):
   c1 = 1.191066e-5
   c2 = 1.438833
 
-  R = (dato - b)/m
-  Teff = (c2*n) / math.log(1 + (c1*math.pow(n, 3) / R))
+  Teff = (c2*n) / math.log(1 + (c1*math.pow(n, 3) / (dato - b)/m))
   Temp = alfa + beta * Teff
   return Temp
 # temperaturaReal
@@ -125,37 +132,35 @@ def normalizarData(banda, data):
   if banda == 1:
     m = 227.3889
     b = 68.2167
-    new_data = [(dato - b)/m for dato in data]
+    return Radiance(m,b,data) # aplico la funcion como un map en cada elemento
   elif banda == 2:
     m = 227.3889
     b = 68.2167
     n = 2561.74
     alfa = -1.437204
     beta = 1.002562
-    new_data = [temperaturaReal(m,b,n,alfa,beta,dato) for dato in data]
+    return temperaturaReal(m,b,n,alfa,beta,data)
   elif banda == 3:
     m = 38.8383
     b = 29.1287
     n = 1522.52
     alfa = -3.625663
     beta = 1.010018
-    new_data = [temperaturaReal(m,b,n,alfa,beta,dato) for dato in data]
+    return temperaturaReal(m,b,n,alfa,beta,data)
   elif banda == 4:
     m = 5.2285
     b = 15.6854
     n = 937.23
     alfa = -0.386043
     beta = 1.001298
-    new_data = [temperaturaReal(m,b,n,alfa,beta,dato) for dato in data]
+    return temperaturaReal(m,b,n,alfa,beta,data)
   elif banda == 6:
     m = 5.5297
     b = 16.5892
     n = 749.83
     alfa = -0.134801
     beta = 1.000482
-    new_data = [temperaturaReal(m,b,n,alfa,beta,dato) for dato in data]
-
-  return new_data
+    return temperaturaReal(m,b,n,alfa,beta,data)
 
 # normalizarData
 
@@ -184,8 +189,6 @@ def netcdf2png(url, dirDest):
               llcrnrlat=-42.866693,urcrnrlat=-22.039758,\
               llcrnrlon=-66.800000,urcrnrlon=-44.968092,\
               resolution='l')
-
-  # img = normalizarData(band, data[0])
 
   # data = data[0]
   # shape = numpy.shape(data)
