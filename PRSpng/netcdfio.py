@@ -110,6 +110,12 @@ def nameTag(banda):
 
 # http://stackoverflow.com/questions/11442191/parallelizing-a-numpy-vector-operation
 # leer para paralelizar
+# http://www.star.nesdis.noaa.gov/smcd/spb/fwu/homepage/GOES_Imager_Vis_OpCal_G13.php
+# Correccion de muestras
+
+# Rpre  = (dato - b)/m
+# C = alfa * exp(beta * dt)
+# Rpost = Rpre * C
 
 def Radiance(dato,m,b):
   return (dato - b)/m
@@ -205,11 +211,13 @@ def netcdf2png(url, dirDest):
                 llcrnrlon=-66.800000,urcrnrlon=-44.968092,\
                 resolution='l')
 
-  # data = data[0]
-  # shape = numpy.shape(data)
-  # data_vector = numpy.reshape(data,numpy.size(data))
-  # data_vector = normalizarData(band, data_vector)
-  # img = numpy.reshape(data_vector, shape)
+  # data = data[0]                                     # me quedo con el primer elemento de data
+  # shape = numpy.shape(data)                          # guardo el shape original de data
+  # data_vector = numpy.reshape(data,numpy.size(data)) # genero un vector de data usando su size (largo*ancho)
+  # data_vector = normalizarData(band, data_vector)    # invoco la funcion sobre el vector
+  # img = numpy.reshape(data_vector, shape)            # paso el vector a matriz usando shape como largo y ancho
+  # print numpy.amin(img)
+  # print numpy.amax(img)
 
   img = data[0]
   img *= 1024.0/numpy.amax(img) # normalizo los datos desde cero hasta 1024
@@ -242,8 +250,8 @@ def netcdf2png(url, dirDest):
   plt.figimage(logo, 5, 5)
 
   # genero los datos para escribir el pie de pagina
-  name  = basename(url)                # obtengo el nombre base del archivo
-  destFile   = dirDest + name + '.png' # determino el nombre del archivo a escribir
+  name     = basename(url)           # obtengo el nombre base del archivo
+  destFile = dirDest + name + '.png' # determino el nombre del archivo a escribir
   
   name_split = name.split(".")[1:4]
   year       = name_split[0]
