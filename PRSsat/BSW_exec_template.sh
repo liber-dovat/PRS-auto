@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#Versión 1.0	03/02/2014	Rodrigo Alonso Suárez
+#Versión 1.0. 10/2016. Rodrigo Alonso Suárez
 
 # PROGRAMAS
 main='/rolo/Wsate/PRS/server-sat-01/libs/PRS-auto/PRSsat/PRSsat_auto';
