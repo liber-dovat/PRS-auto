@@ -10,6 +10,8 @@ import os
 from os.path import basename
 from funciones import ymd
 import math
+from multiprocessing import Pool
+from functools import partial
 
 def ncdump(url, verb=True):
     '''
@@ -164,7 +166,12 @@ def normalizarData(banda, data):
 
   # aplico la funcion como un map en cada elemento
   if banda == 1:
-    return Radiance(data,m,b)
+    # return Radiance(data,m,b)
+    pool = Pool(processes = 32)
+    result = pool.map(partial(Radiance, m=m, b=b), data)
+    pool.close()
+    pool.join()
+    return result
   else:
     vfunc = numpy.vectorize(temperaturaReal)
     return vfunc(data,m,b,n,alfa,beta)
