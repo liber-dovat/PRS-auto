@@ -10,6 +10,8 @@ import os
 from os.path import basename
 from funciones import ymd
 import math
+from multiprocessing import Pool
+from functools import partial
 
 def ncdump(url, verb=True):
     '''
@@ -106,12 +108,29 @@ def nameTag(banda):
 #########################################
 #########################################
 
-def temperaturaReal(m,b,n,alfa,beta,dato):
+# http://stackoverflow.com/questions/11442191/parallelizing-a-numpy-vector-operation
+# leer para paralelizar
+# http://www.star.nesdis.noaa.gov/smcd/spb/fwu/homepage/GOES_Imager_Vis_OpCal_G13.php
+# Correccion de muestras
+
+# Rpre  = (dato - b)/m
+# C = alfa * exp(beta * dt)
+# Rpost = Rpre * C
+
+def Radiance(dato,m,b):
+  return (dato - b)/m
+# Radiance
+
+#########################################
+#########################################
+#########################################
+
+def temperaturaReal(dato,m,b,n,alfa,beta):
   c1 = 1.191066e-5
   c2 = 1.438833
 
   R = (dato - b)/m
-  Teff = (c2*n) / math.log(1 + (c1*math.pow(n, 3) / R))
+  Teff = (c2*n) / math.log(1 + (c1*math.pow(n, 3) / R ))
   Temp = alfa + beta * Teff
   return Temp
 # temperaturaReal
@@ -122,40 +141,47 @@ def temperaturaReal(m,b,n,alfa,beta,dato):
 
 def normalizarData(banda, data):
 
+  # seteo las variables en funcion de las bandas
   if banda == 1:
     m = 227.3889
     b = 68.2167
-    new_data = [(dato - b)/m for dato in data]
   elif banda == 2:
     m = 227.3889
     b = 68.2167
     n = 2561.74
     alfa = -1.437204
     beta = 1.002562
-    new_data = [temperaturaReal(m,b,n,alfa,beta,dato) for dato in data]
   elif banda == 3:
     m = 38.8383
     b = 29.1287
     n = 1522.52
     alfa = -3.625663
     beta = 1.010018
-    new_data = [temperaturaReal(m,b,n,alfa,beta,dato) for dato in data]
   elif banda == 4:
     m = 5.2285
     b = 15.6854
     n = 937.23
     alfa = -0.386043
     beta = 1.001298
-    new_data = [temperaturaReal(m,b,n,alfa,beta,dato) for dato in data]
   elif banda == 6:
     m = 5.5297
     b = 16.5892
     n = 749.83
     alfa = -0.134801
     beta = 1.000482
-    new_data = [temperaturaReal(m,b,n,alfa,beta,dato) for dato in data]
 
-  return new_data
+  # aplico la funcion como un map en cada elemento
+  if banda == 1:
+    return Radiance(data,m,b)
+    # a = [data for _ in xrange(32)]
+    # pool = Pool(processes = 32)
+    # result = pool.map(partial(Radiance, m=m, b=b), a)
+    # pool.close()
+    # pool.join()
+    # return result
+  else:
+    vfunc = numpy.vectorize(temperaturaReal)
+    return vfunc(data,m,b,n,alfa,beta)
 
 # normalizarData
 
@@ -181,17 +207,17 @@ def netcdf2png(url, dirDest):
   lat_0 = lats.mean()
 
   ax1 = Basemap(projection='merc',lon_0=lon_0,lat_0=lat_0,\
-              llcrnrlat=-42.866693,urcrnrlat=-22.039758,\
-              llcrnrlon=-66.800000,urcrnrlon=-44.968092,\
-              resolution='l')
+                llcrnrlat=-42.866693,urcrnrlat=-22.039758,\
+                llcrnrlon=-66.800000,urcrnrlon=-44.968092,\
+                resolution='l')
 
-  # img = normalizarData(band, data[0])
-
-  # data = data[0]
-  # shape = numpy.shape(data)
-  # data_vector = numpy.reshape(data,numpy.size(data))
-  # data_vector = normalizarData(band, data_vector)
-  # img = numpy.reshape(data_vector, shape)
+  # data = data[0]                                     # me quedo con el primer elemento de data
+  # shape = numpy.shape(data)                          # guardo el shape original de data
+  # data_vector = numpy.reshape(data,numpy.size(data)) # genero un vector de data usando su size (largo*ancho)
+  # data_vector = normalizarData(band, data_vector)    # invoco la funcion sobre el vector
+  # img = numpy.reshape(data_vector, shape)            # paso el vector a matriz usando shape como largo y ancho
+  # print numpy.amin(img)
+  # print numpy.amax(img)
 
   img = data[0]
   img *= 1024.0/numpy.amax(img) # normalizo los datos desde cero hasta 1024
@@ -224,8 +250,8 @@ def netcdf2png(url, dirDest):
   plt.figimage(logo, 5, 5)
 
   # genero los datos para escribir el pie de pagina
-  name  = basename(url)                # obtengo el nombre base del archivo
-  destFile   = dirDest + name + '.png' # determino el nombre del archivo a escribir
+  name     = basename(url)           # obtengo el nombre base del archivo
+  destFile = dirDest + name + '.png' # determino el nombre del archivo a escribir
   
   name_split = name.split(".")[1:4]
   year       = name_split[0]
