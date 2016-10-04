@@ -18,11 +18,7 @@
 #define imgTHR2 0.99
 #define imgTHR3 0.85
 #define imgTHR4 0.30
-//#define Ccods 1200
-//#define coszTHR 0.05
-//#define n1THR 0.465
-//#define Rmin 0.06
-//#define Rmax 0.465
+#define coszTHR 0.10
 
 // SATELITES
 static int GOES[Cste]={8,12,13};
@@ -74,9 +70,7 @@ int procesar_NetCDF_VIS_gri(double ** FRmat, double ** RPmat, double ** N1mat,
 	if (Band == 1){ // CANAL VISIBLE, PROCESO
 		
 		// Elijo satelite para calibracion
-		if (ste == 8){ kste=0;}
-		if (ste == 12){kste=1;}
-		if (ste == 13){kste=2;}
+		elegir_satelite(&kste, ste);
 
 		// calculo solar diario
 		calculo_solar_diario(yea, doy, &Fn, &DELTArad, &EcTmin);
@@ -110,6 +104,13 @@ int procesar_NetCDF_VIS_gri(double ** FRmat, double ** RPmat, double ** N1mat,
 	free(BXdata); free(LATdata); free(LONdata);
 
 	return 0;
+}
+
+int elegir_satelite(int *kste, int ste){
+		// Elijo satelite para calibracion
+		if (ste == 8){ *kste=0;}
+		if (ste == 12){*kste=1;}
+		if (ste == 13){*kste=2;}
 }
 
 int open_NetCDF_file(char PATH[CMAXstr],
@@ -302,8 +303,12 @@ int procesar_VIS_gri(double * FRmat, double * RPmat, double * CZmat, int * MSKma
 		cnt2 = CNT2mat[h1];
 		if (cnt1>0){
 			FRmat[h1] = FRmat[h1]/cnt1;
-			RPmat[h1] = RPmat[h1]/cnt1;
 			CZmat[h1] = CZmat[h1]/cnt1;
+			if (CZmat[h1] < coszTHR){
+				RPmat[h1] = 0;
+			}else{
+				RPmat[h1] = RPmat[h1]/cnt1;
+			}
 		}
 		if (cnt2>0){
 			frac = cnt1/cnt2;
