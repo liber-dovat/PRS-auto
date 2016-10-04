@@ -320,8 +320,8 @@ int procesar_VIS_gri(double * FRmat, double * RPmat, double * CZmat, int * MSKma
 	if (*fracMK == imgTHR1){*tag = 1;}
 	if ((*fracMK < imgTHR1)&&(*fracMK >= imgTHR2)){*tag = 2;}
 	if ((*fracMK < imgTHR2)&&(*fracMK >= imgTHR3)){*tag = 3;}
-	if ((*fracMK < imgMIN3)&&(*fracMK >= imgMIN4)){*tag = 4;}
-	if ((*fracMK < imgMIN4)){*tag = 5;}
+	if ((*fracMK < imgTHR3)&&(*fracMK >= imgTHR4)){*tag = 4;}
+	if ((*fracMK < imgTHR4)){*tag = 5;}
 
 	return 1;
 }
@@ -701,7 +701,7 @@ int guardar_imagen_VIS(char RUTAsal[CMAXstr], int Ct,
  		SAVE_N1[h1] = (float) (N1mat[h1]); // SE HACE PARA CASTEAR A FLOAT
  	}
 
- 	if ((tag == 1)||(tag == 2)){
+ 	if ((tag == 1)||(tag == 2)||(tag == 3)){
  		// RUTA MK, FR, RP, N1
  		strcpy(RUTA_MK, RUTAsal); strcat(RUTA_MK, "B01-MK/"); strcat(RUTA_MK, strYEA);
  		strcat(RUTA_MK, "/"); strcat(RUTA_MK, strTMP); strcat(RUTA_MK, ".MK");
@@ -718,7 +718,7 @@ int guardar_imagen_VIS(char RUTAsal[CMAXstr], int Ct,
  		fid = fopen(RUTA_N1, "wb"); fwrite(SAVE_N1, sizeof(float), Ct, fid); fclose(fid);
  	}
 
- 	if ((tag == 2)||(tag == 3)){
+ 	if ((tag == 3)||(tag == 4)||(tag == 5)){
  		// RUTA MK, FR, RP, N1
  		strcpy(RUTA_MK, RUTAsal); strcat(RUTA_MK, "zIMP/B01-MK/"); strcat(RUTA_MK, strYEA);
  		strcat(RUTA_MK, "/"); strcat(RUTA_MK, strTMP); strcat(RUTA_MK, ".MK");
