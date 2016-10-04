@@ -166,12 +166,13 @@ def normalizarData(banda, data):
 
   # aplico la funcion como un map en cada elemento
   if banda == 1:
-    # return Radiance(data,m,b)
-    pool = Pool(processes = 32)
-    result = pool.map(partial(Radiance, m=m, b=b), data)
-    pool.close()
-    pool.join()
-    return result
+    return Radiance(data,m,b)
+    # a = [data for _ in xrange(32)]
+    # pool = Pool(processes = 32)
+    # result = pool.map(partial(Radiance, m=m, b=b), a)
+    # pool.close()
+    # pool.join()
+    # return result
   else:
     vfunc = numpy.vectorize(temperaturaReal)
     return vfunc(data,m,b,n,alfa,beta)
@@ -200,9 +201,9 @@ def netcdf2png(url, dirDest):
   lat_0 = lats.mean()
 
   ax1 = Basemap(projection='merc',lon_0=lon_0,lat_0=lat_0,\
-              llcrnrlat=-42.866693,urcrnrlat=-22.039758,\
-              llcrnrlon=-66.800000,urcrnrlon=-44.968092,\
-              resolution='l')
+                llcrnrlat=-42.866693,urcrnrlat=-22.039758,\
+                llcrnrlon=-66.800000,urcrnrlon=-44.968092,\
+                resolution='l')
 
   # data = data[0]
   # shape = numpy.shape(data)
