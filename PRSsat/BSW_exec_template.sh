@@ -28,6 +28,9 @@ RUTAdes=$RUTAsal$codigo;
 if [ ! -d $RUTAdes'/meta/' ]; then
 	mkdir -p $RUTAdes'/meta/';
 fi
+if [ ! -d $RUTAdes'/test/' ]; then
+	mkdir -p $RUTAdes'/test/';
+fi
 if [ ! -d $RUTAdes'/zCRR/' ]; then
 	mkdir -p $RUTAdes'/zCRR/';
 fi

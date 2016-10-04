@@ -94,7 +94,13 @@ int procesar_NetCDF_VIS_gri(double ** FRmat, double ** RPmat, double ** N1mat,
 		// GUARDAR IMAGEN
 		guardar_imagen_VIS(RUTAsal, Ct, yea, doy, hra, min, sec, 
 			(*FRmat), (*RPmat), (*N1mat), (*MSKmat), *tag, fracMK);
-		
+
+		// GUARDAR IMAGEN TEST
+		guardar_imagen_double(RUTAsal, Ct, yea, doy, hra, min, sec,
+			(*CZmat), "CZ");
+		guardar_imagen_int(RUTAsal, Ct, yea, doy, hra, min, sec,
+			(*CNT1mat), "C1");
+
 		return 1;
 	}
 
@@ -646,107 +652,6 @@ int generar_strings_temporales(int yea, int doy, int hra, int min, int sec,
 	return 1;
 }
 
-// int guardar_imagen_double(char RUTAsal[CMAXstr], int Ct,
-// 	int yea, int doy, int hra, int min, int sec, double * FRmat){
-
-// 	FILE * fid;
-// 	int		h1;
-// 	char RUTA_TEST[CMAXstr];
-// 	char strTMP[23];
-// 	char strYEA[4];
-// 	char strDOY[3];
-// 	char strHRA[2];
-// 	char strMIN[2];
-// 	char strSEC[2];
-// 	short * SAVE_TEST;
-	
-//     // STRINGS NECESARIOS
-//     sprintf(strYEA, "%d", yea);
-//     sprintf(strDOY, "%d", doy);
-// 	if (doy < 10){
-// 		sprintf(strDOY, "00%d", doy);
-// 	}else{
-// 		if (doy < 100){
-// 			sprintf(strDOY, "0%d", doy);
-// 		}
-// 	}
-//     sprintf(strHRA, "%d", hra);
-//     if (hra < 10){
-// 		sprintf(strHRA, "0%d", hra);
-// 	}
-//     sprintf(strMIN, "%d", min);
-//     if (min < 10){
-// 		sprintf(strMIN, "0%d", min);
-// 	}
-//     sprintf(strSEC, "%d", sec);
-//     if (sec < 10){
-// 		sprintf(strSEC, "0%d", sec);
-// 	}
-// 	// CODIGO TEMPORAL
-// 	sprintf(strTMP, "/T000gri_%s%s_%s%s%s", strYEA, strDOY, strHRA, strMIN, strSEC);
-
-//  	// GUARDAR TAG
-//  	sprintf(strTAG, "%s,%s,%s,%s,%s,%d,%7.5f\n", strYEA, strDOY, strHRA, strMIN, strSEC, tag, fracMK); // escribo en la variable tag el valor que me pasan en tag_value
-//  	strcpy(RUTA_TG, RUTAsal); strcat(RUTA_TG, "zCRR/TAGs_"); strcat(RUTA_TG, strYEA); strcat(RUTA_TG, ".TG");
-//  	fid = fopen(RUTA_TG, "ab"); fwrite(strTAG, sizeof(char), strlen(strTAG), fid); fclose(fid);
-
-//  	// ARMAR DATASETS A GUARDAR CASTEADO A FLOAT (no DOUBLE)
-//  	if (!(SAVE_MK = (short *) malloc(Ct * sizeof(short *)))){return 0;}
-//  	if (!(SAVE_FR = (float *) malloc(Ct * sizeof(float *)))){return 0;}
-//  	if (!(SAVE_RP = (float *) malloc(Ct * sizeof(float *)))){return 0;}
-//  	if (!(SAVE_N1 = (float *) malloc(Ct * sizeof(float *)))){return 0;}
-//  	for (h1=0;h1<(Ct);h1++){
-//  		SAVE_MK[h1] = (short) (MKmat[h1]); // SE HACE PARA CASTEAR A SHORT
-//  		SAVE_FR[h1] = (float) (FRmat[h1]); // SE HACE PARA CASTEAR A FLOAT
-//  		SAVE_RP[h1] = (float) (RPmat[h1]); // SE HACE PARA CASTEAR A FLOAT
-//  		SAVE_N1[h1] = (float) (N1mat[h1]); // SE HACE PARA CASTEAR A FLOAT
-//  	}
-
-//  	if ((tag == 1)||(tag == 2)){
-//  		// RUTA MK, FR, RP, N1
-//  		strcpy(RUTA_MK, RUTAsal); strcat(RUTA_MK, "B01-MK/"); strcat(RUTA_MK, strYEA);
-//  		strcat(RUTA_MK, "/"); strcat(RUTA_MK, strTMP); strcat(RUTA_MK, ".MK");
-//  		strcpy(RUTA_FR, RUTAsal); strcat(RUTA_FR, "B01-FR/"); strcat(RUTA_FR, strYEA);
-//  		strcat(RUTA_FR, "/"); strcat(RUTA_FR, strTMP); strcat(RUTA_FR, ".FR");
-//  		strcpy(RUTA_RP, RUTAsal); strcat(RUTA_RP, "B01-RP/"); strcat(RUTA_RP, strYEA);
-//  		strcat(RUTA_RP, "/"); strcat(RUTA_RP, strTMP); strcat(RUTA_RP, ".RP");
-//  		strcpy(RUTA_N1, RUTAsal); strcat(RUTA_N1, "B01-N1/"); strcat(RUTA_N1, strYEA);
-//  		strcat(RUTA_N1, "/"); strcat(RUTA_N1, strTMP); strcat(RUTA_N1, ".N1");
-//  		// Guardo!
-//  		fid = fopen(RUTA_MK, "wb"); fwrite(SAVE_MK, sizeof(short), Ct, fid); fclose(fid);
-//  		fid = fopen(RUTA_FR, "wb"); fwrite(SAVE_FR, sizeof(float), Ct, fid); fclose(fid);
-//  		fid = fopen(RUTA_RP, "wb"); fwrite(SAVE_RP, sizeof(float), Ct, fid); fclose(fid);
-//  		fid = fopen(RUTA_N1, "wb"); fwrite(SAVE_N1, sizeof(float), Ct, fid); fclose(fid);
-//  	}
-
-//  	if ((tag == 2)||(tag == 3)){
-//  		// RUTA MK, FR, RP, N1
-//  		strcpy(RUTA_MK, RUTAsal); strcat(RUTA_MK, "zIMP/B01-MK/"); strcat(RUTA_MK, strYEA);
-//  		strcat(RUTA_MK, "/"); strcat(RUTA_MK, strTMP); strcat(RUTA_MK, ".MK");
-//  		strcpy(RUTA_FR, RUTAsal); strcat(RUTA_FR, "zIMP/B01-FR/"); strcat(RUTA_FR, strYEA);
-//  		strcat(RUTA_FR, "/"); strcat(RUTA_FR, strTMP); strcat(RUTA_FR, ".FR");
-//  		strcpy(RUTA_RP, RUTAsal); strcat(RUTA_RP, "zIMP/B01-RP/"); strcat(RUTA_RP, strYEA);
-//  		strcat(RUTA_RP, "/"); strcat(RUTA_RP, strTMP); strcat(RUTA_RP, ".RP");
-//  		strcpy(RUTA_N1, RUTAsal); strcat(RUTA_N1, "zIMP/B01-N1/"); strcat(RUTA_N1, strYEA);
-//  		strcat(RUTA_N1, "/"); strcat(RUTA_N1, strTMP); strcat(RUTA_N1, ".N1");
-//  		// Guardo!
-//  		fid = fopen(RUTA_MK, "wb"); fwrite(SAVE_MK, sizeof(short), Ct, fid); fclose(fid);
-//  		fid = fopen(RUTA_FR, "wb"); fwrite(SAVE_FR, sizeof(float), Ct, fid); fclose(fid);
-//  		fid = fopen(RUTA_RP, "wb"); fwrite(SAVE_RP, sizeof(float), Ct, fid); fclose(fid);
-//  		fid = fopen(RUTA_N1, "wb"); fwrite(SAVE_N1, sizeof(float), Ct, fid); fclose(fid);
-//  	}
-
-//  	// Libero memoria
-//  	free(SAVE_MK);
-//  	free(SAVE_FR);
-//  	free(SAVE_RP);
-//  	free(SAVE_N1);
-
-// 	// FIN
-// 	return 1;
-
-// }
-
 int guardar_imagen_VIS(char RUTAsal[CMAXstr], int Ct,
 	int yea, int doy, int hra, int min, int sec, 
 	double * FRmat, double * RPmat, double * N1mat, int * MKmat,
@@ -830,6 +735,80 @@ int guardar_imagen_VIS(char RUTAsal[CMAXstr], int Ct,
  	free(SAVE_FR);
  	free(SAVE_RP);
  	free(SAVE_N1);
+
+	// FIN
+	return 1;
+
+}
+
+int guardar_imagen_double(char RUTAsal[CMAXstr], int Ct,
+	int yea, int doy, int hra, int min, int sec, double * DATA, char * tipo){
+
+	FILE * fid;
+	int		h1;
+	char RUTA[CMAXstr];
+	char strTMP[23];
+	char strYEA[4];
+	char strDOY[3];
+	char strHRA[2];
+	char strMIN[2];
+	char strSEC[2];
+	float * SAVE;
+	
+	generar_strings_temporales(yea, doy, hra, min, sec,
+		&strTMP[0], &strYEA[0], &strDOY[0], &strHRA[0], &strMIN[0], &strSEC[0]);
+
+ 	// ARMAR DATASETS A GUARDAR CASTEADO A FLOAT (no DOUBLE)
+ 	if (!(SAVE = (float *) malloc(Ct * sizeof(float *)))){return 0;}
+ 	for (h1=0;h1<(Ct);h1++){
+ 		SAVE[h1] = (float) (DATA[h1]); // SE HACE PARA CASTEAR A FLOAT
+ 	}
+
+	// RUTA MK, FR, RP, N1
+	strcpy(RUTA, RUTAsal); strcat(RUTA, "test/");
+	strcat(RUTA, strTMP); strcat(RUTA, "."); strcat(RUTA, tipo);
+	
+	// Guardo!
+	fid = fopen(RUTA, "wb"); fwrite(SAVE, sizeof(float), Ct, fid); fclose(fid);
+
+ 	free(SAVE);
+
+	// FIN
+	return 1;
+
+}
+
+int guardar_imagen_int(char RUTAsal[CMAXstr], int Ct,
+	int yea, int doy, int hra, int min, int sec, int * DATA, char * tipo){
+
+	FILE * fid;
+	int		h1;
+	char RUTA[CMAXstr];
+	char strTMP[23];
+	char strYEA[4];
+	char strDOY[3];
+	char strHRA[2];
+	char strMIN[2];
+	char strSEC[2];
+	short * SAVE;
+	
+	generar_strings_temporales(yea, doy, hra, min, sec,
+		&strTMP[0], &strYEA[0], &strDOY[0], &strHRA[0], &strMIN[0], &strSEC[0]);
+
+ 	// ARMAR DATASETS A GUARDAR CASTEADO A FLOAT (no DOUBLE)
+ 	if (!(SAVE = (short *) malloc(Ct * sizeof(short *)))){return 0;}
+ 	for (h1=0;h1<(Ct);h1++){
+ 		SAVE[h1] = (short) (DATA[h1]); // SE HACE PARA CASTEAR A FLOAT
+ 	}
+
+	// RUTA MK, FR, RP, N1
+	strcpy(RUTA, RUTAsal); strcat(RUTA, "test/");
+	strcat(RUTA, strTMP); strcat(RUTA, "."); strcat(RUTA, tipo);
+	
+	// Guardo!
+	fid = fopen(RUTA, "wb"); fwrite(SAVE, sizeof(short), Ct, fid); fclose(fid);
+
+ 	free(SAVE);
 
 	// FIN
 	return 1;
