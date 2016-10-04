@@ -1,11 +1,11 @@
 # ignoro los binarios compilados de python
-*.pyc
-*.txt
-salida*
-imagen
-png
-correrycopiar
-data
-test.py
-test
-channel_info.txt
+PRSpng/*.pyc
+PRSpng/*.txt
+PRSpng/salida*
+PRSpng/imagen
+PRSpng/png
+PRSpng/correrycopiar
+PRSpng/data
+PRSpng/test.py
+PRSpng/test
+PRSpng/channel_info.txt
