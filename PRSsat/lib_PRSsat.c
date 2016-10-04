@@ -14,8 +14,10 @@
 #define TRUE !FALSE
 #define Cste 3
 #define celMIN 0.5
-#define imgMIN1 0.85
-#define imgMIN2 0.30
+#define imgTHR1 1.00
+#define imgTHR2 0.99
+#define imgTHR3 0.85
+#define imgTHR4 0.30
 //#define Ccods 1200
 //#define coszTHR 0.05
 //#define n1THR 0.465
@@ -264,7 +266,8 @@ int procesar_VIS_gri(double * FRmat, double * RPmat, double * CZmat, int * MSKma
 						// COSENO DEL ANGULO CENITAL
 						cosz = 0;
 						calculo_cosz_INS(DELTArad, EcTmin, hra, min, sec, lat, lon, &cosz);
-				
+						if (cosz < 0){cosz=0;}
+
 						// CALCULO DE PRODUCTOS
 						if (Braw > 0){
 							calculo_productos_VIS(Braw, cosz, Fn, fc, 
@@ -314,9 +317,11 @@ int procesar_VIS_gri(double * FRmat, double * RPmat, double * CZmat, int * MSKma
 	// ASIGNACION DE BANDERA = {0 img no OK, 1 img OK, 2 img impainting, 3 img mal}
 	*tag = 0;
 	*fracMK = (double) sumaMK / (double) Ct; // calcular el cociente ZMK / Ct = cociente
-	if (*fracMK == 1.0){*tag = 1;}
-	if ((*fracMK < 1.0)&&(*fracMK >= imgMIN1)){*tag = 2;}
-	if ((*fracMK < imgMIN1)&&(*fracMK >= imgMIN2)){*tag = 3;}
+	if (*fracMK == imgTHR1){*tag = 1;}
+	if ((*fracMK < imgTHR1)&&(*fracMK >= imgTHR2)){*tag = 2;}
+	if ((*fracMK < imgTHR2)&&(*fracMK >= imgTHR3)){*tag = 3;}
+	if ((*fracMK < imgMIN3)&&(*fracMK >= imgMIN4)){*tag = 4;}
+	if ((*fracMK < imgMIN4)){*tag = 5;}
 
 	return 1;
 }
