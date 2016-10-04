@@ -19,7 +19,7 @@ def getDateArray():
   #########################################
 
   # genero los paths para los directorios base
-  data_path     = "/sat/PRS/libs/PRS-auto/PRSpng/data/"
+  data_path     = "/sat/PRS/libs/PRS-auto/data/"
   abs_file_path = os.path.abspath(data_path)
 
   # declaro los paths para los dos archivos
@@ -180,7 +180,7 @@ def lastReceived():
         name_split.insert(1, str(month[1]).zfill(2))
 
         # genero los paths para los directorios base
-        data_path     = "/sat/PRS/libs/PRS-auto/PRSpng/data/"
+        data_path     = "/sat/PRS/libs/PRS-auto/data/"
         abs_file_path = os.path.abspath(data_path)
 
         # declaro los paths para los dos archivos
@@ -210,7 +210,7 @@ for file in arreglo:
     # print name_split[0]+'.'+name_split[1]+'.'+name_split[2]+'.'+name_split[3]+'\n'
 
     # genero los paths para los directorios base
-    data_path     = "/sat/PRS/libs/PRS-auto/PRSpng/data/"
+    data_path     = "/sat/PRS/libs/PRS-auto/data/"
     abs_file_path = os.path.abspath(data_path)
 
     # declaro los paths para los dos archivos
