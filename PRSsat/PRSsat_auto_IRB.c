@@ -13,7 +13,7 @@
 #define FALSE 0
 #define TRUE !FALSE
 #define CMAXstr 200
-#define CFLNstr 34
+#define CINPstr 42
 #define Cste 3
 
 // SATELITES
@@ -31,7 +31,7 @@ int main(int argc, char *argv[]){
 	char DATAspatial[CMAXstr];
 	char DATAfolders[CMAXstr];
 	char DATAimglist[CMAXstr];
-	char imgs[CFLNstr];
+	char imgs[CINPstr];
 	char CODEspatial[23];
 	int		h1, h2, h3, Ci, Cj, Ct, tag, Cimgs;
 	double	LATmax, LATmin, LONmax, LONmin, dLATgri, dLONgri, dLATcel, dLONcel;
@@ -86,7 +86,7 @@ int main(int argc, char *argv[]){
 		Cimgs = Cimgs + 1;
 	}
 	fclose(data);
-	char array_imgs[Cimgs][CFLNstr]; 
+	char array_imgs[Cimgs][CINPstr]; 
 	Cimgs = 0;
 	data = fopen(DATAimglist, "ro");
 	if (data == NULL) {printf("No se encontro archivo imglist. Cerrando.\n"); return 0;}

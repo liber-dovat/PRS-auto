@@ -13,7 +13,7 @@
 #define FALSE 0
 #define TRUE !FALSE
 #define CMAXstr 200
-#define CFLNstr 34
+#define CINPstr 42
 #define Cste 3
 
 // SATELITES
@@ -31,9 +31,9 @@ int main(int argc, char *argv[]){
 	char DATAspatial[CMAXstr];
 	char DATAfolders[CMAXstr];
 	char DATAimglist[CMAXstr];
-	char imgs[CFLNstr];
+	char imgs[CINPstr];
 	char CODEspatial[23];
-	int		h1, h2, h3, Ci, Cj, Ct, tag, Cimgs;
+	int		h1, h2, h3, Ci, Cj, Ct, tag, Cimgs, OK;
 	double	LATmax, LATmin, LONmax, LONmin, dLATgri, dLONgri, dLATcel, dLONcel;
 	int * MSKmat;
 	int * CNT1mat;
@@ -86,7 +86,7 @@ int main(int argc, char *argv[]){
 		Cimgs = Cimgs + 1;
 	}
 	fclose(data);
-	char array_imgs[Cimgs][CFLNstr]; 
+	char array_imgs[Cimgs][CINPstr]; 
 	Cimgs = 0;
 	data = fopen(DATAimglist, "ro");
 	if (data == NULL) {printf("No se encontro archivo imglist. Cerrando.\n"); return 0;}
@@ -95,6 +95,26 @@ int main(int argc, char *argv[]){
 		Cimgs = Cimgs + 1;
 	}
 	fclose(data);
+
+	// INFORMACION DE LOS ARCHIVOS CARGADOS
+	printf("-----------------------------------------------------------------------------------\n");
+	printf("---- Archivos y Rutas -------------------------------------------------------------\n");
+	printf("FOLDERS: %s\n", &DATAfolders[0]);
+	printf("SPATIAL: %s\n", &DATAspatial[0]);
+	printf("IMGLIST: %s\n", &DATAimglist[0]);
+	printf("IMAGEN : %s\n", &PATHimg[0]);
+	printf("RUTAent: %s\n", &RUTAent[0]);
+	printf("RUTAsal: %s\n", &RUTAsal[0]);
+	printf("RUTAcal: %s\n", &RUTAcal[0]);
+	printf("CODIGO : %s\n", &CODEspatial[0]);
+	printf("-----------------------------------------------------------------------------------\n");
+	printf("---- Resolucion Espacial ----------------------------------------------------------\n");
+	printf("[Ci, Cj] = [%d, %d] --- Ct = [%d]\n", Ci, Cj, Ct);
+	printf("LAT = [%+07.3f .. %+07.3f] --- GRILLA = [%+07.3f, %+07.3f]\n", LATmax, LATmin, dLATgri, dLONgri);
+	printf("LON = [%+07.3f .. %+07.3f] --- CELDAS = [%+07.3f, %+07.3f]\n", LONmax, LONmin, dLATcel, dLONcel);
+
+	// INIT
+	OK = 0;
 
 	// IMAGEN A PROCESAR
 	strncpy(PATHimg, RUTAent, CMAXstr); strcat(PATHimg, array_imgs[0]);
@@ -120,27 +140,16 @@ int main(int argc, char *argv[]){
 	//mostrar_vector_double(RPmat, Ct, Cj);
 	//mostrar_vector_int(MSKmat, Ct, Cj);
 
-	// MUESTRO VECTORES
-	printf("-----------------------------------------------------------------------------------\n");
-	printf("---- Archivos y Rutas -------------------------------------------------------------\n");
-	printf("FOLDERS: %s\n", &DATAfolders[0]);
-	printf("SPATIAL: %s\n", &DATAspatial[0]);
-	printf("IMGLIST: %s\n", &DATAimglist[0]);
-	printf("IMAGEN : %s\n", &PATHimg[0]);
-	printf("RUTAent: %s\n", &RUTAent[0]);
-	printf("RUTAsal: %s\n", &RUTAsal[0]);
-	printf("RUTAcal: %s\n", &RUTAcal[0]);
-	printf("CODIGO : %s\n", &CODEspatial[0]);
-	printf("-----------------------------------------------------------------------------------\n");
-	printf("---- Resolucion Espacial ----------------------------------------------------------\n");
-	printf("[Ci, Cj] = [%d, %d] --- Ct = [%d]\n", Ci, Cj, Ct);
-	printf("LAT = [%+06.2f .. %+06.2f] --- GRILLA = [%+06.2f, %+06.2f]\n", LATmax, LATmin, dLATgri, dLONgri);
-	printf("LON = [%+06.2f .. %+06.2f] --- CELDAS = [%+06.2f, %+06.2f]\n", LONmax, LONmin, dLATcel, dLONcel);
 	printf("-----------------------------------------------------------------------------------\n");
 	printf("---- Lista de imagenes ------------------------------------------------------------\n");
 	for (h1=0; h1<Cimgs; h1++){
 		printf("%s\n", array_imgs[h1]);
 	}	
+	printf("-----------------------------------------------------------------------------------\n");
+	printf("---- Datos de la imagen -----------------------------------------------------------\n");
+	printf("TAG: %d\n", tag);
+	printf("-----------------------------------------------------------------------------------\n");
+
 	//printf("---- Vectores Regulares -----------------------------------------------------------\n");
 	//printf("LATITUDES:\n");
 	//mostrar_vector_double(LATvec, Ci, 10);
@@ -154,10 +163,7 @@ int main(int argc, char *argv[]){
 	//mostrar_vector_double(CALvis_K, Cste, 10);
 	//mostrar_vector_double(CALvis_alfa, Cste, 10);
 	//mostrar_vector_double(CALvis_beta, Cste, 10);
-	printf("-----------------------------------------------------------------------------------\n");
-	printf("---- Datos de la imagen -----------------------------------------------------------\n");
-	printf("TAG: %d\n", tag);
-	printf("-----------------------------------------------------------------------------------\n");
+
 
 	return 1;
 }
