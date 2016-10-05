@@ -109,12 +109,12 @@ int main(int argc, char *argv[]){
 		&LATvec[0], &LONvec[0], &LATmat[0], &LONmat[0]);
 	cargar_calibracion_VIS(RUTAcal, &CALvis_iniYEA, &CALvis_iniDOY, &CALvis_Xspace,
 		&CALvis_M, &CALvis_K, &CALvis_alfa, &CALvis_beta);
-	procesar_NetCDF_VIS_gri(&FRmat, &RPmat, &N1mat, &CZmat,
-		&MSKmat, &CNT1mat, &CNT2mat, &tag,
-	 	dLATgri, dLONgri, dLATcel, dLONcel, LATmax, LATmin, LONmax, LONmin,
-	 	Ct, Ci, Cj, PATHimg, RUTAsal, 
-	 	CALvis_iniYEA, CALvis_iniDOY, CALvis_Xspace,
-		CALvis_M, CALvis_K, CALvis_alfa, CALvis_beta);
+	// procesar_NetCDF_VIS_gri(&FRmat, &RPmat, &N1mat, &CZmat,
+	// 	&MSKmat, &CNT1mat, &CNT2mat, &tag,
+	//  	dLATgri, dLONgri, dLATcel, dLONcel, LATmax, LATmin, LONmax, LONmin,
+	//  	Ct, Ci, Cj, PATHimg, RUTAsal, 
+	//  	CALvis_iniYEA, CALvis_iniDOY, CALvis_Xspace,
+	// 	CALvis_M, CALvis_K, CALvis_alfa, CALvis_beta);
 	//mostrar_vector_double(FRmat, Ct, Cj);
 	//mostrar_vector_double(CZmat, Ct, Cj);
 	//mostrar_vector_double(RPmat, Ct, Cj);
