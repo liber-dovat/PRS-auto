@@ -173,12 +173,6 @@ def normalizarData(banda, data):
   # aplico la funcion como un map en cada elemento
   if banda == 1:
     return Radiance(data,m,b)
-    # a = [data for _ in xrange(32)]
-    # pool = Pool(processes = 32)
-    # result = pool.map(partial(Radiance, m=m, b=b), a)
-    # pool.close()
-    # pool.join()
-    # return result
   else:
     vfunc = numpy.vectorize(temperaturaReal)
     return vfunc(data,m,b,n,alfa,beta)
@@ -211,16 +205,16 @@ def netcdf2png(url, dirDest):
                 llcrnrlon=-66.800000,urcrnrlon=-44.968092,\
                 resolution='l')
 
-  # data = data[0]                                     # me quedo con el primer elemento de data
-  # shape = numpy.shape(data)                          # guardo el shape original de data
-  # data_vector = numpy.reshape(data,numpy.size(data)) # genero un vector de data usando su size (largo*ancho)
-  # data_vector = normalizarData(band, data_vector)    # invoco la funcion sobre el vector
-  # img = numpy.reshape(data_vector, shape)            # paso el vector a matriz usando shape como largo y ancho
-  # print numpy.amin(img)
-  # print numpy.amax(img)
+  data = data[0]                                     # me quedo con el primer elemento de data
+  shape = numpy.shape(data)                          # guardo el shape original de data
+  data_vector = numpy.reshape(data,numpy.size(data)) # genero un vector de data usando su size (largo*ancho)
+  data_vector = normalizarData(band, data_vector)    # invoco la funcion sobre el vector
+  img = numpy.reshape(data_vector, shape)            # paso el vector a matriz usando shape como largo y ancho
+  print numpy.amin(img)
+  print numpy.amax(img)
 
-  img = data[0]
-  img *= 1024.0/numpy.amax(img) # normalizo los datos desde cero hasta 1024
+  # img = data[0]
+  # img *= 1024.0/numpy.amax(img) # normalizo los datos desde cero hasta 1024
 
   # http://matplotlib.org/users/colormapnorms.html
 
@@ -228,8 +222,13 @@ def netcdf2png(url, dirDest):
   # la ventana seleccionada como proyeccion
   x, y = ax1(lons,lats)
 
+  if band == 1:
+    vmax=100.
+  else:
+    vmax=1400.
+
   # dibujo img en las coordenadas x e y calculadas
-  cs = ax1.pcolormesh(x, y, img, vmin=0., vmax=1024., cmap='jet')
+  cs = ax1.pcolormesh(x, y, img, vmin=0., vmax=vmax, cmap='jet')
   # ax1.pcolormesh(x, y, img, cmap='jet')
 
   # agrego los vectores de las costas, departamentos/estados/provincias y paises
@@ -242,8 +241,8 @@ def netcdf2png(url, dirDest):
   ax1.drawmeridians(numpy.arange(-70, -45, 5), labels=[0,0,1,0], linewidth=0.0, fontsize=10)
 
   # agrego el colorbar
-  cbar = ax1.colorbar(cs, location='bottom', pad='3%', ticks=[0., 512., 1024.])
-  cbar.ax.set_xticklabels(['Low', 'Medium', 'High'], fontsize=10)
+  cbar = ax1.colorbar(cs, location='bottom', pad='3%', ticks=[0., vmax])
+  cbar.ax.set_xticklabels(['0', vmax], fontsize=10)
 
   # agrego el logo en el documento
   logo = plt.imread('/sat/PRS/libs/PRS-auto/PRSpng/imgs/les-logo.png')
