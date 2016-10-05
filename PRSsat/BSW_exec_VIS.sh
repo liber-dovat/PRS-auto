@@ -3,7 +3,7 @@
 #Versión 1.0. 10/2016. Rodrigo Alonso Suárez
 
 # PROGRAMAS
-main='/rolo/Wsate/PRS/server-sat-01/libs/PRS-auto/PRSsat/PRSsat_auto';
+main='/rolo/Wsate/PRS/server-sat-01/libs/PRS-auto/PRSsat/PRSsat_auto_VIS';
 libs='/rolo/Wsate/PRS/server-sat-01/libs/PRS-auto/PRSsat/lib_PRSsat';
 
 # PARAMETROS

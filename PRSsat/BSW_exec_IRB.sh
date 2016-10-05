@@ -3,13 +3,13 @@
 #Versión 1.0. 10/2016. Rodrigo Alonso Suárez
 
 # PROGRAMAS
-main='/rolo/Wsate/PRS/server-sat-01/libs/PRS-auto/PRSsat/PRSsat_auto';
+main='/rolo/Wsate/PRS/server-sat-01/libs/PRS-auto/PRSsat/PRSsat_auto_IRB';
 libs='/rolo/Wsate/PRS/server-sat-01/libs/PRS-auto/PRSsat/lib_PRSsat';
 
 # PARAMETROS
-folders='/rolo/Wsate/PRS/server-sat-01/libs/PRS-auto/PRSsat/data/job_folders_VIS';
-spatial='/rolo/Wsate/PRS/server-sat-01/libs/PRS-auto/PRSsat/data/job_spatial_VIS';
-imglist='/rolo/Wsate/PRS/server-sat-01/libs/PRS-auto/PRSsat/data/job_imglist_VIS';
+folders='/rolo/Wsate/PRS/server-sat-01/libs/PRS-auto/PRSsat/data/job_folders_IRB';
+spatial='/rolo/Wsate/PRS/server-sat-01/libs/PRS-auto/PRSsat/data/job_spatial_IRB';
+imglist='/rolo/Wsate/PRS/server-sat-01/libs/PRS-auto/PRSsat/data/job_imglist_IRB';
 product=('/B02-TX/' '/B02-MK/' '/B03-TX/' '/B03-MK/' '/B04-TX/' '/B04-MK/' '/B06-TX/' '/B06-MK/');
 
 echo '=== Carpetas =================================================================';
