@@ -12,6 +12,10 @@ spatial='/rolo/Wsate/PRS/server-sat-01/libs/PRS-auto/PRSsat/data/job_spatial_VIS
 imglist='/rolo/Wsate/PRS/server-sat-01/libs/PRS-auto/PRSsat/data/job_imglist_VIS1';
 product=('/B01-FR/' '/B01-RP/' '/B01-N1/' '/B01-MK/');
 
+echo '2016/10/goes13.2016.275.143506.BAND_01.nc' >> $imglist; # EMULO DESCARGA NOAA
+echo '2016/10/goes13.2016.277.084518.BAND_01.nc' >> $imglist; # EMULO DESCARGA NOAA
+echo '2016/10/goes13.2016.279.123506.BAND_01.nc' >> $imglist; # EMULO DESCARGA NOAA
+
 echo '=== Carpetas =================================================================';
 j=1;
 while read line; do
@@ -42,9 +46,11 @@ for line in $(<$imglist); do
 	#echo $year;
 	for prod in ${product[*]}
 	do
+		#echo $RUTAdes$prod$year;
     	if [ ! -d $RUTAdes$prod$year ]; then
 			mkdir -p $RUTAdes$prod$year;
 		fi
+		#echo $RUTAdes'/zIMP'$prod$year;
 		if [ ! -d $RUTAdes'/zIMP'$prod$year ]; then
 			mkdir -p $RUTAdes'/zIMP'$prod$year;
 		fi
@@ -54,10 +60,6 @@ done
 echo '=== Compilacion ==============================================================';
 gcc -o $libs'.o' -c $libs'.c' -lnetcdf -lm;
 gcc -o $main $main'.c' $libs'.o' -lnetcdf -lm;
-
-echo '2016/10/goes13.2016.275.143506.BAND_01.nc' >> $imglist; # EMULO DESCARGA NOAA
-echo '2016/10/goes13.2016.277.084518.BAND_01.nc' >> $imglist; # EMULO DESCARGA NOAA
-echo '2016/10/goes13.2016.279.123506.BAND_01.nc' >> $imglist; # EMULO DESCARGA NOAA
 
 echo '=== Run ======================================================================';
 time $main $folders $spatial $imglist;

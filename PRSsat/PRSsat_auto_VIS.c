@@ -11,7 +11,7 @@
 #define TRUE !FALSE
 #define CMAXstr 200
 #define CINPstr 42
-#define CSPTstr 24
+#define CSPTstr 23
 
 // Versión 1.0, 09/2016 -- Rodrigo Alonso Suárez.
 

@@ -11,7 +11,7 @@
 #define TRUE !FALSE
 #define CMAXstr 200
 #define CINPstr 42
-#define CSPTstr 24
+#define CSPTstr 23
 #define Cste 3
 #define Cirb 4
 #define PI 3.1415926
@@ -22,7 +22,7 @@
 #define imgTHR4 0.30
 #define coszTHR 0.10
 #define CFLNstr 34
-#define COUTstr 19
+#define COUTstr 18
 
 // SATELITES
 static int GOES[Cste]={8,12,13};
@@ -967,7 +967,7 @@ int guardar_imagen_VIS(char RUTAsal[CMAXstr], int Ct,
 
  	// GUARDAR TAG
  	sprintf(strTAG, "%s,%s,%s,%s,%s,%d,%7.5f\n", strYEA, strDOY, strHRA, strMIN, strSEC, tag, fracMK); // escribo en la variable tag el valor que me pasan en tag_value
- 	strcpy(RUTA_TG, RUTAsal); strcat(RUTA_TG, "zCRR/TAGs_"); strcat(RUTA_TG, strYEA); strcat(RUTA_TG, ".TG");
+ 	strcpy(RUTA_TG, RUTAsal); strcat(RUTA_TG, "zCRR/TAGs_VIS_"); strcat(RUTA_TG, strYEA); strcat(RUTA_TG, ".TG");
  	fid = fopen(RUTA_TG, "ab"); fwrite(strTAG, sizeof(char), strlen(strTAG), fid); fclose(fid);
 
  	// ARMAR DATASETS A GUARDAR CASTEADO A FLOAT (no DOUBLE)
