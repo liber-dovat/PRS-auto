@@ -146,7 +146,7 @@ int main(int argc, char *argv[]){
 	   		CALvis_iniYEA, CALvis_iniDOY, CALvis_Xspace,
 	  		CALvis_M, CALvis_K, CALvis_alfa, CALvis_beta);
 
-		printf("IMAGEN : %s. TAG = [%d]. OK = [%d].\n", &PATHimg[0], OK, tag);
+		printf("IMAGEN : %s. TAG = [%d]. OK = [%d].\n", &PATHimg[0], tag, OK);
 	}
 	printf("-----------------------------------------------------------------------------------\n");
 	printf("---- Lista de imagenes ------------------------------------------------------------\n");
