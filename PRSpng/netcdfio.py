@@ -127,6 +127,68 @@ class colormapInfrarrojo(colors.Normalize):
 #########################################
 #########################################
 #########################################
+'''
+# http://stackoverflow.com/questions/24004887/matplotlib-pcolormesh-separate-datacolor-and-color-brightness-information
+def mapeoColorInfrarrojo(valor):
+
+  i01 = 40;
+  i02 = 80;
+  i03 = 118;
+  i04 = 158;
+  i05 = 197;
+  i06 = 236;
+  i07 = 276;
+  i08 = 316;
+  i09 = 354;
+  i10 = 394;
+  iT  = 1024;
+
+  C1 = 0.85;
+  C2 = 0.15;
+
+  map = zeros(iT, 3);
+
+  # COLORES CON CODIGO
+  if valor in range(1,i01)
+     return [0 0 0]
+  end
+  for k=(i01+1:i02)
+     map(k,:) = [153 0 0]/255; 
+  end
+  for k=(i02+1:i03)
+     map(k,:) = [153 0 153]/255; 
+  end
+  for k=(i03+1:i04)
+     map(k,:) = [255 0 0]/255; 
+  end
+  for k=(i04+1:i05)
+     map(k,:) = [255 102 0]/255;
+  end
+  for k=(i05+1:i06)
+     map(k,:) = [255 255 0]/255;
+  end
+  for k=(i06+1:i07)
+     map(k,:) = [0 153 0]/255;
+  end
+  for k=(i07+1:i08)
+     map(k,:) = [0 255 0]/255;
+  end
+  for k=(i08+1:i09)
+     map(k,:) = [0 0 255]/255;
+  end
+  for k=(i09+1:i10)
+     map(k,:) = [0 153 153]/255;
+  end
+   # ESCALA DE GRISES
+  for k=(i10+1:iT)
+      Ik = (C1-C2)*((k-iT)/(i10+1-iT)) + C2;
+      map(k,:) = [Ik Ik Ik]; 
+  end
+# mapeoColorInfrarrojo
+'''
+#########################################
+#########################################
+#########################################
 
 # http://stackoverflow.com/questions/11442191/parallelizing-a-numpy-vector-operation
 # leer para paralelizar
@@ -234,7 +296,7 @@ def netcdf2png(url, dirDest):
   img = numpy.reshape(data_vector, shape)            # paso el vector a matriz usando shape como largo y ancho
 
   if band != 1:
-    img *= 1024.0/numpy.amax(img)
+    img *= 1.0/numpy.amax(img)
 
   print numpy.amin(img)
   print numpy.amax(img)
@@ -251,9 +313,10 @@ def netcdf2png(url, dirDest):
   if band == 1:
     vmax=100.
   else:
-    vmax=1024.0/numpy.amax(img)
+    vmax=1.0/numpy.amax(img)
 
   # dibujo img en las coordenadas x e y calculadas
+  # cs = ax1.pcolormesh(x, y, img, vmin=0., vmax=vmax, cmap='jet')
   if band == 1:
     cs = ax1.pcolormesh(x, y, img, vmin=0., vmax=vmax, cmap='jet')
   else:
