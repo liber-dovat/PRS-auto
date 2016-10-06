@@ -7,7 +7,7 @@ main='/rolo/Wsate/PRS/server-sat-01/libs/PRS-auto/PRSsat/PRSsat_auto_VIS';
 libs='/rolo/Wsate/PRS/server-sat-01/libs/PRS-auto/PRSsat/lib_PRSsat';
 
 # PARAMETROS
-folders='/rolo/Wsate/PRS/server-sat-01/libs/PRS-auto/PRSsat/data/job_folders_VIS1';
+folders='/rolo/Wsate/PRS/server-sat-01/libs/PRS-auto/PRSsat/data/job_folders_ALL1';
 spatial='/rolo/Wsate/PRS/server-sat-01/libs/PRS-auto/PRSsat/data/job_spatial_VIS1';
 imglist='/rolo/Wsate/PRS/server-sat-01/libs/PRS-auto/PRSsat/data/job_imglist_VIS1';
 product=('/B01-FR/' '/B01-RP/' '/B01-N1/' '/B01-MK/');
@@ -54,6 +54,9 @@ done
 echo '=== Compilacion ==============================================================';
 gcc -o $libs'.o' -c $libs'.c' -lnetcdf -lm;
 gcc -o $main $main'.c' $libs'.o' -lnetcdf -lm;
+
+echo '2016/01/goes13.2016.002.113733.BAND_01.nc' >> $imglist; # EMULO DESCARGA NOAA
+echo '2016/01/goes13.2016.002.130733.BAND_01.nc' >> $imglist; # EMULO DESCARGA NOAA
 
 echo '=== Run ======================================================================';
 time $main $folders $spatial $imglist;

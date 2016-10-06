@@ -6,9 +6,6 @@
 #include <string.h>
 #include <math.h>
 #include "lib_PRSsat.h"
-//#include "mpi.h"
-//#include "libASIcom.h"
-//#include "libPRS_T000loc_VIS.h"
 
 #define FALSE 0
 #define TRUE !FALSE
