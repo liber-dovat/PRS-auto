@@ -9,7 +9,6 @@ import datetime
 import os
 from os.path import basename
 from funciones import ymd
-import math
 from multiprocessing import Pool
 from functools import partial
 
@@ -108,6 +107,28 @@ def nameTag(banda):
 #########################################
 #########################################
 
+# http://matplotlib.org/users/colormapnorms.html
+# http://stackoverflow.com/questions/35295075/define-custom-normalisation-function-in-matplotlib-when-using-plt-colorbar
+
+'''
+Custom colormap
+'''
+
+class colormapInfrarrojo(colors.Normalize):
+  def __init__(self, vmin=None, vmax=None, midpoint=None, clip=False):
+    self.midpoint = midpoint
+    colors.Normalize.__init__(self, vmin, vmax, clip)
+
+  def __call__(self, value, clip=None):
+    # I'm ignoring masked values and all kinds of edge cases to make a
+    # simple example...
+    x, y = [self.vmin, self.midpoint, self.vmax], [0, 0.5, 1]
+    return numpy.ma.masked_array(numpy.interp(value, x, y))
+
+#########################################
+#########################################
+#########################################
+
 # http://stackoverflow.com/questions/11442191/parallelizing-a-numpy-vector-operation
 # leer para paralelizar
 # http://www.star.nesdis.noaa.gov/smcd/spb/fwu/homepage/GOES_Imager_Vis_OpCal_G13.php
@@ -130,8 +151,8 @@ def temperaturaReal(dato,m,b1,n,a,b2):
   c2 = 1.438833
 
   lx   = (dato - b1) / m
-  aux  = 1 + ( c1*math.pow(n, 3) / lx )
-  Teff = (c2*n) / math.log(aux)
+  aux  = 1 + ( (c1*numpy.power(n, 3)) / lx )
+  Teff = (c2*n) / numpy.log(aux)
   Temp = a + b2 * Teff
 
   return Temp
@@ -214,6 +235,11 @@ def netcdf2png(url, dirDest):
   img = numpy.reshape(data_vector, shape)            # paso el vector a matriz usando shape como largo y ancho
   print numpy.amin(img)
   print numpy.amax(img)
+
+  # if band == 4:
+  #   plt.plot(data_vector[0:1000])
+  #   plt.show()
+  #   plt.savefig("./test/img0_1000.png", bbox_inches='tight', dpi=200)
 
   # img = data[0]
   # img *= 1024.0/numpy.amax(img) # normalizo los datos desde cero hasta 1024
