@@ -7,18 +7,21 @@
 #include <math.h>
 #include <netcdf.h>
 
-#define CMAXstr 200
-#define CFLNstr 34
-#define PI 3.1415926
 #define FALSE 0
 #define TRUE !FALSE
+#define CMAXstr 200
+#define CINPstr 42
+#define CSPTstr 24
 #define Cste 3
+#define PI 3.1415926
 #define celMIN 0.5
 #define imgTHR1 1.00
 #define imgTHR2 0.99
 #define imgTHR3 0.85
 #define imgTHR4 0.30
 #define coszTHR 0.10
+#define CFLNstr 34
+#define COUTstr 19
 
 // SATELITES
 static int GOES[Cste]={8,12,13};
@@ -60,44 +63,43 @@ int procesar_NetCDF_VIS_gri(double ** FRmat, double ** RPmat, double ** N1mat,
 	// VACIO DATASETS (inicializo en zero)
 	for (h1=0; h1<Ct; h1++){
 	 	(*FRmat)[h1] = 0; (*RPmat)[h1] = 0; (*N1mat)[h1] = 0;
-		(*CZmat)[h1] = 0;
-	 	(*MSKmat)[h1] = 0;
-	 	(*CNT1mat)[h1] = 0;
-	 	(*CNT2mat)[h1] = 0;
+	 	(*CZmat)[h1] = 0;
+	  	(*MSKmat)[h1] = 0;
+	  	(*CNT1mat)[h1] = 0;
+	  	(*CNT2mat)[h1] = 0;
 	}
 
 	// PROCESAR LA IMAGEN
 	if (Band == 1){ // CANAL VISIBLE, PROCESO
 		
-		// Elijo satelite para calibracion
-		elegir_satelite(&kste, ste);
+	 	// Elijo satelite para calibracion
+	 	elegir_satelite(&kste, ste);
 
-		// calculo solar diario
-		calculo_solar_diario(yea, doy, &Fn, &DELTArad, &EcTmin);
+	 	// calculo solar diario
+	 	calculo_solar_diario(yea, doy, &Fn, &DELTArad, &EcTmin);
 
-		// proceso imagen
-		procesar_VIS_gri((*FRmat), (*RPmat), (*CZmat),
-			(*MSKmat), (*CNT1mat), (*CNT2mat), &*tag, &fracMK,
-			dLATgri, dLONgri, dLATcel, dLONcel,
-			LATmax, LATmin, LONmax, LONmin,
-			Ct, Ci, Cj, &BXdata[0], &LATdata[0], &LONdata[0], St,
-			CALvis_iniYEA[kste], CALvis_iniDOY[kste], CALvis_Xspace[kste],
-			CALvis_M[kste], CALvis_K[kste], CALvis_alfa[kste], CALvis_beta[kste],
-			Fn, DELTArad, EcTmin, yea, doy, hra, min, sec);
+	 	// proceso imagen
+	 	procesar_VIS_gri((*FRmat), (*RPmat), (*CZmat),
+	 	 	(*MSKmat), (*CNT1mat), (*CNT2mat), &*tag, &fracMK,
+	 	 	dLATgri, dLONgri, dLATcel, dLONcel,
+	 	 	LATmax, LATmin, LONmax, LONmin,
+	 	 	Ct, Ci, Cj, &BXdata[0], &LATdata[0], &LONdata[0], St,
+	 	 	CALvis_iniYEA[kste], CALvis_iniDOY[kste], CALvis_Xspace[kste],
+	 	 	CALvis_M[kste], CALvis_K[kste], CALvis_alfa[kste], CALvis_beta[kste],
+	 	 	Fn, DELTArad, EcTmin, yea, doy, hra, min, sec);
+ 		calcular_nubosidad_GL((*RPmat), (*N1mat), Ct);
 
-		calcular_nubosidad_GL((*RPmat), (*N1mat), Ct);
+	 	// GUARDAR IMAGEN
+	 	guardar_imagen_VIS(RUTAsal, Ct, yea, doy, hra, min, sec, 
+	 	 	(*FRmat), (*RPmat), (*N1mat), (*MSKmat), *tag, fracMK);
 
-		// GUARDAR IMAGEN
-		guardar_imagen_VIS(RUTAsal, Ct, yea, doy, hra, min, sec, 
-			(*FRmat), (*RPmat), (*N1mat), (*MSKmat), *tag, fracMK);
+	 	// // GUARDAR IMAGEN TEST
+	 	// guardar_imagen_double(RUTAsal, Ct, yea, doy, hra, min, sec,
+	 	// 	(*CZmat), "CZ");
+	 	// guardar_imagen_int(RUTAsal, Ct, yea, doy, hra, min, sec,
+	 	// 	(*CNT1mat), "C1");
 
-		// GUARDAR IMAGEN TEST
-		guardar_imagen_double(RUTAsal, Ct, yea, doy, hra, min, sec,
-			(*CZmat), "CZ");
-		guardar_imagen_int(RUTAsal, Ct, yea, doy, hra, min, sec,
-			(*CNT1mat), "C1");
-
-		return 1;
+	 	return 1;
 	}
 
 	// LIBERO MEMORIA
@@ -603,7 +605,7 @@ int guardar_grilla(char RUTAsal[CMAXstr], int Ci, int Cj, int Ct,
 	SAVE_META[5] = (float) (dLONgri);
 
 //[O]
-	printf("[%d] :: [%d] :: [%2.5f] :: [%2.5f] :: [%2.5f] :: [%2.5f]\n", Ci, Cj, PSIlat, dLATgri, PSIlon, dLONgri);
+//	printf("[%d] :: [%d] :: [%2.5f] :: [%2.5f] :: [%2.5f] :: [%2.5f]\n", Ci, Cj, PSIlat, dLATgri, PSIlon, dLONgri);
 
 	// RUTAS
 	strcpy(RUTAmeta, RUTAsal); strcat(RUTAmeta, "meta/T000gri.META");
@@ -612,7 +614,7 @@ int guardar_grilla(char RUTAsal[CMAXstr], int Ci, int Cj, int Ct,
 	strcpy(RUTA_LATmat, RUTAsal); strcat(RUTA_LATmat, "meta/T000gri.LATmat");
 	strcpy(RUTA_LONmat, RUTAsal); strcat(RUTA_LONmat, "meta/T000gri.LONmat");
 
-	printf("%s\n", &RUTAmeta[0]);
+//	printf("%s\n", &RUTAmeta[0]);
 	fid = fopen(RUTAmeta, "wb"); fwrite(SAVE_META, sizeof(float), Cmeta, fid); fclose(fid);
 	fid = fopen(RUTA_LATvec, "wb"); fwrite(SAVE_LATvec, sizeof(float), Ci, fid); fclose(fid);
 	fid = fopen(RUTA_LONvec, "wb"); fwrite(SAVE_LONvec, sizeof(float), Cj, fid); fclose(fid);
@@ -630,7 +632,7 @@ int guardar_grilla(char RUTAsal[CMAXstr], int Ci, int Cj, int Ct,
 }
 
 int generar_strings_temporales(int yea, int doy, int hra, int min, int sec,
-	char strTMP[23], char strYEA[4], char strDOY[3],
+	char strTMP[COUTstr], char strYEA[4], char strDOY[3],
 	char strHRA[2], char strMIN[2], char strSEC[2]){
 
     // STRINGS NECESARIOS
@@ -657,7 +659,7 @@ int generar_strings_temporales(int yea, int doy, int hra, int min, int sec,
 	}
 
 	// CODIGO TEMPORAL
-	sprintf(strTMP, "/T000gri_%s%s_%s%s%s", strYEA, strDOY, strHRA, strMIN, strSEC);
+	sprintf(strTMP, "TART_%s%s_%s%s%s", strYEA, strDOY, strHRA, strMIN, strSEC);
 
 	return 1;
 }
@@ -675,7 +677,7 @@ int guardar_imagen_VIS(char RUTAsal[CMAXstr], int Ct,
 	char RUTA_N1[CMAXstr];
 	char RUTA_TG[CMAXstr];
 	char strTAG[35];
-	char strTMP[23];
+	char strTMP[COUTstr];
 	char strYEA[4];
 	char strDOY[3];
 	char strHRA[2];
@@ -717,6 +719,10 @@ int guardar_imagen_VIS(char RUTAsal[CMAXstr], int Ct,
  		strcpy(RUTA_N1, RUTAsal); strcat(RUTA_N1, "B01-N1/"); strcat(RUTA_N1, strYEA);
  		strcat(RUTA_N1, "/"); strcat(RUTA_N1, strTMP); strcat(RUTA_N1, ".N1");
  		// Guardo!
+		printf("%s\n", RUTA_MK);
+ 		printf("%s\n", RUTA_FR);
+ 		printf("%s\n", RUTA_RP);
+ 		printf("%s\n", RUTA_N1);
  		fid = fopen(RUTA_MK, "wb"); fwrite(SAVE_MK, sizeof(short), Ct, fid); fclose(fid);
  		fid = fopen(RUTA_FR, "wb"); fwrite(SAVE_FR, sizeof(float), Ct, fid); fclose(fid);
  		fid = fopen(RUTA_RP, "wb"); fwrite(SAVE_RP, sizeof(float), Ct, fid); fclose(fid);
@@ -734,6 +740,10 @@ int guardar_imagen_VIS(char RUTAsal[CMAXstr], int Ct,
  		strcpy(RUTA_N1, RUTAsal); strcat(RUTA_N1, "zIMP/B01-N1/"); strcat(RUTA_N1, strYEA);
  		strcat(RUTA_N1, "/"); strcat(RUTA_N1, strTMP); strcat(RUTA_N1, ".N1");
  		// Guardo!
+ 		printf("%s\n", RUTA_MK);
+ 		printf("%s\n", RUTA_FR);
+ 		printf("%s\n", RUTA_RP);
+ 		printf("%s\n", RUTA_N1);
  		fid = fopen(RUTA_MK, "wb"); fwrite(SAVE_MK, sizeof(short), Ct, fid); fclose(fid);
  		fid = fopen(RUTA_FR, "wb"); fwrite(SAVE_FR, sizeof(float), Ct, fid); fclose(fid);
  		fid = fopen(RUTA_RP, "wb"); fwrite(SAVE_RP, sizeof(float), Ct, fid); fclose(fid);
@@ -757,7 +767,7 @@ int guardar_imagen_double(char RUTAsal[CMAXstr], int Ct,
 	FILE * fid;
 	int		h1;
 	char RUTA[CMAXstr];
-	char strTMP[23];
+	char strTMP[COUTstr];
 	char strYEA[4];
 	char strDOY[3];
 	char strHRA[2];
@@ -794,7 +804,7 @@ int guardar_imagen_int(char RUTAsal[CMAXstr], int Ct,
 	FILE * fid;
 	int		h1;
 	char RUTA[CMAXstr];
-	char strTMP[23];
+	char strTMP[COUTstr];
 	char strYEA[4];
 	char strDOY[3];
 	char strHRA[2];

@@ -38,7 +38,8 @@ if [ ! -d $RUTAdes'/zCRR/' ]; then
 	mkdir -p $RUTAdes'/zCRR/';
 fi
 for line in $(<$imglist); do
-	year=${line:7:4};
+	year=${line:15:4};
+	#echo $year;
 	for prod in ${product[*]}
 	do
     	if [ ! -d $RUTAdes$prod$year ]; then
