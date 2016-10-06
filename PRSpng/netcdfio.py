@@ -115,14 +115,13 @@ Custom colormap
 '''
 
 class colormapInfrarrojo(colors.Normalize):
-  def __init__(self, vmin=None, vmax=None, midpoint=None, clip=False):
-    self.midpoint = midpoint
+  def __init__(self, vmin=None, vmax=None, clip=False):
     colors.Normalize.__init__(self, vmin, vmax, clip)
 
   def __call__(self, value, clip=None):
     # I'm ignoring masked values and all kinds of edge cases to make a
     # simple example...
-    x, y = [self.vmin, self.midpoint, self.vmax], [0, 0.5, 1]
+    x, y = [0, 0.101522843, 0.203045685, 0.299492386, 0.401015228, 0.5, 0.598984772, 0.700507614, 0.802030457, 0.898477157, 1], [0, 0.101522843, 0.203045685, 0.299492386, 0.401015228, 0.5, 0.598984772, 0.700507614, 0.802030457, 0.898477157, 1]
     return numpy.ma.masked_array(numpy.interp(value, x, y))
 
 #########################################
@@ -233,6 +232,7 @@ def netcdf2png(url, dirDest):
   data_vector = numpy.reshape(data,numpy.size(data)) # genero un vector de data usando su size (largo*ancho)
   data_vector = normalizarData(band, data_vector)    # invoco la funcion sobre el vector
   img = numpy.reshape(data_vector, shape)            # paso el vector a matriz usando shape como largo y ancho
+  img *= 1.0/numpy.amax(img)
   print numpy.amin(img)
   print numpy.amax(img)
 
@@ -257,7 +257,7 @@ def netcdf2png(url, dirDest):
 
   # dibujo img en las coordenadas x e y calculadas
   cs = ax1.pcolormesh(x, y, img, vmin=0., vmax=vmax, cmap='jet')
-  # ax1.pcolormesh(x, y, img, cmap='jet')
+  # cs = ax1.pcolormesh(x, y, img, vmin=0., vmax=vmax, cmap='jet', norm=colormapInfrarrojo())
 
   # agrego los vectores de las costas, departamentos/estados/provincias y paises
   ax1.drawcoastlines()
