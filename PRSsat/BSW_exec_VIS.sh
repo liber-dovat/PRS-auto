@@ -57,3 +57,6 @@ gcc -o $main $main'.c' $libs'.o' -lnetcdf -lm;
 
 echo '=== Run ======================================================================';
 time $main $folders $spatial $imglist;
+
+echo '=== Borro imglist ============================================================';
+echo '' > $imglist;

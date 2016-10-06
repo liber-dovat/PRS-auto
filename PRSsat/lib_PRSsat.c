@@ -48,7 +48,7 @@ int procesar_NetCDF_VIS_gri(double ** FRmat, double ** RPmat, double ** N1mat,
 	open_NetCDF_file(PATH, &BXdata, &LATdata, &LONdata,
 		&Si, &Sj, &St, &Band, &yea, &doy, &hra, &min, &sec, &ste, &FileName);
 
-	printf("IMAGEN = %s :: [%d, %d] = %d :: Banda = [%d] :: Fecha = [%d-%d] :: Hora = [%d%d-%ds] :: Satelite = [GOES%d]\n",
+	printf("OPENING: %s :: [%04d, %04d] = %09d :: Banda = [%02d] :: Fecha = [%04d-%03d] :: Hora = [%02dhs-%02dmin-%02dsec] :: Satelite = [GOES%02d]\n",
 		FileName, Si, Sj, St, Band, yea, doy, hra, min, sec, ste);
 
 	// ALOCO MEMORIA PARA LOS PROCESAMIENTOS
@@ -95,9 +95,9 @@ int procesar_NetCDF_VIS_gri(double ** FRmat, double ** RPmat, double ** N1mat,
 
 	 	// // GUARDAR IMAGEN TEST
 	 	// guardar_imagen_double(RUTAsal, Ct, yea, doy, hra, min, sec,
-	 	// 	(*CZmat), "CZ");
+	 	//  	(*CZmat), "CZ");
 	 	// guardar_imagen_int(RUTAsal, Ct, yea, doy, hra, min, sec,
-	 	// 	(*CNT1mat), "C1");
+	 	//  	(*CNT1mat), "C1");
 
 	 	return 1;
 	}
@@ -719,10 +719,10 @@ int guardar_imagen_VIS(char RUTAsal[CMAXstr], int Ct,
  		strcpy(RUTA_N1, RUTAsal); strcat(RUTA_N1, "B01-N1/"); strcat(RUTA_N1, strYEA);
  		strcat(RUTA_N1, "/"); strcat(RUTA_N1, strTMP); strcat(RUTA_N1, ".N1");
  		// Guardo!
-		printf("%s\n", RUTA_MK);
- 		printf("%s\n", RUTA_FR);
- 		printf("%s\n", RUTA_RP);
- 		printf("%s\n", RUTA_N1);
+		// printf("%s\n", RUTA_MK);
+ 		// printf("%s\n", RUTA_FR);
+ 		// printf("%s\n", RUTA_RP);
+ 		// printf("%s\n", RUTA_N1);
  		fid = fopen(RUTA_MK, "wb"); fwrite(SAVE_MK, sizeof(short), Ct, fid); fclose(fid);
  		fid = fopen(RUTA_FR, "wb"); fwrite(SAVE_FR, sizeof(float), Ct, fid); fclose(fid);
  		fid = fopen(RUTA_RP, "wb"); fwrite(SAVE_RP, sizeof(float), Ct, fid); fclose(fid);
@@ -740,10 +740,10 @@ int guardar_imagen_VIS(char RUTAsal[CMAXstr], int Ct,
  		strcpy(RUTA_N1, RUTAsal); strcat(RUTA_N1, "zIMP/B01-N1/"); strcat(RUTA_N1, strYEA);
  		strcat(RUTA_N1, "/"); strcat(RUTA_N1, strTMP); strcat(RUTA_N1, ".N1");
  		// Guardo!
- 		printf("%s\n", RUTA_MK);
- 		printf("%s\n", RUTA_FR);
- 		printf("%s\n", RUTA_RP);
- 		printf("%s\n", RUTA_N1);
+ 		// printf("%s\n", RUTA_MK);
+ 		// printf("%s\n", RUTA_FR);
+ 		// printf("%s\n", RUTA_RP);
+ 		// printf("%s\n", RUTA_N1);
  		fid = fopen(RUTA_MK, "wb"); fwrite(SAVE_MK, sizeof(short), Ct, fid); fclose(fid);
  		fid = fopen(RUTA_FR, "wb"); fwrite(SAVE_FR, sizeof(float), Ct, fid); fclose(fid);
  		fid = fopen(RUTA_RP, "wb"); fwrite(SAVE_RP, sizeof(float), Ct, fid); fclose(fid);

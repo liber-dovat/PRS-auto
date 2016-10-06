@@ -135,10 +135,12 @@ int main(int argc, char *argv[]){
 	
 	// PROCESAR LISTA DE IMAGENES
 	for (h1=0; h1<Cimgs; h1++){
-	
+
+		printf("-----------------------------------------------------------------------------------\n");	
+
 		// RUTA A LA IMAGEN
 		strncpy(PATHimg, RUTAent, CMAXstr); strcat(PATHimg, array_imgs[h1]);
-		printf("IMAGEN : %s.\n", &PATHimg[0]);
+
 		// PROCESO IMAGEN
 		OK = procesar_NetCDF_VIS_gri(&FRmat, &RPmat, &N1mat, &CZmat,
 	 		&MSKmat, &CNT1mat, &CNT2mat, &tag,
@@ -150,7 +152,6 @@ int main(int argc, char *argv[]){
 		printf("IMAGEN : %s. TAG = [%d]. OK = [%d].\n", &PATHimg[0], OK, tag);
 	}
 	printf("-----------------------------------------------------------------------------------\n");
-	
 	printf("---- Lista de imagenes ------------------------------------------------------------\n");
 	for (h1=0; h1<Cimgs; h1++){
 		printf("%s\n", array_imgs[h1]);
@@ -170,7 +171,6 @@ int main(int argc, char *argv[]){
 	//mostrar_vector_double(CALvis_K, Cste, 10);
 	//mostrar_vector_double(CALvis_alfa, Cste, 10);
 	//mostrar_vector_double(CALvis_beta, Cste, 10);
-
 	//mostrar_vector_double(FRmat, Ct, Cj);
 	//mostrar_vector_double(CZmat, Ct, Cj);
 	//mostrar_vector_double(RPmat, Ct, Cj);
