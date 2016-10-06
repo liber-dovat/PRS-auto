@@ -121,8 +121,8 @@ class colormapInfrarrojo(colors.Normalize):
   def __call__(self, value, clip=None):
     # I'm ignoring masked values and all kinds of edge cases to make a
     # simple example...
-    x, y = [0, 0.101522843, 0.203045685, 0.299492386, 0.401015228, 0.5, 0.598984772, 0.700507614, 0.802030457, 0.898477157, 1], [0, 0.101522843, 0.203045685, 0.299492386, 0.401015228, 0.5, 0.598984772, 0.700507614, 0.802030457, 0.898477157, 1]
-    return numpy.ma.masked_array(numpy.interp(value, x, y))
+    norma = [0, 40, 80, 118, 158, 197, 236, 276, 316, 354, 394, 1024]
+    return numpy.ma.masked_array(numpy.interp(value, norma, norma))
 
 #########################################
 #########################################
@@ -234,7 +234,7 @@ def netcdf2png(url, dirDest):
   img = numpy.reshape(data_vector, shape)            # paso el vector a matriz usando shape como largo y ancho
 
   if band != 1:
-    img *= 1.0/numpy.amax(img)
+    img *= 1024.0/numpy.amax(img)
 
   print numpy.amin(img)
   print numpy.amax(img)
@@ -251,7 +251,7 @@ def netcdf2png(url, dirDest):
   if band == 1:
     vmax=100.
   else:
-    vmax=1.0/numpy.amax(img)
+    vmax=1024.0/numpy.amax(img)
 
   # dibujo img en las coordenadas x e y calculadas
   if band == 1:
