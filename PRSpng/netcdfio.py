@@ -232,7 +232,10 @@ def netcdf2png(url, dirDest):
   data_vector = numpy.reshape(data,numpy.size(data)) # genero un vector de data usando su size (largo*ancho)
   data_vector = normalizarData(band, data_vector)    # invoco la funcion sobre el vector
   img = numpy.reshape(data_vector, shape)            # paso el vector a matriz usando shape como largo y ancho
-  img *= 1.0/numpy.amax(img)
+
+  if band != 1:
+    img *= 1.0/numpy.amax(img)
+
   print numpy.amin(img)
   print numpy.amax(img)
 
@@ -241,11 +244,6 @@ def netcdf2png(url, dirDest):
   #   plt.show()
   #   plt.savefig("./test/img0_1000.png", bbox_inches='tight', dpi=200)
 
-  # img = data[0]
-  # img *= 1024.0/numpy.amax(img) # normalizo los datos desde cero hasta 1024
-
-  # http://matplotlib.org/users/colormapnorms.html
-
   # dadas las lat y lon del archivo, obtengo las coordenadas x y para
   # la ventana seleccionada como proyeccion
   x, y = ax1(lons,lats)
@@ -253,11 +251,13 @@ def netcdf2png(url, dirDest):
   if band == 1:
     vmax=100.
   else:
-    vmax=1400.
+    vmax=1.0/numpy.amax(img)
 
   # dibujo img en las coordenadas x e y calculadas
-  cs = ax1.pcolormesh(x, y, img, vmin=0., vmax=vmax, cmap='jet')
-  # cs = ax1.pcolormesh(x, y, img, vmin=0., vmax=vmax, cmap='jet', norm=colormapInfrarrojo())
+  if band == 1:
+    cs = ax1.pcolormesh(x, y, img, vmin=0., vmax=vmax, cmap='jet')
+  else:
+    cs = ax1.pcolormesh(x, y, img, vmin=0., vmax=vmax, cmap='jet', norm=colormapInfrarrojo())
 
   # agrego los vectores de las costas, departamentos/estados/provincias y paises
   ax1.drawcoastlines()
