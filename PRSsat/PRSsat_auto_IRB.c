@@ -12,10 +12,6 @@
 #define CMAXstr 200
 #define CINPstr 42
 #define CSPTstr 24
-#define Cste 3
-
-// SATELITES
-static int GOES[Cste]={8,12,13};
 
 // Versión 1.0, 09/2016 -- Rodrigo Alonso Suárez.
 
@@ -36,18 +32,14 @@ int main(int argc, char *argv[]){
 	int * MSKmat;
 	int * CNT1mat;
 	int * CNT2mat;
-	double * FRmat;
-	double * RPmat;
-	double * N1mat;
-	double * CZmat;
+	double * TXmat;
 	double * LATmat; double * LONmat;
 	double * LATvec; double * LONvec;
-	int * CALvis_iniYEA; int * CALvis_iniDOY;
-	double * CALvis_Xspace;
-	double * CALvis_M;
-	double * CALvis_K;
-	double * CALvis_alfa;
-	double * CALvis_beta;
+	double * CALirb_m;
+	double * CALirb_n;
+	double * CALirb_a;
+	double * CALirb_b1;
+	double * CALirb_b2;
 
 	// IMAGEN A PROCESAR
 	strncpy(DATAfolders, argv[1], CMAXstr);
@@ -124,9 +116,9 @@ int main(int argc, char *argv[]){
 	OK = guardar_grilla(RUTAsal, Ci, Cj, Ct, LATmax, dLATgri, LONmin, dLONgri,
 		&LATvec[0], &LONvec[0], &LATmat[0], &LONmat[0]);
 	printf("Grillas grabadas.  OK = [%d]\n", OK);
-	OK = cargar_calibracion_VIS(RUTAcal, &CALvis_iniYEA, &CALvis_iniDOY, &CALvis_Xspace,
-		&CALvis_M, &CALvis_K, &CALvis_alfa, &CALvis_beta);
-	printf("Calibracion VIS.   OK = [%d]\n", OK);
+	OK = cargar_calibracion_IRB(RUTAcal,
+		&CALirb_m, &CALirb_n, &CALirb_a, &CALirb_b1, &CALirb_b2);
+	printf("Calibracion IRB.   OK = [%d]\n", OK);
 	printf("-----------------------------------------------------------------------------------\n");	
 	printf("---- Imagenes procesadas ----------------------------------------------------------\n");
 	
@@ -155,19 +147,6 @@ int main(int argc, char *argv[]){
 	}
 	printf("-----------------------------------------------------------------------------------\n");
 
-	//printf("---- Vectores Regulares -----------------------------------------------------------\n");
-	//printf("LATITUDES:\n");
-	//mostrar_vector_double(LATvec, Ci, 10);
-	//printf("LONGITUDES:\n");
-	//mostrar_vector_double(LONvec, Cj, 10);
-	//printf("CALIBRACION:\n");
-	//mostrar_vector_int(CALvis_iniYEA, Cste, 10);
-	//mostrar_vector_int(CALvis_iniDOY, Cste, 10);
-	//mostrar_vector_double(CALvis_Xspace, Cste, 10);
-	//mostrar_vector_double(CALvis_M, Cste, 10);
-	//mostrar_vector_double(CALvis_K, Cste, 10);
-	//mostrar_vector_double(CALvis_alfa, Cste, 10);
-	//mostrar_vector_double(CALvis_beta, Cste, 10);
 	//mostrar_vector_double(FRmat, Ct, Cj);
 	//mostrar_vector_double(CZmat, Ct, Cj);
 	//mostrar_vector_double(RPmat, Ct, Cj);

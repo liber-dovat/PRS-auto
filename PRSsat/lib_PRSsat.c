@@ -13,6 +13,7 @@
 #define CINPstr 42
 #define CSPTstr 24
 #define Cste 3
+#define Cirb 4
 #define PI 3.1415926
 #define celMIN 0.5
 #define imgTHR1 1.00
@@ -25,6 +26,7 @@
 
 // SATELITES
 static int GOES[Cste]={8,12,13};
+static int IRBS[Cirb]={2,3,4,6};
 
 // Versión 1.0, 10/2016 -- Rodrigo Alonso Suárez.
 
@@ -458,6 +460,59 @@ int cargar_calibracion_VIS(char RUTAcal[CMAXstr],
 		(*CALvis_K)[h1] = K;
 		(*CALvis_alfa)[h1] = alfa;
 		(*CALvis_beta)[h1] = beta;
+	}
+	return 1;
+}
+
+int cargar_calibracion_IRB(char RUTAcal[CMAXstr],
+	double ** CALvis_m, double ** CALvis_n, double ** CALvis_a,
+	double ** CALvis_b1, double ** CALvis_b2){
+
+	FILE * data;
+	char PATH[CMAXstr];
+	char STRste[2];
+	int     h1, h2, ste, ARCHste, Ccal;
+	double	m, n, a, b1, b2;
+
+	// TAMANO DE LOS VECTORES DE CALIBRACION IRB
+	Ccal = Cirb * Cste;
+
+	// ALOCAR MEMORIA REQUERIDA
+	if (!(*CALvis_m  = (double *) malloc(Ccal * sizeof(double *)))){return 0;}
+	if (!(*CALvis_n  = (double *) malloc(Ccal * sizeof(double *)))){return 0;}
+	if (!(*CALvis_a  = (double *) malloc(Ccal * sizeof(double *)))){return 0;}
+	if (!(*CALvis_b1 = (double *) malloc(Ccal * sizeof(double *)))){return 0;}
+	if (!(*CALvis_b1 = (double *) malloc(Ccal * sizeof(double *)))){return 0;}
+	
+	// CARGO ARCHIVOS
+	for (h1 = 0; h1 < Cste; h1++){ // LOOP EN SATELITE
+
+		// STRING DEL SATELITE
+		ste = GOES[h1];
+		if (ste < 10){sprintf(STRste, "0%d", ste);}else{sprintf(STRste, "%d", ste);}
+
+
+		for (h2 = 0; h2 < Cirb; h2++){ // LOOP EN CANALES
+
+			strcpy(PATH, RUTAcal); strcat(PATH, "B01_GOES"); strcat(PATH, STRste);
+
+			// DATA CALIBRACION POS-LAUNCH, cierro ejecucion si no se encuentra
+			// data = fopen(PATH, "ro");
+			// if (data == NULL) {printf("No se encontro archivo de calibracion POS. Cerrando.\n"); return 0;}
+			// fscanf(data, "%d\n", &ARCHste);
+			// fscanf(data, "%d %d\n", &iniYEA, &iniDOY);
+			// fscanf(data, "%lf\n", &alfa);
+			// fscanf(data, "%lf\n", &beta);
+			// fclose(data);
+			// if (ARCHste != ste){printf("No se pudo verificar el CHK POS. Cerrando.\n"); return 0;}
+
+			// ASIGNO DATOS DE CALIBRACION
+			// (*CALvis_m)[h1] = m;
+			// (*CALvis_n)[h1] = n;
+			// (*CALvis_a)[h1] = a;
+			// (*CALvis_b1)[h1] = b1;
+			// (*CALvis_b1)[h1] = b2;
+		}
 	}
 	return 1;
 }
