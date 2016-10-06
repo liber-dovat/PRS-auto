@@ -131,12 +131,10 @@ int main(int argc, char *argv[]){
 		strncpy(PATHimg, RUTAent, CMAXstr); strcat(PATHimg, array_imgs[h1]);
 
 		// PROCESO IMAGEN
-		// OK = procesar_NetCDF_VIS_gri(&FRmat, &RPmat, &N1mat, &CZmat,
-	 // 		&MSKmat, &CNT1mat, &CNT2mat, &tag,
-	 //   		dLATgri, dLONgri, dLATcel, dLONcel, LATmax, LATmin, LONmax, LONmin,
-	 //   		Ct, Ci, Cj, PATHimg, RUTAsal, 
-	 //   		CALvis_iniYEA, CALvis_iniDOY, CALvis_Xspace,
-	 //  		CALvis_M, CALvis_K, CALvis_alfa, CALvis_beta);
+		OK = procesar_NetCDF_IRB_gri(&TXmat, &MSKmat, &CNT1mat, &CNT2mat, &tag,
+	   		dLATgri, dLONgri, dLATcel, dLONcel, LATmax, LATmin, LONmax, LONmin,
+	   		Ct, Ci, Cj, PATHimg, RUTAsal, 
+	   		CALirb_n, CALirb_n, CALirb_a, CALirb_b1, CALirb_b2);
 
 		printf("IMAGEN : %s. TAG = [%d]. OK = [%d].\n", &PATHimg[0], tag, OK);
 	}
@@ -145,6 +143,17 @@ int main(int argc, char *argv[]){
 	for (h1=0; h1<Cimgs; h1++){
 		printf("%s\n", array_imgs[h1]);
 	}
+	printf("-----------------------------------------------------------------------------------\n");
+
+	mostrar_vector_double(CALirb_m, 12, 4);
+	printf("-----------------------------------------------------------------------------------\n");
+	mostrar_vector_double(CALirb_b1, 12, 4);
+	printf("-----------------------------------------------------------------------------------\n");
+	mostrar_vector_double(CALirb_n, 12, 4);
+	printf("-----------------------------------------------------------------------------------\n");
+	mostrar_vector_double(CALirb_a, 12, 4);
+	printf("-----------------------------------------------------------------------------------\n");
+	mostrar_vector_double(CALirb_b2, 12, 4);
 	printf("-----------------------------------------------------------------------------------\n");
 
 	//mostrar_vector_double(FRmat, Ct, Cj);

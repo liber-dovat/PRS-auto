@@ -55,18 +55,18 @@ echo '=== Compilacion ==========================================================
 gcc -o $libs'.o' -c $libs'.c' -lnetcdf -lm;
 gcc -o $main $main'.c' $libs'.o' -lnetcdf -lm;
 
-echo '2016/01/goes13.2016.275.143506.BAND_02.nc' >> $imglist; # EMULO DESCARGA NOAA
-echo '2016/01/goes13.2016.275.143506.BAND_03.nc' >> $imglist; # EMULO DESCARGA NOAA
-echo '2016/01/goes13.2016.275.143506.BAND_04.nc' >> $imglist; # EMULO DESCARGA NOAA
-echo '2016/01/goes13.2016.275.143506.BAND_06.nc' >> $imglist; # EMULO DESCARGA NOAA
-echo '2016/01/goes13.2016.277.084518.BAND_02.nc' >> $imglist; # EMULO DESCARGA NOAA
-echo '2016/01/goes13.2016.277.084518.BAND_03.nc' >> $imglist; # EMULO DESCARGA NOAA
-echo '2016/01/goes13.2016.277.084518.BAND_04.nc' >> $imglist; # EMULO DESCARGA NOAA
-echo '2016/01/goes13.2016.277.084518.BAND_06.nc' >> $imglist; # EMULO DESCARGA NOAA
-echo '2016/01/goes13.2016.279.123506.BAND_02.nc' >> $imglist; # EMULO DESCARGA NOAA
-echo '2016/01/goes13.2016.279.123506.BAND_03.nc' >> $imglist; # EMULO DESCARGA NOAA
-echo '2016/01/goes13.2016.279.123506.BAND_04.nc' >> $imglist; # EMULO DESCARGA NOAA
-echo '2016/01/goes13.2016.279.123506.BAND_06.nc' >> $imglist; # EMULO DESCARGA NOAA
+echo '2016/10/goes13.2016.275.143506.BAND_02.nc' >> $imglist; # EMULO DESCARGA NOAA
+echo '2016/10/goes13.2016.275.143506.BAND_03.nc' >> $imglist; # EMULO DESCARGA NOAA
+echo '2016/10/goes13.2016.275.143506.BAND_04.nc' >> $imglist; # EMULO DESCARGA NOAA
+echo '2016/10/goes13.2016.275.143506.BAND_06.nc' >> $imglist; # EMULO DESCARGA NOAA
+echo '2016/10/goes13.2016.277.084518.BAND_02.nc' >> $imglist; # EMULO DESCARGA NOAA
+echo '2016/10/goes13.2016.277.084518.BAND_03.nc' >> $imglist; # EMULO DESCARGA NOAA
+echo '2016/10/goes13.2016.277.084518.BAND_04.nc' >> $imglist; # EMULO DESCARGA NOAA
+echo '2016/10/goes13.2016.277.084518.BAND_06.nc' >> $imglist; # EMULO DESCARGA NOAA
+echo '2016/10/goes13.2016.279.123506.BAND_02.nc' >> $imglist; # EMULO DESCARGA NOAA
+echo '2016/10/goes13.2016.279.123506.BAND_03.nc' >> $imglist; # EMULO DESCARGA NOAA
+echo '2016/10/goes13.2016.279.123506.BAND_04.nc' >> $imglist; # EMULO DESCARGA NOAA
+echo '2016/10/goes13.2016.279.123506.BAND_06.nc' >> $imglist; # EMULO DESCARGA NOAA
 
 echo '=== Run ======================================================================';
 time $main $folders $spatial $imglist;
