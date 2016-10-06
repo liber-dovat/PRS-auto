@@ -7,10 +7,23 @@ main='/rolo/Wsate/PRS/server-sat-01/libs/PRS-auto/PRSsat/PRSsat_auto_IRB';
 libs='/rolo/Wsate/PRS/server-sat-01/libs/PRS-auto/PRSsat/lib_PRSsat';
 
 # PARAMETROS
-folders='/rolo/Wsate/PRS/server-sat-01/libs/PRS-auto/PRSsat/data/job_folders_IRB1';
+folders='/rolo/Wsate/PRS/server-sat-01/libs/PRS-auto/PRSsat/data/job_folders_ALL1';
 spatial='/rolo/Wsate/PRS/server-sat-01/libs/PRS-auto/PRSsat/data/job_spatial_IRB1';
 imglist='/rolo/Wsate/PRS/server-sat-01/libs/PRS-auto/PRSsat/data/job_imglist_IRB1';
 product=('/B02-TX/' '/B02-MK/' '/B03-TX/' '/B03-MK/' '/B04-TX/' '/B04-MK/' '/B06-TX/' '/B06-MK/');
+
+echo '2016/10/goes13.2016.275.143506.BAND_02.nc' >> $imglist; # EMULO DESCARGA NOAA
+echo '2016/10/goes13.2016.275.143506.BAND_03.nc' >> $imglist; # EMULO DESCARGA NOAA
+echo '2016/10/goes13.2016.275.143506.BAND_04.nc' >> $imglist; # EMULO DESCARGA NOAA
+echo '2016/10/goes13.2016.275.143506.BAND_06.nc' >> $imglist; # EMULO DESCARGA NOAA
+echo '2016/10/goes13.2016.277.084518.BAND_02.nc' >> $imglist; # EMULO DESCARGA NOAA
+echo '2016/10/goes13.2016.277.084518.BAND_03.nc' >> $imglist; # EMULO DESCARGA NOAA
+echo '2016/10/goes13.2016.277.084518.BAND_04.nc' >> $imglist; # EMULO DESCARGA NOAA
+echo '2016/10/goes13.2016.277.084518.BAND_06.nc' >> $imglist; # EMULO DESCARGA NOAA
+echo '2016/10/goes13.2016.279.123506.BAND_02.nc' >> $imglist; # EMULO DESCARGA NOAA
+echo '2016/10/goes13.2016.279.123506.BAND_03.nc' >> $imglist; # EMULO DESCARGA NOAA
+echo '2016/10/goes13.2016.279.123506.BAND_04.nc' >> $imglist; # EMULO DESCARGA NOAA
+echo '2016/10/goes13.2016.279.123506.BAND_06.nc' >> $imglist; # EMULO DESCARGA NOAA
 
 echo '=== Carpetas =================================================================';
 j=1;
@@ -38,7 +51,8 @@ if [ ! -d $RUTAdes'/zCRR/' ]; then
 	mkdir -p $RUTAdes'/zCRR/';
 fi
 for line in $(<$imglist); do
-	year=${line:7:4};
+	year=${line:15:4};
+	#echo $year;
 	for prod in ${product[*]}
 	do
     	if [ ! -d $RUTAdes$prod$year ]; then
@@ -56,3 +70,6 @@ gcc -o $main $main'.c' $libs'.o' -lnetcdf -lm;
 
 echo '=== Run ======================================================================';
 time $main $folders $spatial $imglist;
+
+echo '=== Borro imglist ============================================================';
+echo '' > $imglist;
