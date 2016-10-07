@@ -101,12 +101,13 @@ int procesar_NetCDF_VIS_gri(double ** FRmat, double ** RPmat, double ** N1mat,
 	 	guardar_imagen_int(RUTAsal, Ct, yea, doy, hra, min, sec,
 	 	  	(*CNT1mat), "C1");
 
+		// LIBERO MEMORIA
+		free(BXdata); free(LATdata); free(LONdata);
 	 	return 1;
 	}
 
 	// LIBERO MEMORIA
 	free(BXdata); free(LATdata); free(LONdata);
-
 	return 0;
 }
 
@@ -172,20 +173,23 @@ int procesar_NetCDF_IRB_gri(double ** TXmat,
 	 	guardar_imagen_int(RUTAsal, Ct, yea, doy, hra, min, sec,
 	 	  	(*CNT1mat), "C1");
 
+ 		// LIBERO MEMORIA
+		free(BXdata); free(LATdata); free(LONdata);
 	 	return 1;
 	}
 
 	// LIBERO MEMORIA
 	free(BXdata); free(LATdata); free(LONdata);
-
 	return 0;
 }
 
 int elegir_satelite_VIS(int *kste, int ste){
-		// Elijo satelite para calibracion
-		if (ste == 8){ *kste=0;}
-		if (ste == 12){*kste=1;}
-		if (ste == 13){*kste=2;}
+	
+	// Elijo satelite para calibracion
+	if (ste == 8){ *kste=0;}
+	if (ste == 12){*kste=1;}
+	if (ste == 13){*kste=2;}
+	return 1;
 }
 
 int elegir_satelite_IRB(int *k, int ste, int band){
@@ -202,6 +206,7 @@ int elegir_satelite_IRB(int *k, int ste, int band){
 	if (band == 6){kband=3;}
 
 	*k = kste*Cirb + kband;
+	return 1;
 }
 
 int open_NetCDF_file(char PATH[CMAXstr],
@@ -561,6 +566,7 @@ int calcular_nubosidad_GL(double * RPmat, double * N1mat, int Ct){
 		if (rp > Rmax){n1 = 1;};
 		N1mat[h1] = n1;
 	}
+	return 1;
 }
 
 int calculo_productos_VIS(int Braw, double cosz, double Fn, double fc,
@@ -586,6 +592,8 @@ int calculo_productos_IRB(int Braw,
 	double CALirb_b1, double CALirb_b2,
 	double *tx){
 	
+
+
 	return 1;
 }
 
@@ -839,6 +847,7 @@ int nDESDEfecha(int iniYEA, int iniDOY, int finYEA, int finDOY, int *N){
 		}
 	}
 	*N = *N - 1;
+	return 1;
 }
 
 int guardar_grilla(char RUTAsal[CMAXstr], int Ci, int Cj, int Ct,
@@ -957,8 +966,6 @@ int guardar_imagen_VIS(char RUTAsal[CMAXstr], int Ct,
 	char RUTA_FR[CMAXstr];
 	char RUTA_RP[CMAXstr];
 	char RUTA_N1[CMAXstr];
-	char RUTA_TG[CMAXstr];
-	char strTAG[35];
 	char strTMP[COUTstr];
 	char strYEA[4];
 	char strDOY[3];
@@ -977,10 +984,8 @@ int guardar_imagen_VIS(char RUTAsal[CMAXstr], int Ct,
 		&strTMP[0], &strYEA[0], &strDOY[0], &strHRA[0], &strMIN[0], &strSEC[0]);
 
  	// GUARDAR TAG
- 	sprintf(strTAG, "%s,%s,%s,%s,%s,%d,%7.5f\n", strYEA, strDOY, strHRA, strMIN, strSEC, tag, fracMK); // escribo en la variable tag el valor que me pasan en tag_value
- 	strcpy(RUTA_TG, RUTAsal); strcat(RUTA_TG, "zCRR/TAGs_B"); strcat(RUTA_TG, strBANDA);
- 	strcat(RUTA_TG, "_");strcat(RUTA_TG, strYEA); strcat(RUTA_TG, ".TG");
- 	fid = fopen(RUTA_TG, "ab"); fwrite(strTAG, sizeof(char), strlen(strTAG), fid); fclose(fid);
+	guardar_tag(RUTAsal, strTMP, strYEA, strDOY, strHRA, strMIN, strSEC, strBANDA,
+		tag, fracMK);
 
  	// ARMAR DATASETS A GUARDAR CASTEADO A FLOAT (no DOUBLE)
  	if (!(SAVE_MK = (short *) malloc(Ct * sizeof(short *)))){return 0;}
@@ -1056,8 +1061,6 @@ int guardar_imagen_IRB(char RUTAsal[CMAXstr], int Ct,
 	int		h1;
 	char RUTA_MK[CMAXstr];
 	char RUTA_TX[CMAXstr];
-	char RUTA_TG[CMAXstr];
-	char strTAG[35];
 	char strTMP[COUTstr];
 	char strYEA[4];
 	char strDOY[3];
@@ -1073,11 +1076,9 @@ int guardar_imagen_IRB(char RUTAsal[CMAXstr], int Ct,
 	generar_strings_temporales(yea, doy, hra, min, sec,
 		&strTMP[0], &strYEA[0], &strDOY[0], &strHRA[0], &strMIN[0], &strSEC[0]);
 
- 	// GUARDAR TAG
- 	sprintf(strTAG, "%s,%s,%s,%s,%s,%d,%7.5f\n", strYEA, strDOY, strHRA, strMIN, strSEC, tag, fracMK); // escribo en la variable tag el valor que me pasan en tag_value
- 	strcpy(RUTA_TG, RUTAsal); strcat(RUTA_TG, "zCRR/TAGs_B"); strcat(RUTA_TG, strBANDA);
- 	strcat(RUTA_TG, "_");strcat(RUTA_TG, strYEA); strcat(RUTA_TG, ".TG");
- 	fid = fopen(RUTA_TG, "ab"); fwrite(strTAG, sizeof(char), strlen(strTAG), fid); fclose(fid);
+	// GUARDAR TAG
+	guardar_tag(RUTAsal, strTMP, strYEA, strDOY, strHRA, strMIN, strSEC, strBANDA,
+		tag, fracMK);
 
  	// ARMAR DATASETS A GUARDAR CASTEADO A FLOAT (no DOUBLE)
  	if (!(SAVE_MK = (short *) malloc(Ct * sizeof(short *)))){return 0;}
@@ -1122,6 +1123,22 @@ int guardar_imagen_IRB(char RUTAsal[CMAXstr], int Ct,
 	return 1;
 }
 
+int guardar_tag(char RUTAsal[CMAXstr], char strTMP[COUTstr], char strYEA[4], char strDOY[3], char strHRA[2],
+	char strMIN[2], char strSEC[2], char strBANDA[2], int tag, double fracMK){
+
+	FILE * fid;
+	char RUTA_TG[CMAXstr];
+	char strTAG[35];
+
+	// GUARDAR TAG
+ 	sprintf(strTAG, "%s,%s,%s,%s,%s,%d,%7.5f\n", strYEA, strDOY, strHRA, strMIN, strSEC, tag, fracMK); // escribo en la variable tag el valor que me pasan en tag_value
+ 	strcpy(RUTA_TG, RUTAsal); strcat(RUTA_TG, "zCRR/TAGs_B"); strcat(RUTA_TG, strBANDA);
+ 	strcat(RUTA_TG, "_");strcat(RUTA_TG, strYEA); strcat(RUTA_TG, ".TG");
+ 	fid = fopen(RUTA_TG, "ab"); fwrite(strTAG, sizeof(char), strlen(strTAG), fid); fclose(fid);
+
+ 	return 1;
+}
+
 int guardar_imagen_double(char RUTAsal[CMAXstr], int Ct,
 	int yea, int doy, int hra, int min, int sec, double * DATA, char * tipo){
 
@@ -1156,7 +1173,6 @@ int guardar_imagen_double(char RUTAsal[CMAXstr], int Ct,
 
 	// FIN
 	return 1;
-
 }
 
 int guardar_imagen_int(char RUTAsal[CMAXstr], int Ct,
@@ -1193,5 +1209,4 @@ int guardar_imagen_int(char RUTAsal[CMAXstr], int Ct,
 
 	// FIN
 	return 1;
-
 }
