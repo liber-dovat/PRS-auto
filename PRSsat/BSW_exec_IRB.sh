@@ -10,7 +10,7 @@ libs='/rolo/Wsate/PRS/server-sat-01/libs/PRS-auto/PRSsat/lib_PRSsat';
 folders='/rolo/Wsate/PRS/server-sat-01/libs/PRS-auto/PRSsat/data/job_folders_ALL1';
 spatial='/rolo/Wsate/PRS/server-sat-01/libs/PRS-auto/PRSsat/data/job_spatial_IRB1';
 imglist='/rolo/Wsate/PRS/server-sat-01/libs/PRS-auto/PRSsat/data/job_imglist_IRB1';
-product=('/B02-TX/' '/B02-MK/' '/B03-TX/' '/B03-MK/' '/B04-TX/' '/B04-MK/' '/B06-TX/' '/B06-MK/');
+product=('/B02-T2/' '/B02-MK/' '/B03-T3/' '/B03-MK/' '/B04-T4/' '/B04-MK/' '/B06-T6/' '/B06-MK/');
 
 echo '2016/10/goes13.2016.275.143506.BAND_02.nc' >> $imglist; # EMULO DESCARGA NOAA
 echo '2016/10/goes13.2016.275.143506.BAND_03.nc' >> $imglist; # EMULO DESCARGA NOAA

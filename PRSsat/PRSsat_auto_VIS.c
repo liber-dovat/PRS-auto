@@ -119,10 +119,10 @@ int main(int argc, char *argv[]){
 	printf("Grillas generadas. OK = [%d]. Ci = [%d] :: Cj = [%d] :: Ct = [%d].\n", OK, Ci, Cj, Ct);
 	OK = guardar_grilla(RUTAsal, Ci, Cj, Ct, LATmax, dLATgri, LONmin, dLONgri,
 		&LATvec[0], &LONvec[0], &LATmat[0], &LONmat[0]);
-	printf("Grillas grabadas.  OK = [%d]\n", OK);
+	printf("Grillas grabadas.  OK = [%d].\n", OK);
 	OK = cargar_calibracion_VIS(RUTAcal, &CALvis_iniYEA, &CALvis_iniDOY, &CALvis_Xspace,
 		&CALvis_M, &CALvis_K, &CALvis_alfa, &CALvis_beta);
-	printf("Calibracion VIS.   OK = [%d]\n", OK);
+	printf("Calibracion VIS.   OK = [%d].\n", OK);
 	printf("-----------------------------------------------------------------------------------\n");	
 	printf("---- Imagenes procesadas ----------------------------------------------------------\n");
 	

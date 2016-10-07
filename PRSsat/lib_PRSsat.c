@@ -93,20 +93,21 @@ int procesar_NetCDF_VIS_gri(double ** FRmat, double ** RPmat, double ** N1mat,
 
 	 	// GUARDAR IMAGEN
 	 	guardar_imagen_VIS(RUTAsal, Ct, yea, doy, hra, min, sec, 
-	 	 	(*FRmat), (*RPmat), (*N1mat), (*MSKmat), *tag, fracMK);
+	 	 	(*FRmat), (*RPmat), (*N1mat), (*MSKmat), *tag, fracMK, Band);
 
 	 	// GUARDAR IMAGEN TEST
-	 	guardar_imagen_double(RUTAsal, Ct, yea, doy, hra, min, sec,
-	 	  	(*CZmat), "CZ");
-	 	guardar_imagen_int(RUTAsal, Ct, yea, doy, hra, min, sec,
-	 	  	(*CNT1mat), "C1");
+	 	// guardar_imagen_double(RUTAsal, Ct, yea, doy, hra, min, sec,
+	 	//   	(*CZmat), "CZ", Band);
+	 	// guardar_imagen_int(RUTAsal, Ct, yea, doy, hra, min, sec,
+	 	//   	(*CNT1mat), "C1", Band);
 
+		// LIBERO MEMORIA
+		free(BXdata); free(LATdata); free(LONdata);
 	 	return 1;
 	}
 
 	// LIBERO MEMORIA
 	free(BXdata); free(LATdata); free(LONdata);
-
 	return 0;
 }
 
@@ -126,8 +127,6 @@ int procesar_NetCDF_IRB_gri(double ** TXmat,
 	double * LONdata;
 
 	*tag = 0;
-
-	printf("%s\n", PATH);
 
 	if(open_NetCDF_file(PATH, &BXdata, &LATdata, &LONdata,
 		&Si, &Sj, &St, &Band, &yea, &doy, &hra, &min, &sec, &ste, &FileName)==0){return 0;}
@@ -165,29 +164,30 @@ int procesar_NetCDF_IRB_gri(double ** TXmat,
 	 	  	CALirb_b1[k], CALirb_b2[k]);
 
 	 	// GUARDAR IMAGEN
-	 	// guardar_imagen_VIS(RUTAsal, Ct, yea, doy, hra, min, sec, 
-	 	//  	(*FRmat), (*RPmat), (*N1mat), (*MSKmat), *tag, fracMK);
+	 	guardar_imagen_IRB(RUTAsal, Ct, yea, doy, hra, min, sec, 
+	 	  	(*TXmat), (*MSKmat), *tag, fracMK, Band);
 
 	 	// // GUARDAR IMAGEN TEST
-	 	// guardar_imagen_double(RUTAsal, Ct, yea, doy, hra, min, sec,
-	 	//  	(*CZmat), "CZ");
 	 	// guardar_imagen_int(RUTAsal, Ct, yea, doy, hra, min, sec,
-	 	//  	(*CNT1mat), "C1");
+	 	//   	(*CNT1mat), "C1", Band);
 
+ 		// LIBERO MEMORIA
+		free(BXdata); free(LATdata); free(LONdata);
 	 	return 1;
 	}
 
 	// LIBERO MEMORIA
 	free(BXdata); free(LATdata); free(LONdata);
-
 	return 0;
 }
 
 int elegir_satelite_VIS(int *kste, int ste){
-		// Elijo satelite para calibracion
-		if (ste == 8){ *kste=0;}
-		if (ste == 12){*kste=1;}
-		if (ste == 13){*kste=2;}
+	
+	// Elijo satelite para calibracion
+	if (ste == 8){ *kste=0;}
+	if (ste == 12){*kste=1;}
+	if (ste == 13){*kste=2;}
+	return 1;
 }
 
 int elegir_satelite_IRB(int *k, int ste, int band){
@@ -204,6 +204,7 @@ int elegir_satelite_IRB(int *k, int ste, int band){
 	if (band == 6){kband=3;}
 
 	*k = kste*Cirb + kband;
+	return 1;
 }
 
 int open_NetCDF_file(char PATH[CMAXstr],
@@ -426,7 +427,9 @@ int procesar_IRB_gri(double * TXmat, int * MSKmat,
 
 						// CALCULO DE PRODUCTOS
 						if (Braw > 0){
-							// FALTA!
+							calculo_productos_IRB(Braw,
+								CALirb_m, CALirb_n, CALirb_a,
+								CALirb_b1, CALirb_b2, &tx);
 							mk = 1;
 						}
 
@@ -546,6 +549,24 @@ int asignar_tag(double fracMK, int *tag){
 	return 1;
 }
 
+int calculo_productos_VIS(int Braw, double cosz, double Fn, double fc,
+	double CALvis_Xspace, double CALvis_M, double CALvis_K,
+	double *fr, double *rp){
+			
+	double 	ls;
+
+	ls = ((Braw/32) - CALvis_Xspace)*CALvis_M; // Radiancia pre-launch
+	ls = ls * fc; // Radiancia post-launch
+	*fr = (ls * CALvis_K)/(10 * Fn); // (x100) - En porcentaje. (/1000) - Parámetro K expresado por mil.
+	if (*fr > 100){*fr = 100;}
+	if (*fr < 0){*fr = 0;}
+	*rp = *fr / cosz;
+	if (*rp > 100){*rp = 100;};
+	if (*rp < 0){*rp = 0;};
+	
+	return 1;
+}
+
 int calcular_nubosidad_GL(double * RPmat, double * N1mat, int Ct){
 
 	int 	h1;
@@ -561,23 +582,24 @@ int calcular_nubosidad_GL(double * RPmat, double * N1mat, int Ct){
 		if (rp > Rmax){n1 = 1;};
 		N1mat[h1] = n1;
 	}
+	return 1;
 }
 
-int calculo_productos_VIS(int Braw, double cosz, double Fn, double fc,
-	double CALvis_Xspace, double CALvis_M, double CALvis_K,
-	double *fr, double *rp){
-			
-	double 	ls;
-
-	ls = (double) ((double) (Braw/32) - CALvis_Xspace)*CALvis_M; // Radiancia pre-launch
-	ls = ls * fc; // Radiancia post-launch
-	*fr = (ls * CALvis_K)/(10 * Fn); // (x100) - En porcentaje. (/1000) - Parámetro K expresado por mil.
-	if (*fr > 100){*fr = 100;}
-	if (*fr < 0){*fr = 0;}
-	*rp = *fr / cosz;
-	if (*rp > 100){*rp = 100;};
-	if (*rp < 0){*rp = 0;};
+int calculo_productos_IRB(int Braw,
+	double CALirb_m, double CALirb_n, double CALirb_a,
+	double CALirb_b1, double CALirb_b2, double *tx){
 	
+	double lx, aux, Teff, C1, C2;
+
+	// Parametros de calibracion
+	C1 = 0.000011911;
+	C2 = 1.438833;
+
+	lx = ((Braw/32) - CALirb_b1)/CALirb_m; // Radiancia pre-launch
+	aux = 1 + (C1*CALirb_n*CALirb_n*CALirb_n/lx);
+	Teff = (C2 * CALirb_n)/log(aux);
+	*tx = CALirb_a + CALirb_b2*Teff;
+
 	return 1;
 }
 
@@ -831,6 +853,7 @@ int nDESDEfecha(int iniYEA, int iniDOY, int finYEA, int finDOY, int *N){
 		}
 	}
 	*N = *N - 1;
+	return 1;
 }
 
 int guardar_grilla(char RUTAsal[CMAXstr], int Ci, int Cj, int Ct,
@@ -933,7 +956,7 @@ int generar_strings_temporales(int yea, int doy, int hra, int min, int sec,
 	}
 
 	// CODIGO TEMPORAL
-	sprintf(strTMP, "TART_%s%s_%s%s%s", strYEA, strDOY, strHRA, strMIN, strSEC);
+	sprintf(strTMP, "ART_%s%s_%s%s%s", strYEA, strDOY, strHRA, strMIN, strSEC);
 
 	return 1;
 }
@@ -941,7 +964,7 @@ int generar_strings_temporales(int yea, int doy, int hra, int min, int sec,
 int guardar_imagen_VIS(char RUTAsal[CMAXstr], int Ct,
 	int yea, int doy, int hra, int min, int sec, 
 	double * FRmat, double * RPmat, double * N1mat, int * MKmat,
-	int tag, double fracMK){
+	int tag, double fracMK, int Band){
 
 	FILE * fid;
 	int		h1;
@@ -949,26 +972,26 @@ int guardar_imagen_VIS(char RUTAsal[CMAXstr], int Ct,
 	char RUTA_FR[CMAXstr];
 	char RUTA_RP[CMAXstr];
 	char RUTA_N1[CMAXstr];
-	char RUTA_TG[CMAXstr];
-	char strTAG[35];
 	char strTMP[COUTstr];
 	char strYEA[4];
 	char strDOY[3];
 	char strHRA[2];
 	char strMIN[2];
 	char strSEC[2];
+	char strBANDA[2];
 	short * SAVE_MK;
 	float * SAVE_FR;
 	float * SAVE_RP;
 	float * SAVE_N1;
 
+	// STRINGS
+	sprintf(strBANDA, "0%d", Band);
 	generar_strings_temporales(yea, doy, hra, min, sec,
 		&strTMP[0], &strYEA[0], &strDOY[0], &strHRA[0], &strMIN[0], &strSEC[0]);
 
  	// GUARDAR TAG
- 	sprintf(strTAG, "%s,%s,%s,%s,%s,%d,%7.5f\n", strYEA, strDOY, strHRA, strMIN, strSEC, tag, fracMK); // escribo en la variable tag el valor que me pasan en tag_value
- 	strcpy(RUTA_TG, RUTAsal); strcat(RUTA_TG, "zCRR/TAGs_VIS_"); strcat(RUTA_TG, strYEA); strcat(RUTA_TG, ".TG");
- 	fid = fopen(RUTA_TG, "ab"); fwrite(strTAG, sizeof(char), strlen(strTAG), fid); fclose(fid);
+	guardar_tag(RUTAsal, strTMP, strYEA, strDOY, strHRA, strMIN, strSEC, strBANDA,
+		tag, fracMK);
 
  	// ARMAR DATASETS A GUARDAR CASTEADO A FLOAT (no DOUBLE)
  	if (!(SAVE_MK = (short *) malloc(Ct * sizeof(short *)))){return 0;}
@@ -982,6 +1005,7 @@ int guardar_imagen_VIS(char RUTAsal[CMAXstr], int Ct,
  		SAVE_N1[h1] = (float) (N1mat[h1]); // SE HACE PARA CASTEAR A FLOAT
  	}
 
+ 	// GUARDO IMAGEN ACEPTABLE
  	if ((tag == 1)||(tag == 2)||(tag == 3)){
  		// RUTA MK, FR, RP, N1
  		strcpy(RUTA_MK, RUTAsal); strcat(RUTA_MK, "B01-MK/"); strcat(RUTA_MK, strYEA);
@@ -1003,6 +1027,7 @@ int guardar_imagen_VIS(char RUTAsal[CMAXstr], int Ct,
  		fid = fopen(RUTA_N1, "wb"); fwrite(SAVE_N1, sizeof(float), Ct, fid); fclose(fid);
  	}
 
+	// GUARDO IMPAINTING
  	if ((tag == 3)||(tag == 4)||(tag == 5)){
  		// RUTA MK, FR, RP, N1
  		strcpy(RUTA_MK, RUTAsal); strcat(RUTA_MK, "zIMP/B01-MK/"); strcat(RUTA_MK, strYEA);
@@ -1032,11 +1057,103 @@ int guardar_imagen_VIS(char RUTAsal[CMAXstr], int Ct,
 
 	// FIN
 	return 1;
+}
 
+int guardar_imagen_IRB(char RUTAsal[CMAXstr], int Ct,
+	int yea, int doy, int hra, int min, int sec, 
+	double * TXmat, int * MKmat, int tag, double fracMK, int Band){
+
+	FILE * fid;
+	int		h1;
+	char RUTA_MK[CMAXstr];
+	char RUTA_TX[CMAXstr];
+	char strTMP[COUTstr];
+	char strYEA[4];
+	char strDOY[3];
+	char strHRA[2];
+	char strMIN[2];
+	char strSEC[2];
+	char strBANDA1[2];
+	char strBANDA2[2];
+	short * SAVE_MK;
+	float * SAVE_TX;
+	
+	// STRINGS
+	sprintf(strBANDA1, "%d", Band);
+	sprintf(strBANDA2, "0%d", Band);
+	generar_strings_temporales(yea, doy, hra, min, sec,
+		&strTMP[0], &strYEA[0], &strDOY[0], &strHRA[0], &strMIN[0], &strSEC[0]);
+
+	// GUARDAR TAG
+	guardar_tag(RUTAsal, strTMP, strYEA, strDOY, strHRA, strMIN, strSEC, strBANDA2,
+		tag, fracMK);
+
+ 	// ARMAR DATASETS A GUARDAR CASTEADO A FLOAT (no DOUBLE)
+ 	if (!(SAVE_MK = (short *) malloc(Ct * sizeof(short *)))){return 0;}
+ 	if (!(SAVE_TX = (float *) malloc(Ct * sizeof(float *)))){return 0;}
+ 	for (h1=0;h1<(Ct);h1++){
+ 		SAVE_MK[h1] = (short) (MKmat[h1]); // SE HACE PARA CASTEAR A SHORT
+ 		SAVE_TX[h1] = (float) (TXmat[h1]); // SE HACE PARA CASTEAR A FLOAT
+ 	}
+
+ 	if ((tag == 1)||(tag == 2)||(tag == 3)){
+ 		// RUTA MK, TX
+ 		strcpy(RUTA_MK, RUTAsal); strcat(RUTA_MK, "B"); strcat(RUTA_MK, strBANDA2);
+ 		strcat(RUTA_MK, "-MK/"); strcat(RUTA_MK, strYEA); strcat(RUTA_MK, "/");
+ 		strcat(RUTA_MK, strTMP); strcat(RUTA_MK, ".MK");
+ 		strcpy(RUTA_TX, RUTAsal); strcat(RUTA_TX, "B"); strcat(RUTA_TX, strBANDA2);
+ 		strcat(RUTA_TX, "-T"); strcat(RUTA_TX, strBANDA1);
+ 		strcat(RUTA_TX, "/"); strcat(RUTA_TX, strYEA); strcat(RUTA_TX, "/");
+ 		strcat(RUTA_TX, strTMP); strcat(RUTA_TX, ".T"); strcat(RUTA_TX, strBANDA1);
+ 		// Guardo!
+		// printf("%s\n", RUTA_MK);
+ 	// 	printf("%s\n", RUTA_TX);
+ 		fid = fopen(RUTA_MK, "wb"); fwrite(SAVE_MK, sizeof(short), Ct, fid); fclose(fid);
+ 		fid = fopen(RUTA_TX, "wb"); fwrite(SAVE_TX, sizeof(float), Ct, fid); fclose(fid);
+ 	}
+
+ 	if ((tag == 3)||(tag == 4)||(tag == 5)){
+ 		// RUTA MK, TX
+ 	 	strcpy(RUTA_MK, RUTAsal); strcat(RUTA_MK, "zIMP/B"); strcat(RUTA_MK, strBANDA2);
+ 		strcat(RUTA_MK, "-MK/"); strcat(RUTA_MK, strYEA); strcat(RUTA_MK, "/");
+ 		strcat(RUTA_MK, strTMP); strcat(RUTA_MK, ".MK");
+ 		strcpy(RUTA_TX, RUTAsal); strcat(RUTA_TX, "zIMP/B"); strcat(RUTA_TX, strBANDA2);
+ 		strcat(RUTA_TX, "-T"); strcat(RUTA_TX, strBANDA1);
+ 		strcat(RUTA_TX, "/"); strcat(RUTA_TX, strYEA); strcat(RUTA_TX, "/");
+ 		strcat(RUTA_TX, strTMP); strcat(RUTA_TX, ".T"); strcat(RUTA_TX, strBANDA1);
+ 		// Guardo!
+ 		// printf("%s\n", RUTA_MK);
+ 		// printf("%s\n", RUTA_TX);
+ 		fid = fopen(RUTA_MK, "wb"); fwrite(SAVE_MK, sizeof(short), Ct, fid); fclose(fid);
+ 		fid = fopen(RUTA_TX, "wb"); fwrite(SAVE_TX, sizeof(float), Ct, fid); fclose(fid);
+ 	}
+
+ 	// Libero memoria
+ 	free(SAVE_MK);
+ 	free(SAVE_TX);
+
+	// FIN
+	return 1;
+}
+
+int guardar_tag(char RUTAsal[CMAXstr], char strTMP[COUTstr], char strYEA[4], char strDOY[3], char strHRA[2],
+	char strMIN[2], char strSEC[2], char strBANDA[2], int tag, double fracMK){
+
+	FILE * fid;
+	char RUTA_TG[CMAXstr];
+	char strTAG[35];
+
+	// GUARDAR TAG
+ 	sprintf(strTAG, "%s,%s,%s,%s,%s,%d,%7.5f\n", strYEA, strDOY, strHRA, strMIN, strSEC, tag, fracMK); // escribo en la variable tag el valor que me pasan en tag_value
+ 	strcpy(RUTA_TG, RUTAsal); strcat(RUTA_TG, "zCRR/TAGs_B"); strcat(RUTA_TG, strBANDA);
+ 	strcat(RUTA_TG, "_");strcat(RUTA_TG, strYEA); strcat(RUTA_TG, ".TG");
+ 	fid = fopen(RUTA_TG, "ab"); fwrite(strTAG, sizeof(char), strlen(strTAG), fid); fclose(fid);
+
+ 	return 1;
 }
 
 int guardar_imagen_double(char RUTAsal[CMAXstr], int Ct,
-	int yea, int doy, int hra, int min, int sec, double * DATA, char * tipo){
+	int yea, int doy, int hra, int min, int sec, double * DATA, char * tipo, int Band){
 
 	FILE * fid;
 	int		h1;
@@ -1047,8 +1164,11 @@ int guardar_imagen_double(char RUTAsal[CMAXstr], int Ct,
 	char strHRA[2];
 	char strMIN[2];
 	char strSEC[2];
+	char strBANDA2[2];
 	float * SAVE;
 	
+	// STRINGS
+	sprintf(strBANDA2, "0%d", Band);
 	generar_strings_temporales(yea, doy, hra, min, sec,
 		&strTMP[0], &strYEA[0], &strDOY[0], &strHRA[0], &strMIN[0], &strSEC[0]);
 
@@ -1058,9 +1178,9 @@ int guardar_imagen_double(char RUTAsal[CMAXstr], int Ct,
  		SAVE[h1] = (float) (DATA[h1]); // SE HACE PARA CASTEAR A FLOAT
  	}
 
-	// RUTA MK, FR, RP, N1
-	strcpy(RUTA, RUTAsal); strcat(RUTA, "test/");
-	strcat(RUTA, strTMP); strcat(RUTA, "."); strcat(RUTA, tipo);
+	// RUTA
+	strcpy(RUTA, RUTAsal); strcat(RUTA, "test/B"); strcat(RUTA, strBANDA2);
+	strcat(RUTA, "_"); strcat(RUTA, strTMP); strcat(RUTA, "."); strcat(RUTA, tipo);
 	
 	// Guardo!
 	fid = fopen(RUTA, "wb"); fwrite(SAVE, sizeof(float), Ct, fid); fclose(fid);
@@ -1069,11 +1189,10 @@ int guardar_imagen_double(char RUTAsal[CMAXstr], int Ct,
 
 	// FIN
 	return 1;
-
 }
 
 int guardar_imagen_int(char RUTAsal[CMAXstr], int Ct,
-	int yea, int doy, int hra, int min, int sec, int * DATA, char * tipo){
+	int yea, int doy, int hra, int min, int sec, int * DATA, char * tipo, int Band){
 
 	FILE * fid;
 	int		h1;
@@ -1084,8 +1203,11 @@ int guardar_imagen_int(char RUTAsal[CMAXstr], int Ct,
 	char strHRA[2];
 	char strMIN[2];
 	char strSEC[2];
+	char strBANDA2[2];
 	short * SAVE;
-	
+
+	// STRINGS
+	sprintf(strBANDA2, "0%d", Band);
 	generar_strings_temporales(yea, doy, hra, min, sec,
 		&strTMP[0], &strYEA[0], &strDOY[0], &strHRA[0], &strMIN[0], &strSEC[0]);
 
@@ -1095,9 +1217,9 @@ int guardar_imagen_int(char RUTAsal[CMAXstr], int Ct,
  		SAVE[h1] = (short) (DATA[h1]); // SE HACE PARA CASTEAR A FLOAT
  	}
 
-	// RUTA MK, FR, RP, N1
-	strcpy(RUTA, RUTAsal); strcat(RUTA, "test/");
-	strcat(RUTA, strTMP); strcat(RUTA, "."); strcat(RUTA, tipo);
+	// RUTA
+	strcpy(RUTA, RUTAsal); strcat(RUTA, "test/B"); strcat(RUTA, strBANDA2);
+	strcat(RUTA, "_"); strcat(RUTA, strTMP); strcat(RUTA, "."); strcat(RUTA, tipo);
 	
 	// Guardo!
 	fid = fopen(RUTA, "wb"); fwrite(SAVE, sizeof(short), Ct, fid); fclose(fid);
@@ -1106,5 +1228,4 @@ int guardar_imagen_int(char RUTAsal[CMAXstr], int Ct,
 
 	// FIN
 	return 1;
-
 }
