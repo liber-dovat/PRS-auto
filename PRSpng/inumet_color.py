@@ -1,78 +1,61 @@
-#!/usr/bin/python
 
 import matplotlib as _mpl
 import matplotlib.colors as _mplc
 
-# i01 = 40;
-# i02 = 80;
-# i03 = 118;
-# i04 = 158;
-# i05 = 197;
-# i06 = 236;
-# i07 = 276;
-# i08 = 316;
-# i09 = 354;
-# i10 = 394;
-# iT  = 1024;
+'''
+colorInumet = []
 
-# # map = zeros(iT, 3);
+i01 = 40;
+i02 = 80;
+i03 = 118;
+i04 = 158;
+i05 = 197;
+i06 = 236;
+i07 = 276;
+i08 = 316;
+i09 = 354;
+i10 = 394;
+iT  = 1024;
 
-# # for valor in range(1, 1025):
-# #   # COLORES CON CODIGO
-# #   if valor in range(1,i01):
-# #     print [0, 0, 0]
-# #   elif valor in range(i01, i02):
-# #     print [153/255, 0, 0]
-# #   elif valor in range(i02, i03):
-# #     print [153/255, 0, 153/255]
-# #   elif valor in range(i03, i04):
-# #     print [255/255, 0, 0]
-# #   elif valor in range(i04, i05):
-# #     print [255/255, 102/255, 0]
-# #   elif valor in range(i05, i06):
-# #     print [255/255, 255/255, 0]
-# #   elif valor in range(i06, i07):
-# #     print [0, 153/255, 0]
-# #   elif valor in range(i07, i08):
-# #     print [0, 255/255, 0]
-# #   elif valor in range(i08, i09):
-# #     print [0, 0, 255/255]
-# #   elif valor in range(i09, i10):
-# #     print [0, 153/255, 153/255]
-# #   elif valor in range(i10, iT):
-# #     Ik = (C1-C2)*((valor-iT)/(i10+1-iT)) + C2
-# #     print [Ik, Ik, Ik]
+for valor in range(1,i01):
+  colorInumet.append[0, 0, 0]
+for valor in range(i01, i02):
+  colorInumet.append[153/255., 0, 0]
+for valor in range(i02, i03):
+  colorInumet.append[153/255., 0, 153/255.]
+for valor in range(i03, i04):
+  colorInumet.append[255/255., 0, 0]
+for valor in range(i04, i05):
+  colorInumet.append[255/255., 102/255., 0]
+for valor in range(i05, i06):
+  colorInumet.append[255/255., 255/255., 0]
+for valor in range(i06, i07):
+  colorInumet.append[0, 153/255., 0]
+for valor in range(i07, i08):
+  colorInumet.append[0, 255/255., 0]
+for valor in range(i08, i09):
+  colorInumet.append[0, 0, 255/255.]
+for valor in range(i09, i10):
+  colorInumet.append[0, 153/255., 153/255.]
 
-# for valor in range(1,i01):
-#   print [0, 0, 0]
-# for valor in range(i01, i02):
-#   print [153/255., 0, 0]
-# for valor in range(i02, i03):
-#   print [153/255., 0, 153/255.]
-# for valor in range(i03, i04):
-#   print [255/255., 0, 0]
-# for valor in range(i04, i05):
-#   print [255/255., 102/255., 0]
-# for valor in range(i05, i06):
-#   print [255/255., 255/255., 0]
-# for valor in range(i06, i07):
-#   print [0, 153/255., 0]
-# for valor in range(i07, i08):
-#   print [0, 255/255., 0]
-# for valor in range(i08, i09):
-#   print [0, 0, 255/255.]
-# for valor in range(i09, i10):
-#   print [0, 153/255., 153/255.]
+# 630 intervalos
+base = 0.85
+step = base / (iT - i10)
 
-# # 630 intervalos
-# base = 0.85
-# step = base / (iT - i10)
-# # de gris a negro
-# for valor in range(i10, iT-1):
-#   base -= step
-#   print [base, base, base]
+colorInumet.append[base, base, base]
 
-# # mapeoColorInfrarrojo
+# de gris a negro
+for valor in range(i10, iT-1):
+  base -= step
+  colorInumet.append[base, base, base]
+
+colorInumet.append[0, 0, 0]
+
+print colorInumet
+
+'''
+
+# https://github.com/indranilsinharoy/iutils/blob/master/plot/colormap.py
 
 def _get_inumet(N):
 
