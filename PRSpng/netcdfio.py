@@ -11,6 +11,7 @@ from os.path import basename
 from funciones import ymd
 from multiprocessing import Pool
 from functools import partial
+from colores import _get_inumet
 
 def ncdump(url, verb=True):
     '''
@@ -129,6 +130,8 @@ class colormapInfrarrojo(colors.Normalize):
 #########################################
 '''
 # http://stackoverflow.com/questions/24004887/matplotlib-pcolormesh-separate-datacolor-and-color-brightness-information
+# https://github.com/indranilsinharoy/iutils/blob/master/plot/colormap.py
+
 def mapeoColorInfrarrojo(valor):
 
   i01 = 40;
@@ -207,8 +210,19 @@ def Radiance(dato,m,b):
 #########################################
 #########################################
 
+'''
+double lx, aux, Teff, C1, C2;
+
+C1 = 0.000011911;
+C2 = 1.438833;
+lx = ((Braw/32) - CALirb_b1)/CALirb_m; // Radiancia pre-launch
+aux = 1 + (C1*CALirb_n*CALirb_n*CALirb_n/lx);
+Teff = (C2 * CALirb_n)/log(aux);
+*tx = CALirb_a + CALirb_b2*Teff;
+'''
+
 def temperaturaReal(dato,m,b1,n,a,b2):
-  c1 = 1.191066e-5
+  c1 = 0.000011911
   c2 = 1.438833
 
   lx   = (dato - b1) / m
@@ -320,7 +334,8 @@ def netcdf2png(url, dirDest):
   if band == 1:
     cs = ax1.pcolormesh(x, y, img, vmin=0., vmax=vmax, cmap='jet')
   else:
-    cs = ax1.pcolormesh(x, y, img, vmin=0., vmax=vmax, cmap='jet', norm=colormapInfrarrojo())
+    cmap = _get_inumet(1024)
+    cs = ax1.pcolormesh(x, y, img, vmin=0., vmax=vmax, cmap=cmap)
 
   # agrego los vectores de las costas, departamentos/estados/provincias y paises
   ax1.drawcoastlines()
