@@ -136,9 +136,6 @@ def netcdf2png(url, dirDest):
   data_vector = calibrarData(band, data_vector)    # invoco la funcion sobre el vector
   img = numpy.reshape(data_vector, shape)            # paso el vector a matriz usando shape como largo y ancho
 
-  # if band != 1:
-  #   img *= 1.0/numpy.amax(img)
-
   print numpy.amin(img)
   print numpy.amax(img)
 
@@ -152,17 +149,28 @@ def netcdf2png(url, dirDest):
   x, y = ax1(lons,lats)
 
   if band == 1:
+    vmin=0.
     vmax=100.
-  else:
-    vmax=1024.
+  elif band == 2:
+    vmin = -68.
+    vmax = 47.
+  elif band == 3:
+    vmin = -68.
+    vmax = -8.
+  elif band == 4:
+    vmin = -80.
+    vmax = 50.
+  elif band == 6:
+    vmin = -68.
+    vmax = 7.
 
   # dibujo img en las coordenadas x e y calculadas
   # cs = ax1.pcolormesh(x, y, img, vmin=0., vmax=vmax, cmap='jet')
   if band == 1:
-    cs = ax1.pcolormesh(x, y, img, vmin=0., vmax=vmax, cmap='jet')
+    cs = ax1.pcolormesh(x, y, img, vmin=vmin, vmax=vmax, cmap='jet')
   else:
-    inumet = _get_inumet(60)
-    cs = ax1.pcolormesh(x, y, img, vmin=0., vmax=vmax, cmap=inumet)
+    inumet = _get_inumet(1024)
+    cs = ax1.pcolormesh(x, y, img, vmin=vmin, vmax=vmax, cmap=inumet)
 
   # agrego los vectores de las costas, departamentos/estados/provincias y paises
   ax1.drawcoastlines()
@@ -174,8 +182,8 @@ def netcdf2png(url, dirDest):
   ax1.drawmeridians(numpy.arange(-70, -45, 5), labels=[0,0,1,0], linewidth=0.0, fontsize=10)
 
   # agrego el colorbar
-  cbar = ax1.colorbar(cs, location='bottom', pad='3%', ticks=[0., vmax])
-  cbar.ax.set_xticklabels(['0', vmax], fontsize=10)
+  cbar = ax1.colorbar(cs, location='bottom', pad='3%', ticks=[vmin, vmax])
+  cbar.ax.set_xticklabels([vmin, vmax], fontsize=10)
 
   # agrego el logo en el documento
   logo = plt.imread('/sat/PRS/libs/PRS-auto/PRSpng/imgs/les-logo.png')

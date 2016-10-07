@@ -17,17 +17,6 @@ def Radiance(dato,m,b):
 #########################################
 #########################################
 
-'''
-double lx, aux, Teff, C1, C2;
-
-C1 = 0.000011911;
-C2 = 1.438833;
-lx = ((Braw/32) - CALirb_b1)/CALirb_m; // Radiancia pre-launch
-aux = 1 + (C1*CALirb_n*CALirb_n*CALirb_n/lx);
-Teff = (C2 * CALirb_n)/log(aux);
-*tx = CALirb_a + CALirb_b2*Teff;
-'''
-
 def temperaturaReal(dato,m,b1,n,a,b2):
   c1 = 0.000011911
   c2 = 1.438833
