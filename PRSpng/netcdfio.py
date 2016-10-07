@@ -136,8 +136,8 @@ def netcdf2png(url, dirDest):
   data_vector = calibrarData(band, data_vector)    # invoco la funcion sobre el vector
   img = numpy.reshape(data_vector, shape)            # paso el vector a matriz usando shape como largo y ancho
 
-  if band != 1:
-    img *= 1.0/numpy.amax(img)
+  # if band != 1:
+  #   img *= 1.0/numpy.amax(img)
 
   print numpy.amin(img)
   print numpy.amax(img)
@@ -154,14 +154,14 @@ def netcdf2png(url, dirDest):
   if band == 1:
     vmax=100.
   else:
-    vmax=1.0/numpy.amax(img)
+    vmax=1024.
 
   # dibujo img en las coordenadas x e y calculadas
   # cs = ax1.pcolormesh(x, y, img, vmin=0., vmax=vmax, cmap='jet')
   if band == 1:
     cs = ax1.pcolormesh(x, y, img, vmin=0., vmax=vmax, cmap='jet')
   else:
-    inumet = _get_inumet(1024)
+    inumet = _get_inumet(60)
     cs = ax1.pcolormesh(x, y, img, vmin=0., vmax=vmax, cmap=inumet)
 
   # agrego los vectores de las costas, departamentos/estados/provincias y paises

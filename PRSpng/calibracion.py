@@ -32,7 +32,7 @@ def temperaturaReal(dato,m,b1,n,a,b2):
   c1 = 0.000011911
   c2 = 1.438833
 
-  lx   = (dato - b1) / m
+  lx   = (dato/32.0 - b1) / m
   aux  = 1 + ( (c1*numpy.power(n, 3)) / lx )
   Teff = (c2*n) / numpy.log(aux)
   Temp = a + b2 * Teff
