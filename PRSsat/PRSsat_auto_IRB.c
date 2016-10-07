@@ -115,10 +115,10 @@ int main(int argc, char *argv[]){
 	printf("Grillas generadas. OK = [%d]. Ci = [%d] :: Cj = [%d] :: Ct = [%d].\n", OK, Ci, Cj, Ct);
 	OK = guardar_grilla(RUTAsal, Ci, Cj, Ct, LATmax, dLATgri, LONmin, dLONgri,
 		&LATvec[0], &LONvec[0], &LATmat[0], &LONmat[0]);
-	printf("Grillas grabadas.  OK = [%d]\n", OK);
+	printf("Grillas grabadas.  OK = [%d].\n", OK);
 	OK = cargar_calibracion_IRB(RUTAcal,
 		&CALirb_m, &CALirb_n, &CALirb_a, &CALirb_b1, &CALirb_b2);
-	printf("Calibracion IRB.   OK = [%d]\n", OK);
+	printf("Calibracion IRB.   OK = [%d].\n", OK);
 	printf("-----------------------------------------------------------------------------------\n");	
 	printf("---- Imagenes procesadas ----------------------------------------------------------\n");
 	
@@ -134,27 +134,27 @@ int main(int argc, char *argv[]){
 		OK = procesar_NetCDF_IRB_gri(&TXmat, &MSKmat, &CNT1mat, &CNT2mat, &tag,
 	   		dLATgri, dLONgri, dLATcel, dLONcel, LATmax, LATmin, LONmax, LONmin,
 	   		Ct, Ci, Cj, PATHimg, RUTAsal, 
-	   		CALirb_n, CALirb_n, CALirb_a, CALirb_b1, CALirb_b2);
+	   		CALirb_m, CALirb_n, CALirb_a, CALirb_b1, CALirb_b2);
 
 		printf("IMAGEN : %s. TAG = [%d]. OK = [%d].\n", &PATHimg[0], tag, OK);
 	}
 	printf("-----------------------------------------------------------------------------------\n");
-	printf("---- Lista de imagenes ------------------------------------------------------------\n");
-	for (h1=0; h1<Cimgs; h1++){
-		printf("%s\n", array_imgs[h1]);
-	}
-	printf("-----------------------------------------------------------------------------------\n");
+	// printf("---- Lista de imagenes ------------------------------------------------------------\n");
+	// for (h1=0; h1<Cimgs; h1++){
+	// 	printf("%s\n", array_imgs[h1]);
+	// }
+	// printf("-----------------------------------------------------------------------------------\n");
 
-	mostrar_vector_double(CALirb_m, 12, 4);
-	printf("-----------------------------------------------------------------------------------\n");
-	mostrar_vector_double(CALirb_b1, 12, 4);
-	printf("-----------------------------------------------------------------------------------\n");
-	mostrar_vector_double(CALirb_n, 12, 4);
-	printf("-----------------------------------------------------------------------------------\n");
-	mostrar_vector_double(CALirb_a, 12, 4);
-	printf("-----------------------------------------------------------------------------------\n");
-	mostrar_vector_double(CALirb_b2, 12, 4);
-	printf("-----------------------------------------------------------------------------------\n");
+	// mostrar_vector_double(CALirb_m, 12, 4);
+	// printf("-----------------------------------------------------------------------------------\n");
+	// mostrar_vector_double(CALirb_b1, 12, 4);
+	// printf("-----------------------------------------------------------------------------------\n");
+	// mostrar_vector_double(CALirb_n, 12, 4);
+	// printf("-----------------------------------------------------------------------------------\n");
+	// mostrar_vector_double(CALirb_a, 12, 4);
+	// printf("-----------------------------------------------------------------------------------\n");
+	// mostrar_vector_double(CALirb_b2, 12, 4);
+	// printf("-----------------------------------------------------------------------------------\n");
 
 	//mostrar_vector_double(FRmat, Ct, Cj);
 	//mostrar_vector_double(CZmat, Ct, Cj);

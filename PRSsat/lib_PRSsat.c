@@ -96,10 +96,10 @@ int procesar_NetCDF_VIS_gri(double ** FRmat, double ** RPmat, double ** N1mat,
 	 	 	(*FRmat), (*RPmat), (*N1mat), (*MSKmat), *tag, fracMK, Band);
 
 	 	// GUARDAR IMAGEN TEST
-	 	guardar_imagen_double(RUTAsal, Ct, yea, doy, hra, min, sec,
-	 	  	(*CZmat), "CZ");
-	 	guardar_imagen_int(RUTAsal, Ct, yea, doy, hra, min, sec,
-	 	  	(*CNT1mat), "C1");
+	 	// guardar_imagen_double(RUTAsal, Ct, yea, doy, hra, min, sec,
+	 	//   	(*CZmat), "CZ", Band);
+	 	// guardar_imagen_int(RUTAsal, Ct, yea, doy, hra, min, sec,
+	 	//   	(*CNT1mat), "C1", Band);
 
 		// LIBERO MEMORIA
 		free(BXdata); free(LATdata); free(LONdata);
@@ -127,8 +127,6 @@ int procesar_NetCDF_IRB_gri(double ** TXmat,
 	double * LONdata;
 
 	*tag = 0;
-
-	printf("%s\n", PATH);
 
 	if(open_NetCDF_file(PATH, &BXdata, &LATdata, &LONdata,
 		&Si, &Sj, &St, &Band, &yea, &doy, &hra, &min, &sec, &ste, &FileName)==0){return 0;}
@@ -170,8 +168,8 @@ int procesar_NetCDF_IRB_gri(double ** TXmat,
 	 	  	(*TXmat), (*MSKmat), *tag, fracMK, Band);
 
 	 	// // GUARDAR IMAGEN TEST
-	 	guardar_imagen_int(RUTAsal, Ct, yea, doy, hra, min, sec,
-	 	  	(*CNT1mat), "C1");
+	 	// guardar_imagen_int(RUTAsal, Ct, yea, doy, hra, min, sec,
+	 	//   	(*CNT1mat), "C1", Band);
 
  		// LIBERO MEMORIA
 		free(BXdata); free(LATdata); free(LONdata);
@@ -557,7 +555,7 @@ int calculo_productos_VIS(int Braw, double cosz, double Fn, double fc,
 			
 	double 	ls;
 
-	ls = (double) ((double) (Braw/32) - CALvis_Xspace)*CALvis_M; // Radiancia pre-launch
+	ls = ((Braw/32) - CALvis_Xspace)*CALvis_M; // Radiancia pre-launch
 	ls = ls * fc; // Radiancia post-launch
 	*fr = (ls * CALvis_K)/(10 * Fn); // (x100) - En porcentaje. (/1000) - Parámetro K expresado por mil.
 	if (*fr > 100){*fr = 100;}
@@ -597,7 +595,7 @@ int calculo_productos_IRB(int Braw,
 	C1 = 0.000011911;
 	C2 = 1.438833;
 
-	lx = (((double) Braw/32) - CALirb_b1)/CALirb_m; // Radiancia pre-launch
+	lx = ((Braw/32) - CALirb_b1)/CALirb_m; // Radiancia pre-launch
 	aux = 1 + (C1*CALirb_n*CALirb_n*CALirb_n/lx);
 	Teff = (C2 * CALirb_n)/log(aux);
 	*tx = CALirb_a + CALirb_b2*Teff;
@@ -1108,8 +1106,8 @@ int guardar_imagen_IRB(char RUTAsal[CMAXstr], int Ct,
  		strcat(RUTA_TX, "/"); strcat(RUTA_TX, strYEA); strcat(RUTA_TX, "/");
  		strcat(RUTA_TX, strTMP); strcat(RUTA_TX, ".T"); strcat(RUTA_TX, strBANDA1);
  		// Guardo!
-		printf("%s\n", RUTA_MK);
- 		printf("%s\n", RUTA_TX);
+		// printf("%s\n", RUTA_MK);
+ 	// 	printf("%s\n", RUTA_TX);
  		fid = fopen(RUTA_MK, "wb"); fwrite(SAVE_MK, sizeof(short), Ct, fid); fclose(fid);
  		fid = fopen(RUTA_TX, "wb"); fwrite(SAVE_TX, sizeof(float), Ct, fid); fclose(fid);
  	}
@@ -1124,8 +1122,8 @@ int guardar_imagen_IRB(char RUTAsal[CMAXstr], int Ct,
  		strcat(RUTA_TX, "/"); strcat(RUTA_TX, strYEA); strcat(RUTA_TX, "/");
  		strcat(RUTA_TX, strTMP); strcat(RUTA_TX, ".T"); strcat(RUTA_TX, strBANDA1);
  		// Guardo!
- 		printf("%s\n", RUTA_MK);
- 		printf("%s\n", RUTA_TX);
+ 		// printf("%s\n", RUTA_MK);
+ 		// printf("%s\n", RUTA_TX);
  		fid = fopen(RUTA_MK, "wb"); fwrite(SAVE_MK, sizeof(short), Ct, fid); fclose(fid);
  		fid = fopen(RUTA_TX, "wb"); fwrite(SAVE_TX, sizeof(float), Ct, fid); fclose(fid);
  	}
@@ -1155,7 +1153,7 @@ int guardar_tag(char RUTAsal[CMAXstr], char strTMP[COUTstr], char strYEA[4], cha
 }
 
 int guardar_imagen_double(char RUTAsal[CMAXstr], int Ct,
-	int yea, int doy, int hra, int min, int sec, double * DATA, char * tipo){
+	int yea, int doy, int hra, int min, int sec, double * DATA, char * tipo, int Band){
 
 	FILE * fid;
 	int		h1;
@@ -1166,8 +1164,11 @@ int guardar_imagen_double(char RUTAsal[CMAXstr], int Ct,
 	char strHRA[2];
 	char strMIN[2];
 	char strSEC[2];
+	char strBANDA2[2];
 	float * SAVE;
 	
+	// STRINGS
+	sprintf(strBANDA2, "0%d", Band);
 	generar_strings_temporales(yea, doy, hra, min, sec,
 		&strTMP[0], &strYEA[0], &strDOY[0], &strHRA[0], &strMIN[0], &strSEC[0]);
 
@@ -1177,9 +1178,9 @@ int guardar_imagen_double(char RUTAsal[CMAXstr], int Ct,
  		SAVE[h1] = (float) (DATA[h1]); // SE HACE PARA CASTEAR A FLOAT
  	}
 
-	// RUTA MK, FR, RP, N1
-	strcpy(RUTA, RUTAsal); strcat(RUTA, "test/");
-	strcat(RUTA, strTMP); strcat(RUTA, "."); strcat(RUTA, tipo);
+	// RUTA
+	strcpy(RUTA, RUTAsal); strcat(RUTA, "test/B"); strcat(RUTA, strBANDA2);
+	strcat(RUTA, "_"); strcat(RUTA, strTMP); strcat(RUTA, "."); strcat(RUTA, tipo);
 	
 	// Guardo!
 	fid = fopen(RUTA, "wb"); fwrite(SAVE, sizeof(float), Ct, fid); fclose(fid);
@@ -1191,7 +1192,7 @@ int guardar_imagen_double(char RUTAsal[CMAXstr], int Ct,
 }
 
 int guardar_imagen_int(char RUTAsal[CMAXstr], int Ct,
-	int yea, int doy, int hra, int min, int sec, int * DATA, char * tipo){
+	int yea, int doy, int hra, int min, int sec, int * DATA, char * tipo, int Band){
 
 	FILE * fid;
 	int		h1;
@@ -1202,8 +1203,11 @@ int guardar_imagen_int(char RUTAsal[CMAXstr], int Ct,
 	char strHRA[2];
 	char strMIN[2];
 	char strSEC[2];
+	char strBANDA2[2];
 	short * SAVE;
-	
+
+	// STRINGS
+	sprintf(strBANDA2, "0%d", Band);
 	generar_strings_temporales(yea, doy, hra, min, sec,
 		&strTMP[0], &strYEA[0], &strDOY[0], &strHRA[0], &strMIN[0], &strSEC[0]);
 
@@ -1213,9 +1217,9 @@ int guardar_imagen_int(char RUTAsal[CMAXstr], int Ct,
  		SAVE[h1] = (short) (DATA[h1]); // SE HACE PARA CASTEAR A FLOAT
  	}
 
-	// RUTA MK, FR, RP, N1
-	strcpy(RUTA, RUTAsal); strcat(RUTA, "test/");
-	strcat(RUTA, strTMP); strcat(RUTA, "."); strcat(RUTA, tipo);
+	// RUTA
+	strcpy(RUTA, RUTAsal); strcat(RUTA, "test/B"); strcat(RUTA, strBANDA2);
+	strcat(RUTA, "_"); strcat(RUTA, strTMP); strcat(RUTA, "."); strcat(RUTA, tipo);
 	
 	// Guardo!
 	fid = fopen(RUTA, "wb"); fwrite(SAVE, sizeof(short), Ct, fid); fclose(fid);
