@@ -1,7 +1,5 @@
 #!/usr/bin/python
 
-import struct
-
 # RUTAsat = '/sat/prd-sat/ART_G015x015GG_C015x015/'
 # PATHfr  = RUTAsat + 'B01-FR/2016/ART_2016275_143500.FR'
 
@@ -30,7 +28,7 @@ meta       = open(RUTAsat + 'meta/T000gri.META',   'r')
 # LATdeg_vec = open(RUTAsat + 'meta/T000gri.LATvec', 'r')
 # LONdeg_vec = open(RUTAsat + 'meta/T000gri.LONvec', 'r')
 
-tple = struct.unpack( 'f', meta )
-
-for f in tple:
-  print f
+ba = bytearray(meta.read())
+for byte in ba:
+    print byte & 1
+    
