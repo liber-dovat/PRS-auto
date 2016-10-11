@@ -39,6 +39,10 @@ fid = open(RUTAsat + 'meta/T000gri.LONvec', 'r')
 LONdeg_vec = numpy.fromfile(fid, dtype='float32')
 fid.close()
 
+Ci = meta[1];
+Cj = meta[2];
+Ct = Ci*Cj;
+
 print meta
 print LATdeg_vec
 print LONdeg_vec
@@ -46,3 +50,5 @@ print LONdeg_vec
 print meta.size
 print LATdeg_vec.size
 print LATdeg_vec.size
+
+print Ct
