@@ -27,7 +27,7 @@ Cj = meta(2);
 Ct = Ci*Cj;
 '''
 
-fid = open(RUTAsat + 'meta/T000gri.META', 'rb')
+fid = open(RUTAsat + 'meta/T000gri.META', 'r')
 meta = numpy.fromfile(fid, dtype='float32')
 fid.close()
 
@@ -39,8 +39,9 @@ fid = open(RUTAsat + 'meta/T000gri.LONvec', 'r')
 LONdeg_vec = numpy.fromfile(fid, dtype='float32')
 fid.close()
 
-Ci = meta[1];
-Cj = meta[2];
+# no entiendo que son estos valores
+Ci = meta[0];
+Cj = meta[1];
 Ct = Ci*Cj;
 
 print meta
