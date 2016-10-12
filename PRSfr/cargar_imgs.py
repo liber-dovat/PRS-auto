@@ -48,7 +48,7 @@ print IMG1.shape
 cs = plt.pcolormesh(LONdeg_vec, LATdeg_vec, IMG1, cmap='jet')
 
 # agrego el colorbar
-cbar = plt.colorbar(cs, orientation='horizontal')
+cbar = plt.colorbar(cs)
 
 plt.savefig(PATHpng + 'file.png', bbox_inches='tight', dpi=200)
 plt.close()
