@@ -17,54 +17,26 @@ RUTAsat = './test_fr/'
 PATHpng = RUTAsat + 'png/'
 PATHfr  = RUTAsat + 'B01-FR/2016/ART_2016285_133500.FR'
 
-'''
-% --- Cargar metadatos
-fid = fopen([RUTAsat,'meta/T000gri.META'], 'r');
-meta = fread(fid, 6, 'float32');
-fclose(fid);
-fid = fopen([RUTAsat,'meta/T000gri.LATvec'], 'r');
-LATdeg_vec = fread(fid, meta(1), 'float32');
-fclose(fid);
-fid = fopen([RUTAsat,'meta/T000gri.LONvec'], 'r');
-LONdeg_vec = fread(fid, meta(2), 'float32');
-fclose(fid);
-
-Ci = meta(1);
-Cj = meta(2);
-Ct = Ci*Cj;
-'''
-
-numpy.set_printoptions(suppress=True)
-
 fid = open(RUTAsat + 'meta/T000gri.META', 'r')
 meta = numpy.fromfile(fid, dtype='float32')
 fid.close()
 
 fid = open(RUTAsat + 'meta/T000gri.LATvec', 'r')
 LATdeg_vec = numpy.fromfile(fid, dtype='float32')
-LATdeg_vec = LATdeg_vec[::-1]
+LATdeg_vec = LATdeg_vec[::-1] # invierto el arreglo porque quedaba invertido verticalmente
 fid.close()
 
 fid = open(RUTAsat + 'meta/T000gri.LONvec', 'r')
 LONdeg_vec = numpy.fromfile(fid, dtype='float32')
 fid.close()
 
-# no entiendo que son estos valores
+# obtengo del vector meta el largo y alto de elementos de los vectores y los datos
 Ci = meta[0];
 Cj = meta[1];
 Ct = Ci*Cj;
 
-print meta
-print LATdeg_vec
-print LONdeg_vec
-
-print meta.size
-print LATdeg_vec.size
-print LATdeg_vec.size
-
-print Ci
-print Cj
-print Ct
+print "Lon min:" + str(numpy.amin(LONdeg_vec)) + ", Lon max:" + str(numpy.amax(LONdeg_vec))
+print "Lat min:" + str(numpy.amin(LATdeg_vec)) + ", Lat max:" + str(numpy.amax(LATdeg_vec))
 
 # imagen
 fid = open(PATHfr, 'r')
@@ -73,7 +45,10 @@ fid.close()
 IMG1 = numpy.reshape(data, (Ci, Cj))
 print IMG1.shape
 
-plt.pcolormesh(LONdeg_vec, LATdeg_vec, IMG1, cmap='jet')
+cs = plt.pcolormesh(LONdeg_vec, LATdeg_vec, IMG1, cmap='jet')
+
+# agrego el colorbar
+cbar = plt.colorbar(cs, orientation='horizontal')
 
 plt.savefig(PATHpng + 'file.png', bbox_inches='tight', dpi=200)
 plt.close()
