@@ -38,10 +38,15 @@ Ct = Ci*Cj;
 print "Lon min:" + str(numpy.amin(LONdeg_vec)) + ", Lon max:" + str(numpy.amax(LONdeg_vec))
 print "Lat min:" + str(numpy.amin(LATdeg_vec)) + ", Lat max:" + str(numpy.amax(LATdeg_vec))
 
+axes = plt.gca()
+axes.set_xlim([numpy.amin(LONdeg_vec),numpy.amax(LONdeg_vec)])
+axes.set_ylim([numpy.amin(LATdeg_vec),numpy.amax(LATdeg_vec)])
+
 # imagen
 fid = open(PATHfr, 'r')
 data = numpy.fromfile(fid, dtype='float32')
 fid.close()
+data[data == 0.0] = numpy.nan
 IMG1 = numpy.reshape(data, (Ci, Cj))
 print IMG1.shape
 
@@ -49,6 +54,12 @@ cs = plt.pcolormesh(LONdeg_vec, LATdeg_vec, IMG1, cmap='jet')
 
 # agrego el colorbar
 cbar = plt.colorbar(cs)
+
+# agrego el logo en el documento
+logo = plt.imread('/sat/PRS/libs/PRS-auto/PRSpng/imgs/les-logo.png')
+plt.figimage(logo, 5, 5)
+
+plt.annotate("tag", (0,0), (140, -50), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=10, family='monospace')
 
 plt.savefig(PATHpng + 'file.png', bbox_inches='tight', dpi=200)
 plt.close()
