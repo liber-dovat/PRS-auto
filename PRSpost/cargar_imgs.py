@@ -119,15 +119,15 @@ def frtopng(metaPath, file):
   # genero el pie de la imagen, con el logo y la info del arcivo
   plt.annotate(name, (0,0), (140, -25), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=12, family='monospace')
 
-  PATHpng = './test_fr/png/'
+  PATHpng = './test/png/'
   plt.savefig(PATHpng + name +'.png', bbox_inches='tight', dpi=200)
   plt.close() # cierro el archivo
 
 # frtopng
 
-frtopng('./test_fr/meta15/', './test_fr/imgs/ART_2016285_133500.FR')
-frtopng('./test_fr/meta15/', './test_fr/imgs/ART_2016285_133500.RP')
-frtopng('./test_fr/meta60/', './test_fr/imgs/ART_2016285_133500.T2')
-frtopng('./test_fr/meta60/', './test_fr/imgs/ART_2016285_133500.T3')
-frtopng('./test_fr/meta60/', './test_fr/imgs/ART_2016285_133500.T4')
-frtopng('./test_fr/meta60/', './test_fr/imgs/ART_2016285_133500.T6')
+frtopng('./test/meta15/', './test/imgs/ART_2016285_133500.FR')
+frtopng('./test/meta15/', './test/imgs/ART_2016285_133500.RP')
+frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T2')
+frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T3')
+frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T4')
+frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T6')
