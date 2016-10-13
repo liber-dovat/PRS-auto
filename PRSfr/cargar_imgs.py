@@ -15,6 +15,15 @@ from os.path              import basename
 
 # print PATHfr
 
+def getExt(url):
+  name = basename(url)
+  return name.split('.')[-1]
+# getExt
+
+#########################################
+#########################################
+#########################################
+
 def frtopng(metaPath, file):
 
   fid = open(metaPath + '/T000gri.META', 'r')
@@ -35,7 +44,7 @@ def frtopng(metaPath, file):
   Cj = meta[1];
   Ct = Ci*Cj;
 
-  numpy.set_printoptions(suppress=True)
+  # numpy.set_printoptions(suppress=True)
   # print meta
   # print Ci
   # print Cj
@@ -53,42 +62,32 @@ def frtopng(metaPath, file):
   axes.set_xlim([numpy.amin(LONdeg_vec),numpy.amax(LONdeg_vec)])
   axes.set_ylim([numpy.amin(LATdeg_vec),numpy.amax(LATdeg_vec)])
 
-  name = basename(file)
-  extencion = name.split('.')[-1]
-  # print extencion
-
-  # Si FR|RP|T2|T3|T4|T6 dtype es float32
-  # MK o C1 es int16
   # abro el archivo FR
-  if extencion == 'MK' or extencion == 'C1':
-    dtype = 'int16'
-  else:
-    dtype = 'float32'
-
-  # abro el archivo pasado por parametro
   fid = open(file, 'r')
-  data = numpy.fromfile(fid, dtype=dtype)
+  data = numpy.fromfile(fid, dtype='float32')
   fid.close()
-  # print data.size
+  # print data.shape
   IMG = numpy.reshape(data, (Ci, Cj))
   # print IMG.shape
 
   # grafico IMG1 usando lon como vector x y lat como vector y
   cs = plt.pcolormesh(LONdeg_vec, LATdeg_vec, IMG, cmap='jet')
 
+  ext = getExt(file)
+
   # dado que FR y RP van de 0 a 100 seteo esos rangos para el colorbar
-  if extencion == 'MK' or extencion == 'C1':
-    cbar = plt.colorbar(cs)
-    print IMG
-  else:
+  if ext == 'FR' or ext == 'RP':
     plt.clim(0,100)
-    # agrego el colorbar
-    cbar = plt.colorbar(cs, ticks=[0., 20., 40., 60., 80., 100.])
-    cbar.ax.set_xticklabels([0., 20., 40., 60., 80., 100.], fontsize=10)
+
+  # agrego el colorbar
+  cbar = plt.colorbar(cs, ticks=[0., 20., 40., 60., 80., 100.])
+  cbar.ax.set_xticklabels([0., 20., 40., 60., 80., 100.], fontsize=10)
 
   # agrego el logo en el documento
   logo = plt.imread('/sat/PRS/libs/PRS-auto/PRSpng/imgs/les-logo.png')
   plt.figimage(logo, 5, 5)
+
+  name = basename(file)
 
   # genero el pie de la imagen, con el logo y la info del arcivo
   plt.annotate(name, (0,0), (140, -25), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=12, family='monospace')
@@ -99,7 +98,9 @@ def frtopng(metaPath, file):
 
 # frtopng
 
-# frtopng('./test_fr/meta15/', './test_fr/imgs/ART_2016285_133500.FR')
-# frtopng('./test_fr/meta15/', './test_fr/imgs/ART_2016285_133500.RP')
-frtopng('./test_fr/meta15/', './test_fr/imgs/MKART_2016285_133500.MK')
-# frtopng('./test_fr/meta60/', './test_fr/imgs/B02ART_2016285_133500.MK')
+frtopng('./test_fr/meta15/', './test_fr/imgs/ART_2016285_133500.FR')
+frtopng('./test_fr/meta15/', './test_fr/imgs/ART_2016285_133500.RP')
+frtopng('./test_fr/meta60/', './test_fr/imgs/ART_2016285_133500.T2')
+frtopng('./test_fr/meta60/', './test_fr/imgs/ART_2016285_133500.T3')
+frtopng('./test_fr/meta60/', './test_fr/imgs/ART_2016285_133500.T4')
+frtopng('./test_fr/meta60/', './test_fr/imgs/ART_2016285_133500.T6')
