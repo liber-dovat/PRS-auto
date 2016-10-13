@@ -88,7 +88,7 @@ def ncdump(url, verb=True):
 #########################################
 #########################################
 
-def nameTag(banda):
+def bandTag(banda):
 
   if banda == 1:
     return "CH1 FR"
@@ -102,7 +102,6 @@ def nameTag(banda):
     return "CH6 T6"
 
 # nameTag
-
 
 #########################################
 #########################################
@@ -203,7 +202,7 @@ def netcdf2png(url, dirDest):
   str_day   = str(day).zfill(2)
   str_month = str(month).zfill(2)
   str_hm    = hms[0:2] + ":" +hms[2:4]
-  str_chnl  = nameTag(band)
+  str_chnl  = bandTag(band)
 
   tag = str_chnl + " " + str_day + "-" + str_month + "-" + year + " " + str_hm + " UTC"
 

@@ -8,6 +8,7 @@ import struct
 import numpy
 import os
 
+from funciones    import ymd
 from os.path      import basename
 from inumet_color import _get_inumet
 
@@ -16,10 +17,56 @@ from inumet_color import _get_inumet
 
 # print PATHfr
 
+#########################################
+#########################################
+#########################################
+
+def bandTag(banda):
+
+  if banda == 'FR':
+    return "CH1 FR"
+  elif banda == 'RP':
+    return "CH1 RP"
+  elif banda == 'T2':
+    return "CH2 T2"
+  elif banda == 'T3':
+    return "CH3 T3"
+  elif banda == 'T4':
+    return "CH4 T4"
+  elif banda == 'T6':
+    return "CH6 T6"
+
+# bandTag
+
+#########################################
+#########################################
+#########################################
+
 def getExt(url):
   name = basename(url)
   return name.split('.')[-1]
 # getExt
+
+#########################################
+#########################################
+#########################################
+
+def nameTag(basename):
+  name       = basename[:-3]
+  name_split = name.split("_")
+  year       = name_split[1][0:4]
+  doy        = name_split[1][4:8]
+  hms        = name_split[2]
+  month      = ymd(int(year), int(doy))[1]
+  day        = ymd(int(year), int(doy))[2]
+
+  str_day   = str(day).zfill(2)
+  str_month = str(month).zfill(2)
+  str_hm    = hms[0:2] + ":" +hms[2:4]
+  str_chnl  = bandTag(getExt(basename))
+
+  return str_chnl + " " + str_day + "-" + str_month + "-" + year + " " + str_hm + " UTC"  
+# nameTag
 
 #########################################
 #########################################
@@ -81,6 +128,7 @@ def frtopng(metaPath, file):
     cs = plt.pcolormesh(LONdeg_vec, LATdeg_vec, IMG, cmap='jet')
     plt.clim(0,100)
 
+    # percent_sign= u'\N{PERCENT SIGN}'
     # agrego el colorbar
     cbar = plt.colorbar(cs, ticks=[0., 20., 40., 60., 80., 100.])
     cbar.ax.set_xticklabels([0., 20., 40., 60., 80., 100.], fontsize=10)
@@ -107,6 +155,7 @@ def frtopng(metaPath, file):
     cs = plt.pcolormesh(LONdeg_vec, LATdeg_vec, IMG, vmin=vmin, vmax=vmax, cmap=inumet)
 
     # agrego el colorbar
+    # degree_sign= u'\N{DEGREE SIGN}'
     cbar = plt.colorbar(cs, ticks=[vmin, 0., vmax])
     cbar.ax.set_xticklabels([vmin, 0., vmax], fontsize=10)
 
@@ -114,13 +163,17 @@ def frtopng(metaPath, file):
   logo = plt.imread('/sat/PRS/libs/PRS-auto/PRSpng/imgs/les-logo.png')
   plt.figimage(logo, 5, 5)
 
-  name = basename(file)
+  # genero los datos para escribir el pie de pagina
+  name     = basename(file)           # obtengo el nombre base del archivo
+  PATHpng = './test/png/'
+  destFile = PATHpng + ext + name +'.png' # determino el nombre del archivo a escribir
+
+  tag = nameTag(name)
 
   # genero el pie de la imagen, con el logo y la info del arcivo
-  plt.annotate(name, (0,0), (140, -25), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=12, family='monospace')
+  plt.annotate(tag, (0,0), (230, -25), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=12, family='monospace')
 
-  PATHpng = './test/png/'
-  plt.savefig(PATHpng + name +'.png', bbox_inches='tight', dpi=200)
+  plt.savefig(destFile, bbox_inches='tight', dpi=200)
   plt.close() # cierro el archivo
 
 # frtopng
