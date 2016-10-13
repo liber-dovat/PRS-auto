@@ -8,7 +8,8 @@ import struct
 import numpy
 import os
 
-from os.path              import basename
+from os.path      import basename
+from inumet_color import _get_inumet
 
 # RUTAsat = '/sat/prd-sat/ART_G015x015GG_C015x015/'
 # PATHfr  = RUTAsat + 'B01-FR/2016/ART_2016275_143500.FR'
@@ -70,14 +71,17 @@ def frtopng(metaPath, file):
   IMG = numpy.reshape(data, (Ci, Cj))
   # print IMG.shape
 
-  # grafico IMG1 usando lon como vector x y lat como vector y
-  cs = plt.pcolormesh(LONdeg_vec, LATdeg_vec, IMG, cmap='jet')
-
   ext = getExt(file)
 
   # dado que FR y RP van de 0 a 100 seteo esos rangos para el colorbar
   if ext == 'FR' or ext == 'RP':
+    cmap='jet'
     plt.clim(0,100)
+  else:
+    cmap = _get_inumet(1024)
+
+  # grafico IMG1 usando lon como vector x y lat como vector y    
+  cs = plt.pcolormesh(LONdeg_vec, LATdeg_vec, IMG, cmap=cmap)
 
   # agrego el colorbar
   cbar = plt.colorbar(cs, ticks=[0., 20., 40., 60., 80., 100.])
