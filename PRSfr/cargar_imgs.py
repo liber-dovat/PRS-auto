@@ -73,15 +73,14 @@ def frtopng(metaPath, file):
 
   ext = getExt(file)
 
+  # grafico IMG1 usando lon como vector x y lat como vector y
   # dado que FR y RP van de 0 a 100 seteo esos rangos para el colorbar
   if ext == 'FR' or ext == 'RP':
-    cmap='jet'
+    cs = plt.pcolormesh(LONdeg_vec, LATdeg_vec, IMG, cmap='jet')
     plt.clim(0,100)
   else:
-    cmap = _get_inumet(1024)
-
-  # grafico IMG1 usando lon como vector x y lat como vector y    
-  cs = plt.pcolormesh(LONdeg_vec, LATdeg_vec, IMG, cmap=cmap)
+    inumet = _get_inumet(1024)
+    cs = plt.pcolormesh(LONdeg_vec, LATdeg_vec, IMG, cmap=inumet)
 
   # agrego el colorbar
   cbar = plt.colorbar(cs, ticks=[0., 20., 40., 60., 80., 100.])
@@ -102,9 +101,9 @@ def frtopng(metaPath, file):
 
 # frtopng
 
-frtopng('./test_fr/meta15/', './test_fr/imgs/ART_2016285_133500.FR')
-frtopng('./test_fr/meta15/', './test_fr/imgs/ART_2016285_133500.RP')
-frtopng('./test_fr/meta60/', './test_fr/imgs/ART_2016285_133500.T2')
-frtopng('./test_fr/meta60/', './test_fr/imgs/ART_2016285_133500.T3')
-frtopng('./test_fr/meta60/', './test_fr/imgs/ART_2016285_133500.T4')
+# frtopng('./test_fr/meta15/', './test_fr/imgs/ART_2016285_133500.FR')
+# frtopng('./test_fr/meta15/', './test_fr/imgs/ART_2016285_133500.RP')
+# frtopng('./test_fr/meta60/', './test_fr/imgs/ART_2016285_133500.T2')
+# frtopng('./test_fr/meta60/', './test_fr/imgs/ART_2016285_133500.T3')
+# frtopng('./test_fr/meta60/', './test_fr/imgs/ART_2016285_133500.T4')
 frtopng('./test_fr/meta60/', './test_fr/imgs/ART_2016285_133500.T6')

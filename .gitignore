@@ -1,5 +1,5 @@
 # ignoro los binarios compilados de python
-PRSpng/*.pyc
+*.pyc
 PRSpng/*.txt
 PRSpng/salida*
 PRSpng/imagen
