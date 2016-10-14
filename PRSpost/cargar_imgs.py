@@ -11,6 +11,7 @@ import os
 from funciones    import ymd
 from os.path      import basename
 from inumet_color import _get_inumet
+from mpl_toolkits.basemap import Basemap
 
 # RUTAsat = '/sat/prd-sat/ART_G015x015GG_C015x015/'
 # PATHfr  = RUTAsat + 'B01-FR/2016/ART_2016275_143500.FR'
@@ -102,8 +103,8 @@ def frtopng(metaPath, file):
   # print LATdeg_vec.size
   # print LATdeg_vec.size
 
-  # print "Lon min:" + str(numpy.amin(LONdeg_vec)) + ", Lon max:" + str(numpy.amax(LONdeg_vec))
-  # print "Lat min:" + str(numpy.amin(LATdeg_vec)) + ", Lat max:" + str(numpy.amax(LATdeg_vec))
+  print "Lon min:" + str(numpy.amin(LONdeg_vec)) + ", Lon max:" + str(numpy.amax(LONdeg_vec))
+  print "Lat min:" + str(numpy.amin(LATdeg_vec)) + ", Lat max:" + str(numpy.amax(LATdeg_vec))
 
   # plt.axis('scaled')
 
@@ -120,12 +121,26 @@ def frtopng(metaPath, file):
   IMG = numpy.reshape(data, (Ci, Cj))
   # print IMG.shape
 
+  ax1 = Basemap(projection='merc',\
+                llcrnrlat=numpy.amin(LATdeg_vec),urcrnrlat=numpy.amax(LATdeg_vec),\
+                llcrnrlon=numpy.amin(LONdeg_vec),urcrnrlon=numpy.amax(LONdeg_vec),\
+                resolution='l')
+
+  ax1.drawcoastlines()
+  ax1.drawstates()
+  ax1.drawcountries()
+
+  
+
+  lons2d, lats2d = numpy.meshgrid(LONdeg_vec, LATdeg_vec)
+  x, y = ax1(lons2d,lats2d)
+
   ext = getExt(file)
 
   # grafico IMG1 usando lon como vector x y lat como vector y
   # dado que FR y RP van de 0 a 100 seteo esos rangos para el colorbar
   if ext == 'FR' or ext == 'RP':
-    cs = plt.pcolormesh(LONdeg_vec, LATdeg_vec, IMG, cmap='jet')
+    cs = plt.pcolormesh(x, y, IMG, cmap='jet')
     plt.clim(0,100)
 
     # percent_sign= u'\N{PERCENT SIGN}'
@@ -152,7 +167,7 @@ def frtopng(metaPath, file):
       vmax = 7.
 
     inumet = _get_inumet(1024)
-    cs = plt.pcolormesh(LONdeg_vec, LATdeg_vec, IMG, vmin=vmin, vmax=vmax, cmap=inumet)
+    cs = plt.pcolormesh(x, y, IMG, vmin=vmin, vmax=vmax, cmap=inumet)
 
     # agrego el colorbar
     # degree_sign= u'\N{DEGREE SIGN}'
@@ -171,16 +186,16 @@ def frtopng(metaPath, file):
   tag = nameTag(name)
 
   # genero el pie de la imagen, con el logo y la info del arcivo
-  plt.annotate(tag, (0,0), (230, -25), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=12, family='monospace')
+  plt.annotate(tag, (0,0), (180, -25), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=12, family='monospace')
 
   plt.savefig(destFile, bbox_inches='tight', dpi=200)
   plt.close() # cierro el archivo
 
 # frtopng
 
-frtopng('./test/meta15/', './test/imgs/ART_2016285_133500.FR')
+# frtopng('./test/meta15/', './test/imgs/ART_2016285_133500.FR')
 frtopng('./test/meta15/', './test/imgs/ART_2016285_133500.RP')
 frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T2')
-frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T3')
-frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T4')
-frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T6')
+# frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T3')
+# frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T4')
+# frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T6')

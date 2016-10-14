@@ -132,7 +132,7 @@ def netcdf2png(url, dirDest):
   data = data[0]                                     # me quedo con el primer elemento de data
   shape = numpy.shape(data)                          # guardo el shape original de data
   data_vector = numpy.reshape(data,numpy.size(data)) # genero un vector de data usando su size (largo*ancho)
-  data_vector = calibrarData(band, data_vector)    # invoco la funcion sobre el vector
+  data_vector = calibrarData(band, data_vector)      # invoco la funcion sobre el vector
   img = numpy.reshape(data_vector, shape)            # paso el vector a matriz usando shape como largo y ancho
 
   print numpy.amin(img)
