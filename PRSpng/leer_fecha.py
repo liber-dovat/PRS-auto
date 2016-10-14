@@ -200,11 +200,13 @@ for file in arreglo:
   print file
   netcdf2png(file,'/sat/PRS/libs/PRS-auto/PRSpng/png/')
 
+  root = "/sat/PRS/libs/PRS-auto/PRSpng/png/"
+
   if file == arreglo[-1]:
     filename   = basename(file)
     name_split = filename.split(".")
     name_split = name_split[1:4]
-    # print name_split
+    print name_split
     month = ymd(int(name_split[0]), int(name_split[1]))
     name_split.insert(1, str(month[1]).zfill(2))
     # print name_split[0]+'.'+name_split[1]+'.'+name_split[2]+'.'+name_split[3]+'\n'
@@ -218,11 +220,12 @@ for file in arreglo:
 
     # abro los dos archivos para trabajar con ellos
     # el primero es de solo lectura, y el segundo es de lectura escritura
+    tsmp = name_split[0]+'.'+name_split[1]+'.'+name_split[2]+'.'+name_split[3]
     ultima_procesada = open(prs_path, 'w')
-    ultima_procesada.write(name_split[0]+'.'+name_split[1]+'.'+name_split[2]+'.'+name_split[3]+'\n')
+    ultima_procesada.write(tsmp + '\n')
 
-  # BAND_01
-  root = "/sat/PRS/libs/PRS-auto/PRSpng/png/"
+    timestamp_html = open(root + 'timestamp.html', 'w')
+    timestamp_html.write(tsmp)
 
   if file == arreglo[-5]:
       pattern = re.compile(".*BAND_01\.nc$")
