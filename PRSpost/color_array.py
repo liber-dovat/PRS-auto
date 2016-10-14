@@ -4,17 +4,17 @@ import matplotlib.colors as _mplc
 def getInumetColorRange():
   color_arr = []
   
-  i01 = 40;
-  i02 = 80;
-  i03 = 118;
-  i04 = 158;
-  i05 = 197;
-  i06 = 236;
-  i07 = 276;
-  i08 = 316;
-  i09 = 354;
-  i10 = 394;
-  iT  = 1024;
+  i01 = 40
+  i02 = 80
+  i03 = 120
+  i04 = 160
+  i05 = 200
+  i06 = 240
+  i07 = 280
+  i08 = 320
+  i09 = 360
+  i10 = 380
+  iT  = 1024
   
   for valor in range(1,i01):
     color_arr.append([0, 0, 0])
