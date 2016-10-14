@@ -142,12 +142,12 @@ def frtopng(metaPath, file):
   # grafico IMG1 usando lon como vector x y lat como vector y
   # dado que FR y RP van de 0 a 100 seteo esos rangos para el colorbar
   if ext == 'FR' or ext == 'RP':
-    cs = plt.pcolormesh(x, y, IMG, cmap='jet')
+    cs = ax1.pcolormesh(x, y, IMG, cmap='jet')
     plt.clim(0,100)
 
     # percent_sign= u'\N{PERCENT SIGN}'
     # agrego el colorbar
-    cbar = plt.colorbar(cs, ticks=[0., 20., 40., 60., 80., 100.])
+    cbar = ax1.colorbar(cs, location='bottom', pad='3%', ticks=[0., 20., 40., 60., 80., 100.])
     cbar.ax.set_xticklabels([0., 20., 40., 60., 80., 100.], fontsize=10)
   else:
 
@@ -169,11 +169,11 @@ def frtopng(metaPath, file):
       vmax = 7.
 
     inumet = _get_inumet(1024)
-    cs = plt.pcolormesh(x, y, IMG, vmin=vmin, vmax=vmax, cmap=inumet)
+    cs = ax1.pcolormesh(x, y, IMG, vmin=vmin, vmax=vmax, cmap=inumet)
 
     # agrego el colorbar
     # degree_sign= u'\N{DEGREE SIGN}'
-    cbar = plt.colorbar(cs, ticks=[vmin, 0., vmax])
+    cbar = ax1.colorbar(cs, location='bottom', pad='3%', ticks=[vmin, 0., vmax])
     cbar.ax.set_xticklabels([vmin, 0., vmax], fontsize=10)
 
   # agrego el logo en el documento
@@ -188,7 +188,7 @@ def frtopng(metaPath, file):
   tag = nameTag(name)
 
   # genero el pie de la imagen, con el logo y la info del arcivo
-  plt.annotate(tag, (0,0), (180, -20), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=12, family='monospace')
+  plt.annotate(tag, (0,0), (140, -50), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=10, family='monospace')
 
   plt.savefig(destFile, bbox_inches='tight', dpi=200)
   plt.close() # cierro el archivo
