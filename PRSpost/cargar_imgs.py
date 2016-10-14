@@ -130,7 +130,9 @@ def frtopng(metaPath, file):
   ax1.drawstates()
   ax1.drawcountries()
 
-  
+  # dibujo los valores de latitudes y longitudes
+  ax1.drawparallels(numpy.arange(-45, -20, 5), labels=[1,0,0,0], linewidth=0.0, fontsize=10)
+  ax1.drawmeridians(numpy.arange(-70, -45, 5), labels=[0,0,1,0], linewidth=0.0, fontsize=10)
 
   lons2d, lats2d = numpy.meshgrid(LONdeg_vec, LATdeg_vec)
   x, y = ax1(lons2d,lats2d)
@@ -186,7 +188,7 @@ def frtopng(metaPath, file):
   tag = nameTag(name)
 
   # genero el pie de la imagen, con el logo y la info del arcivo
-  plt.annotate(tag, (0,0), (180, -25), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=12, family='monospace')
+  plt.annotate(tag, (0,0), (180, -20), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=12, family='monospace')
 
   plt.savefig(destFile, bbox_inches='tight', dpi=200)
   plt.close() # cierro el archivo
@@ -194,8 +196,8 @@ def frtopng(metaPath, file):
 # frtopng
 
 # frtopng('./test/meta15/', './test/imgs/ART_2016285_133500.FR')
-frtopng('./test/meta15/', './test/imgs/ART_2016285_133500.RP')
-frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T2')
+# frtopng('./test/meta15/', './test/imgs/ART_2016285_133500.RP')
+# frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T2')
 # frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T3')
 # frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T4')
-# frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T6')
+frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T6')
