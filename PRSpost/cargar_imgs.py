@@ -8,9 +8,9 @@ import struct
 import numpy
 import os
 
-from funciones    import ymd
-from os.path      import basename
-from inumet_color import _get_inumet
+from funciones   import ymd
+from os.path     import basename
+from color_array import colorArray
 from mpl_toolkits.basemap import Basemap
 
 # RUTAsat = '/sat/prd-sat/ART_G015x015GG_C015x015/'
@@ -186,7 +186,7 @@ def frtopng(metaPath, file):
   else:
     # Los datos de T2 a T6 estan en kelvin, asi que los paso a Celsius
     IMG  -= 273.
-    cmap  = _get_inumet(1024)
+    cmap  = colorArray(1024, band)
     ticks = [vmin, 0., vmax]
   # if FR o RP
 
