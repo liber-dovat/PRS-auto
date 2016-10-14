@@ -1,6 +1,18 @@
 import matplotlib as _mpl
 import matplotlib.colors as _mplc
 
+  '''
+  -30°C/-34°C -- #009999 -- (0,153,153) -- Celeste
+  -35°C/-39°C -- #0000FF -- (0,0,255)   -- Azul
+  -40°C/-44°C -- #00FF00 -- (0,255,0)   -- Verde Claro
+  -45°C/-49°C -- #009900 -- (0,153,0)   -- Verde
+  -50°C/-54°C -- #FFFF00 -- (255,255,0) -- Amarillo
+  -55°C/-59°C -- #FF6600 -- (255,102,0) -- Naranja
+  -60°C/-64°C -- #FF0000 -- (255,0,0)   -- Rojo
+  -65°C/-64°C -- #990099 -- (153,0,153) -- Púrpura
+  -70°C/-69°C -- #990000 -- (153,0,0)   -- Marrón
+  -75°C/-74°C -- #000000 -- (0,0,0)     -- Negro
+  '''
 def getInumetColorRange():
   color_arr = []
   
@@ -62,14 +74,14 @@ def colorArray(N, band):
 
   col_seq = getInumetColorRange()
 
-  seqLen = len(col_seq)
-  delta = 1.0/(seqLen - 1)
+  seqLen  = len(col_seq)
+  delta   = 1.0/(seqLen - 1)
   r_tuple = ((i*delta, col_seq[i][0], col_seq[i][0]) for i in range(seqLen))
   g_tuple = ((i*delta, col_seq[i][1], col_seq[i][1]) for i in range(seqLen))
   b_tuple = ((i*delta, col_seq[i][2], col_seq[i][2]) for i in range(seqLen))
-  cdict = {'red': tuple(r_tuple),
-           'green': tuple(g_tuple),
-           'blue': tuple(b_tuple)}
+  cdict   = {'red':   tuple(r_tuple),
+             'green': tuple(g_tuple),
+             'blue':  tuple(b_tuple)}
   cwm = _mpl.colors.LinearSegmentedColormap('Inumet', cdict, N)
   return cwm
 
