@@ -31,50 +31,60 @@ elif band == 'T6':
 # dado un valor de temperatura y una banda, mapeo el valor a un entero entre 0 y 1024
 def tempToValue(temp, band):
 
-  i01 = 40
-  i02 = 80
-  i03 = 118
-  i04 = 158
-  i05 = 197
-  i06 = 236
-  i07 = 276
-  i08 = 316
-  i09 = 354
-  i10 = 394
-  iT  = 1024
+  # i01 = 60
+  # i02 = 120
+  # i03 = 180
+  # i04 = 240
+  # i05 = 300
+  # i06 = 360
+  # i07 = 420
+  # i08 = 480
+  # i09 = 540
+  # i10 = 600
+  # iT  = 1024
+
+  # el rango de temperaturas depende de la banda
+  i01 = -75.
+  i02 = -70.
+  i03 = -65.
+  i04 = -60.
+  i05 = -55.
+  i06 = -50.
+  i07 = -45.
+  i08 = -40.
+  i09 = -35.
+  i10 = -30.
+  iT  = 50.
+
+  # la escala de color se corresponde con el 59.13% del 100%
+  # cuando 1024 -> 100%, 59.13 -> 605, aproximando
+  px_color = 605
+  px_gris  = 419
+
+  middle = px_color/20.
   
-  for valor in range(1,i01):
-    color_arr.append([0, 0, 0])
-  for valor in range(i01, i02):
-    color_arr.append([153/255., 0, 0])
-  for valor in range(i02, i03):
-    color_arr.append([153/255., 0, 153/255.])
-  for valor in range(i03, i04):
-    color_arr.append([255/255., 0, 0])
-  for valor in range(i04, i05):
-    color_arr.append([255/255., 102/255., 0])
-  for valor in range(i05, i06):
-    color_arr.append([255/255., 255/255., 0])
-  for valor in range(i06, i07):
-    color_arr.append([0, 153/255., 0])
-  for valor in range(i07, i08):
-    color_arr.append([0, 255/255., 0])
-  for valor in range(i08, i09):
-    color_arr.append([0, 0, 255/255.])
-  for valor in range(i09, i10):
-    color_arr.append([0, 153/255., 153/255.])
+  # retorno un valor en el medio de la franja para no caer en un borde
+  if temp < -75.:
+    return middle
+  elif temp in range(i01, i02):
+    return 2*middle
+  elif temp in range(i02, i03):
+    return 3*middle
+  elif temp in range(i03, i04):
+    return 4*middle
+  elif temp in range(i04, i05):
+    return 5*middle
+  elif temp in range(i05, i06):
+    return 6*middle
+  elif temp in range(i06, i07):
+    return 7*middle
+  elif temp in range(i07, i08):
+    return 8*middle
+  elif temp in range(i08, i09):
+    return 9*middle
+  elif temp in range(i09, i10):
+    return 10*middle
   
-  # 630 intervalos
-  base = 0.85
-  step = base / (iT - i10)
-  
-  color_arr.append([base, base, base])
-  
-  # de gris a negro
-  for valor in range(i10, iT-1):
-    base -= step
-    color_arr.append([base, base, base])
-  
-  color_arr.append([0, 0, 0])
+  hundred = abs(i10) + iT
   
   return color
