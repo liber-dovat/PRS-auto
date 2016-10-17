@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import matplotlib as _mpl
-import matplotlib.colors as _mplc
-
 '''
 -30°C/-34°C -- #009999 -- (0,153,153) -- Celeste
 -35°C/-39°C -- #0000FF -- (0,0,255)   -- Azul
@@ -16,9 +13,24 @@ import matplotlib.colors as _mplc
 -75°C/-74°C -- #000000 -- (0,0,0)     -- Negro
 '''
 
-def getInumetColorRange():
-  color_arr = []
-  
+'''
+elif band == 'T2':
+  vmin = -68.
+  vmax = 47. 
+elif band == 'T3':
+  vmin = -68.
+  vmax = -8.
+elif band == 'T4':
+  vmin = -80.
+  vmax = 50.
+elif band == 'T6':
+  vmin = -68.
+  vmax = 7.
+'''
+
+# dado un valor de temperatura y una banda, mapeo el valor a un entero entre 0 y 1024
+def tempToValue(temp, band):
+
   i01 = 40
   i02 = 80
   i03 = 118
@@ -65,27 +77,4 @@ def getInumetColorRange():
   
   color_arr.append([0, 0, 0])
   
-  return color_arr
-  
-# def _get_inumet()
-
-#########################################
-#########################################
-#########################################
-
-def colorArray(N, band):
-
-  col_seq = getInumetColorRange()
-
-  seqLen  = len(col_seq)
-  delta   = 1.0/(seqLen - 1)
-  r_tuple = ((i*delta, col_seq[i][0], col_seq[i][0]) for i in range(seqLen))
-  g_tuple = ((i*delta, col_seq[i][1], col_seq[i][1]) for i in range(seqLen))
-  b_tuple = ((i*delta, col_seq[i][2], col_seq[i][2]) for i in range(seqLen))
-  cdict   = {'red':   tuple(r_tuple),
-             'green': tuple(g_tuple),
-             'blue':  tuple(b_tuple)}
-  cwm = _mpl.colors.LinearSegmentedColormap('Inumet', cdict, N)
-  return cwm
-
-# def colorArray(N)
+  return color
