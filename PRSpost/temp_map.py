@@ -29,7 +29,7 @@ elif band == 'T6':
 '''
 
 # dado un valor de temperatura y una banda, mapeo el valor a un entero entre 0 y 1024
-def tempToValue(temp, tMin, tMax):
+def tempToValue(temp, tMin, tMax, middle, pixelesColor, pixelesGris):
 
   # el rango de temperaturas es fijo, lo que cambia es el mapeo a color según la banda
   i01 = -75
@@ -43,23 +43,6 @@ def tempToValue(temp, tMin, tMax):
   i09 = -35
   i10 = -30
   iT  =  50
-
-  # hyaku es el 100% de la franja de temperatura que quiero representar
-  hyaku = abs(tMax - tMin)
-
-  # encuentro a que porcentaje se correspone el rango de temperaturas negativas de la escala
-  porcentajeColor = abs(tMin) * 100. / hyaku
-
-  # determino a cuantos pixeles se corresponde la franja de color de los 1024
-  pixelesColor = porcentajeColor * 1024. / 100.
-
-  # determino la cantidad de pixeles de cada color discreto
-  pixelesPorFranja = int(pixelesColor / 10.)
-
-  # determino la cantidad de pixeles correspondientes a la escala de grises
-  pixelesGris = 1024 - (pixelesPorFranja * 10)
-
-  middle = pixelesPorFranja / 2
 
   # retorno un valor en el medio de la franja para no caer en un borde
   if temp < -75.:
@@ -87,3 +70,30 @@ def tempToValue(temp, tMin, tMax):
     offsetPixelGris = (temp * pixelesGris) / tMax
 
     return pixelesColor + offsetPixelGris
+
+
+#########################################
+#########################################
+#########################################
+
+def pixelesFranja(tMin, tMax):
+  # hyaku es el 100% de la franja de temperatura que quiero representar
+  hyaku = abs(tMax - tMin)
+
+  # encuentro a que porcentaje se correspone el rango de temperaturas negativas de la escala
+  porcentajeColor = abs(tMin) * 100. / hyaku
+
+  # determino a cuantos pixeles se corresponde la franja de color de los 1024
+  pixelesColor = porcentajeColor * 1024. / 100.
+
+  # determino la cantidad de pixeles de cada color discreto
+  pixelesPorFranja = int(pixelesColor / 10.)
+
+  # determino la cantidad de pixeles correspondientes a la escala de grises
+  pixelesGris = 1024 - (pixelesPorFranja * 10)
+
+  middle = pixelesPorFranja / 2
+
+  return middle, pixelesColor, pixelesGris
+
+# pixelesFranja

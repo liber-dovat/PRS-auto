@@ -12,7 +12,7 @@ import os
 from funciones   import ymd
 from os.path     import basename
 from color_array import colorArray
-from temp_map    import tempToValue
+from temp_map    import tempToValue, pixelesFranja
 from mpl_toolkits.basemap import Basemap
 
 # RUTAsat = '/sat/prd-sat/ART_G015x015GG_C015x015/'
@@ -181,22 +181,26 @@ def frtopng(metaPath, file):
 
   # defino el colormap  y la disposicion de tick segun la banda
   if band == 'FR' or band == 'RP':
-    cmap  = 'jet'
-    ticks = [0., 20., 40., 60., 80., 100.]
+    cmap        = 'jet'
+    ticks       = [0., 20., 40., 60., 80., 100.]
+    ticksLabels = ticks
   else:
     # Los datos de T2 a T6 estan en kelvin, asi que los paso a Celsius
     IMG  -= 273.
     cmap  = colorArray(1024, vmin, vmax)
-    ticks = [vmin, 0., vmax]
+
+    ticksLabels = [vmin, 0., vmax]
+
+    middle, pixelesColor, pixelesGris = pixelesFranja(vmin,vmax)
 
     # aplico el mapeo de temperatura a rangos de 1024
     vfunc = numpy.vectorize(tempToValue)
-    IMG   = vfunc(IMG,vmin,vmax)
+    IMG   = vfunc(IMG,vmin,vmax,middle,pixelesColor,pixelesGris)
 
-    # reinicio los valos vmin y vmax para dibujar la escala 
-    vmin = 1
-    vmax = 1024
-    ticks = [vmin, 0., vmax]
+    vmin  = 1
+    vmax  = 1024
+    ticks = [vmin, pixelesColor, vmax]
+
   # if FR o RP
 
   print "MAX: " + str(numpy.amax(IMG))
@@ -209,7 +213,7 @@ def frtopng(metaPath, file):
 
   # agrego el colorbar
   cbar = ax1.colorbar(cs, location='bottom', pad='3%', ticks=ticks)
-  cbar.ax.set_xticklabels(ticks, fontsize=10)
+  cbar.ax.set_xticklabels(ticksLabels, fontsize=10)
 
   # agrego el logo en el documento
   logo = plt.imread('/sat/PRS/libs/PRS-auto/PRSpng/imgs/les-logo.png')
