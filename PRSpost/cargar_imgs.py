@@ -189,14 +189,19 @@ def frtopng(metaPath, file):
     IMG  -= 273.
     cmap  = colorArray(1024, vmin, vmax)
 
+    # defino las etiquetas del colorbar
     ticksLabels = [vmin, 0., vmax]
 
+    # calculo los rangos de los colores para usar en la funcion tempToValue
     middle, pixelesColor, pixelesGris = pixelesFranja(vmin,vmax)
 
     # aplico el mapeo de temperatura a rangos de 1024
     vfunc = numpy.vectorize(tempToValue)
+
+    # mapeo los valores de IMG a enteros entre 1 y 1024
     IMG   = vfunc(IMG,vmin,vmax,middle,pixelesColor,pixelesGris)
 
+    # seteo los valores vmin y vmax para que coincidan con el mapeo
     vmin  = 1
     vmax  = 1024
     ticks = [vmin, pixelesColor, vmax]
