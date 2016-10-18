@@ -16,6 +16,107 @@ import matplotlib.colors as _mplc
 -75°C/-74°C -- #000000 -- (0,0,0)     -- Negro
 '''
 
+def getColorRange(tMin, tMax):
+
+  # hyaku es el 100% de la franja de temperatura que quiero representar
+  hyaku = abs(tMax - tMin)
+
+  # encuentro a que porcentaje se correspone el rango de temperaturas negativas de la escala
+  porcentajeColor = abs(tMin) * 100. / hyaku
+
+  # determino a cuantos pixeles se corresponde la franja de color de los 1024
+  pixelesColor = porcentajeColor * 1024. / 100.
+
+  # determino la cantidad de pixeles de cada color discreto
+  pixelesPorFranja = math.ceil(pixelesColor / 10.)
+
+  # determino la cantidad de pixeles correspondientes a la escala de grises
+  pixelesGris = 1024 - (pixelesPorFranja * 10)
+
+  color_arr = []
+  
+  franjaMin = 1
+  franjaMax = pixelesPorFranja
+  iT  = 1024
+  
+  for valor in range(franjaMin,franjaMax):
+    color_arr.append([0, 0, 0])
+
+  franjaMin = franjaMax
+  franjaMax += pixelesPorFranja
+
+  for valor in range(franjaMin,franjaMax):
+    color_arr.append([153/255., 0, 0])
+
+  franjaMin = franjaMax
+  franjaMax += pixelesPorFranja
+
+  for valor in range(franjaMin,franjaMax):
+    color_arr.append([153/255., 0, 153/255.])
+
+  franjaMin = franjaMax
+  franjaMax += pixelesPorFranja
+
+  for valor in range(franjaMin,franjaMax):
+    color_arr.append([255/255., 0, 0])
+
+  franjaMin = franjaMax
+  franjaMax += pixelesPorFranja
+
+  for valor in range(franjaMin,franjaMax):
+    color_arr.append([255/255., 102/255., 0])
+
+  franjaMin = franjaMax
+  franjaMax += pixelesPorFranja
+
+  for valor in range(franjaMin,franjaMax):
+    color_arr.append([255/255., 255/255., 0])
+
+  franjaMin = franjaMax
+  franjaMax += pixelesPorFranja
+
+  for valor in range(franjaMin,franjaMax):
+    color_arr.append([0, 153/255., 0])
+
+  franjaMin = franjaMax
+  franjaMax += pixelesPorFranja
+
+  for valor in range(franjaMin,franjaMax):
+    color_arr.append([0, 255/255., 0])
+
+  franjaMin = franjaMax
+  franjaMax += pixelesPorFranja
+
+  for valor in range(franjaMin,franjaMax):
+    color_arr.append([0, 0, 255/255.])
+
+  franjaMin = franjaMax
+  franjaMax += pixelesPorFranja
+
+  for valor in range(franjaMin,franjaMax):
+    color_arr.append([0, 153/255., 153/255.])
+  
+  # El color inicial de la escala de grises
+  colorGris = 0.85
+  step      = colorGris / pixelesGris
+  
+  color_arr.append([colorGris, colorGris, colorGris])
+  
+  # de gris a negro
+  for valor in range(franjaMax, 1024-1):
+    colorGris -= step
+    color_arr.append([colorGris, colorGris, colorGris])
+  
+  color_arr.append([0, 0, 0])
+  
+  return color_arr
+  
+# def getColorRange()
+
+#########################################
+#########################################
+#########################################
+
 def getInumetColorRange():
   color_arr = []
   
@@ -67,7 +168,7 @@ def getInumetColorRange():
   
   return color_arr
   
-# def _get_inumet()
+# def getInumetColorRange()
 
 #########################################
 #########################################
