@@ -150,8 +150,6 @@ def frtopng(metaPath, file):
   data = numpy.fromfile(fid, dtype='float32')
   fid.close()
 
-  print "MAX: " + str(numpy.amax(data))
-
   # paso el vector data a una matriz de tamano Ci Cj
   IMG = numpy.reshape(data, (Ci, Cj))
 
@@ -185,20 +183,25 @@ def frtopng(metaPath, file):
   if band == 'FR' or band == 'RP':
     cmap  = 'jet'
     ticks = [0., 20., 40., 60., 80., 100.]
-    # grafico IMG1 usando lon como vector x y lat como vector y
-    cs = ax1.pcolormesh(x, y, IMG, vmin=vmin, vmax=vmax, cmap=cmap)
   else:
     # Los datos de T2 a T6 estan en kelvin, asi que los paso a Celsius
     IMG  -= 273.
     cmap  = colorArray(1024, vmin, vmax)
     ticks = [vmin, 0., vmax]
 
+    # aplico el mapeo de temperatura a rangos de 1024
     vfunc = numpy.vectorize(tempToValue)
     IMG   = vfunc(IMG,vmin,vmax)
 
-    # grafico IMG1 usando lon como vector x y lat como vector y
-    cs = ax1.pcolormesh(x, y, IMG, vmin=vmin, vmax=vmax, cmap=cmap)
+    # reinicio los valos vmin y vmax para dibujar la escala 
+    vmin = 1
+    vmax = 1024
   # if FR o RP
+
+  print "MAX: " + str(numpy.amax(IMG))
+
+  # grafico IMG1 usando lon como vector x y lat como vector y
+  cs = ax1.pcolormesh(x, y, IMG, vmin=vmin, vmax=vmax, cmap=cmap)
 
   # seteo los limites del colorbar
   plt.clim(vmin, vmax)
@@ -227,9 +230,9 @@ def frtopng(metaPath, file):
 
 # frtopng
 
-# frtopng('./test/meta15/', './test/imgs/ART_2016285_133500.FR')
-# frtopng('./test/meta15/', './test/imgs/ART_2016285_133500.RP')
-# frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T2')
-# frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T3')
-# frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T4')
+frtopng('./test/meta15/', './test/imgs/ART_2016285_133500.FR')
+frtopng('./test/meta15/', './test/imgs/ART_2016285_133500.RP')
+frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T2')
+frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T3')
+frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T4')
 frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T6')

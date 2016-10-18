@@ -60,7 +60,7 @@ def tempToValue(temp, tMin, tMax):
   pixelesGris = 1024 - (pixelesPorFranja * 10)
 
   middle = pixelesPorFranja / 2
-  
+
   # retorno un valor en el medio de la franja para no caer en un borde
   if temp < -75.:
     return middle
@@ -82,7 +82,7 @@ def tempToValue(temp, tMin, tMax):
     return 9*middle
   elif temp in range(i09, i10):
     return 10*middle
-  elif:
+  else:
 
     offsetPixelGris = (temp * pixelesGris) / tMax
 
