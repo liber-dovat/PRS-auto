@@ -29,39 +29,37 @@ elif band == 'T6':
 '''
 
 # dado un valor de temperatura y una banda, mapeo el valor a un entero entre 0 y 1024
-def tempToValue(temp, band):
+def tempToValue(temp, tMin, tMax):
 
-  # i01 = 60
-  # i02 = 120
-  # i03 = 180
-  # i04 = 240
-  # i05 = 300
-  # i06 = 360
-  # i07 = 420
-  # i08 = 480
-  # i09 = 540
-  # i10 = 600
-  # iT  = 1024
+  # el rango de temperaturas es fijo, lo que cambia es el mapeo a color según la banda
+  i01 = -75
+  i02 = -70
+  i03 = -65
+  i04 = -60
+  i05 = -55
+  i06 = -50
+  i07 = -45
+  i08 = -40
+  i09 = -35
+  i10 = -30
+  iT  =  50
 
-  # el rango de temperaturas depende de la banda
-  i01 = -75.
-  i02 = -70.
-  i03 = -65.
-  i04 = -60.
-  i05 = -55.
-  i06 = -50.
-  i07 = -45.
-  i08 = -40.
-  i09 = -35.
-  i10 = -30.
-  iT  = 50.
+  # hyaku es el 100% de la franja de temperatura que quiero representar
+  hyaku = abs(tMax - tMin)
 
-  # la escala de color se corresponde con el 59.13% del 100%
-  # cuando 1024 -> 100%, 59.13 -> 605, aproximando
-  px_color = 605
-  px_gris  = 419
+  # encuentro a que porcentaje se correspone el rango de temperaturas negativas de la escala
+  porcentajeColor = abs(tMin) * 100. / hyaku
 
-  middle = px_color/20.
+  # determino a cuantos pixeles se corresponde la franja de color de los 1024
+  pixelesColor = porcentajeColor * 1024. / 100.
+
+  # determino la cantidad de pixeles de cada color discreto
+  pixelesPorFranja = int(pixelesColor / 10.)
+
+  # determino la cantidad de pixeles correspondientes a la escala de grises
+  pixelesGris = 1024 - (pixelesPorFranja * 10)
+
+  middle = pixelesPorFranja / 2
   
   # retorno un valor en el medio de la franja para no caer en un borde
   if temp < -75.:
@@ -84,7 +82,11 @@ def tempToValue(temp, band):
     return 9*middle
   elif temp in range(i09, i10):
     return 10*middle
-  
-  hundred = abs(i10) + iT
-  
-  return color
+  elif:
+
+    # percentageTemp  = (temp * 100) / tMax
+    # offsetPixelGris = (percentageTemp * pixelesGris) / 100
+
+    offsetPixelGris = (temp * pixelesGris) / tMax
+
+    return pixelesColor + offsetPixelGris
