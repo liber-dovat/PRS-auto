@@ -196,6 +196,7 @@ def frtopng(metaPath, file):
     # reinicio los valos vmin y vmax para dibujar la escala 
     vmin = 1
     vmax = 1024
+    ticks = [vmin, 0., vmax]
   # if FR o RP
 
   print "MAX: " + str(numpy.amax(IMG))
