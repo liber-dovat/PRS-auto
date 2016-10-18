@@ -187,7 +187,7 @@ def frtopng(metaPath, file):
   else:
     # Los datos de T2 a T6 estan en kelvin, asi que los paso a Celsius
     IMG  -= 273.
-    cmap  = colorArray(1024, band)
+    cmap  = colorArray(1024, vmin, vmax)
     ticks = [vmin, 0., vmax]
   # if FR o RP
 
@@ -221,8 +221,8 @@ def frtopng(metaPath, file):
 
 # frtopng
 
-frtopng('./test/meta15/', './test/imgs/ART_2016285_133500.FR')
-frtopng('./test/meta15/', './test/imgs/ART_2016285_133500.RP')
+# frtopng('./test/meta15/', './test/imgs/ART_2016285_133500.FR')
+# frtopng('./test/meta15/', './test/imgs/ART_2016285_133500.RP')
 frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T2')
 frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T3')
 frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T4')

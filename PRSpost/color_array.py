@@ -2,6 +2,7 @@
 
 import matplotlib as _mpl
 import matplotlib.colors as _mplc
+import math
 
 '''
 -30°C/-34°C -- #009999 -- (0,153,153) -- Celeste
@@ -28,7 +29,7 @@ def getColorRange(tMin, tMax):
   pixelesColor = porcentajeColor * 1024. / 100.
 
   # determino la cantidad de pixeles de cada color discreto
-  pixelesPorFranja = math.ceil(pixelesColor / 10.)
+  pixelesPorFranja = int(math.floor(pixelesColor / 10.))
 
   # determino la cantidad de pixeles correspondientes a la escala de grises
   pixelesGris = 1024 - (pixelesPorFranja * 10)
@@ -174,9 +175,10 @@ def getInumetColorRange():
 #########################################
 #########################################
 
-def colorArray(N, band):
+def colorArray(N, tMin, tMax):
 
   col_seq = getInumetColorRange()
+  # col_seq = getColorRange(tMin, tMax)
 
   seqLen  = len(col_seq)
   delta   = 1.0/(seqLen - 1)
