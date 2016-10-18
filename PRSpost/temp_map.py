@@ -84,9 +84,6 @@ def tempToValue(temp, tMin, tMax):
     return 10*middle
   elif:
 
-    # percentageTemp  = (temp * 100) / tMax
-    # offsetPixelGris = (percentageTemp * pixelesGris) / 100
-
     offsetPixelGris = (temp * pixelesGris) / tMax
 
     return pixelesColor + offsetPixelGris

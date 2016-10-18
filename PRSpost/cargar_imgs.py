@@ -12,6 +12,7 @@ import os
 from funciones   import ymd
 from os.path     import basename
 from color_array import colorArray
+from temp_map    import tempToValue
 from mpl_toolkits.basemap import Basemap
 
 # RUTAsat = '/sat/prd-sat/ART_G015x015GG_C015x015/'
@@ -184,15 +185,20 @@ def frtopng(metaPath, file):
   if band == 'FR' or band == 'RP':
     cmap  = 'jet'
     ticks = [0., 20., 40., 60., 80., 100.]
+    # grafico IMG1 usando lon como vector x y lat como vector y
+    cs = ax1.pcolormesh(x, y, IMG, vmin=vmin, vmax=vmax, cmap=cmap)
   else:
     # Los datos de T2 a T6 estan en kelvin, asi que los paso a Celsius
     IMG  -= 273.
     cmap  = colorArray(1024, vmin, vmax)
     ticks = [vmin, 0., vmax]
-  # if FR o RP
 
-  # grafico IMG1 usando lon como vector x y lat como vector y
-  cs = ax1.pcolormesh(x, y, IMG, vmin=vmin, vmax=vmax, cmap=cmap)
+    vfunc = numpy.vectorize(tempToValue)
+    IMG   = vfunc(IMG,vmin,vmax)
+
+    # grafico IMG1 usando lon como vector x y lat como vector y
+    cs = ax1.pcolormesh(x, y, IMG, vmin=vmin, vmax=vmax, cmap=cmap)
+  # if FR o RP
 
   # seteo los limites del colorbar
   plt.clim(vmin, vmax)
@@ -223,7 +229,7 @@ def frtopng(metaPath, file):
 
 # frtopng('./test/meta15/', './test/imgs/ART_2016285_133500.FR')
 # frtopng('./test/meta15/', './test/imgs/ART_2016285_133500.RP')
-frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T2')
-frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T3')
-frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T4')
+# frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T2')
+# frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T3')
+# frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T4')
 frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T6')
