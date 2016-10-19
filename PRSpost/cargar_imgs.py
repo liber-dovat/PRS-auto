@@ -77,6 +77,27 @@ def getExt(url):
 #########################################
 #########################################
 
+def getFolderExt(banda):
+
+  if banda == 'FR':
+    return "FR"
+  elif banda == 'RP':
+    return "RP"
+  elif banda == 'T2':
+    return "B02"
+  elif banda == 'T3':
+    return "B03"
+  elif banda == 'T4':
+    return "B04"
+  elif banda == 'T6':
+    return "B06"
+
+# getFolderExt
+
+#########################################
+#########################################
+#########################################
+
 def nameTag(basename):
   name       = basename[:-3]
   name_split = name.split("_")
@@ -98,7 +119,7 @@ def nameTag(basename):
 #########################################
 #########################################
 
-def frtopng(metaPath, file):
+def frtopng(file, metaPath, outPngPath):
 
   # abro el archivo meta y guardo los datos
   fid = open(metaPath + '/T000gri.META', 'r')
@@ -225,9 +246,23 @@ def frtopng(metaPath, file):
   plt.figimage(logo, 5, 5)
 
   # genero los datos para escribir el pie de pagina
-  name     = basename(file)           # obtengo el nombre base del archivo
-  PATHpng = './test/png/'
-  destFile = PATHpng + band + name + '.png' # determino el nombre del archivo a escribir
+  name = basename(file)           # obtengo el nombre base del archivo
+  year = name[4:8]
+
+  # chequeo existsencia de ruta final y directorios intermedios, sino los creo
+  bandFolder = getFolderExt(band)
+
+  if not os.path.isdir(outPngPath + bandFolder):
+    os.mkdir(outPngPath + bandFolder)
+  # if
+
+  if not os.path.isdir(outPngPath + bandFolder + '/' + str(year)):
+    os.mkdir(outPngPath + bandFolder + "/" + str(year))
+  # if
+
+  outPath = outPngPath + bandFolder + "/" + str(year) + "/"
+
+  destFile = outPath + name[0:18] + '.png' # genero la ruta y nombre del archivo a guardar
 
   tag = nameTag(name)
 
@@ -240,9 +275,14 @@ def frtopng(metaPath, file):
 
 # frtopng
 
-frtopng('./test/meta15/', './test/imgs/ART_2016285_133500.FR')
-frtopng('./test/meta15/', './test/imgs/ART_2016285_133500.RP')
-frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T2')
-frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T3')
-frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T4')
-frtopng('./test/meta60/', './test/imgs/ART_2016285_133500.T6')
+# PATHpng = '/sat/prd-sat/PNGs/'
+PATHpng = './test/png/'
+meta15  = './test/meta15/'
+meta60  = './test/meta60/'
+
+frtopng('./test/imgs/ART_2016285_133500.FR', meta15, PATHpng)
+frtopng('./test/imgs/ART_2016285_133500.RP', meta15, PATHpng)
+frtopng('./test/imgs/ART_2016285_133500.T2', meta60, PATHpng)
+frtopng('./test/imgs/ART_2016285_133500.T3', meta60, PATHpng)
+frtopng('./test/imgs/ART_2016285_133500.T4', meta60, PATHpng)
+frtopng('./test/imgs/ART_2016285_133500.T6', meta60, PATHpng)
