@@ -12,7 +12,6 @@ import os
 from funciones   import ymd
 from os.path     import basename
 from color_array import colorArray
-from temp_map    import tempToValue, tempToValueV2, tempToValueV3, pixelesFranja, pixelesFranjaV2, pixelesFranjaV3
 from mpl_toolkits.basemap import Basemap
 
 # RUTAsat = '/sat/prd-sat/ART_G015x015GG_C015x015/'
@@ -222,41 +221,21 @@ def fileToPng(file, metaPath, outPngPath):
   band = getExt(file)
 
   # defino el min y max en funcion de la banda
-  vmin, vmax = rangoColorbarV2(band)
+  vmin, vmax = rangoColorbar(band)
 
   # defino el colormap  y la disposicion de tick segun la banda
   if band == 'FR' or band == 'RP':
     cmap        = 'jet'
     ticks       = [0., 20., 40., 60., 80., 100.]
     ticksLabels = ticks
-  elif band == 'T3':
-    IMG  -= 273.
-    cmap = 'gray_r'
-    vmin = numpy.amin(IMG)
-    vmax = numpy.max(IMG)
+  else:
+    IMG         -= 273.
+    vmin        = numpy.amin(IMG)
+    vmax        = numpy.max(IMG)
+    # cmap        = 'gray_r'
+    cmap = colorArray(1024, vmin, vmax)
     ticks       = [vmin, vmax]
     ticksLabels = ticks
-  else:
-    # Los datos de T2 a T6 estan en kelvin, asi que los paso a Celsius
-    IMG  -= 273.
-    cmap  = colorArray(1024, vmin, vmax)
-
-    # defino las etiquetas del colorbar
-    ticksLabels = ['-75', '-70', '-65', '-60', '-55', '-50', '-45', '-40', '-35', '-30', vmax]
-
-    # calculo los rangos de los colores para usar en la funcion tempToValue
-    middle, pixelesColor, pixelesGris = pixelesFranjaV3(vmin,vmax)
-
-    # aplico el mapeo de temperatura a rangos de 1024
-    vfunc = numpy.vectorize(tempToValueV3)
-
-    # mapeo los valores de IMG a enteros entre 1 y 1024
-    IMG   = vfunc(IMG,vmin,vmax,middle,pixelesColor,pixelesGris)
-
-    # seteo los valores vmin y vmax para que coincidan con el mapeo
-    vmin  = 1
-    vmax  = 1024
-    ticks = [middle, 3*middle, 5*middle, 7*middle, 9*middle, 11*middle, 13*middle, 15*middle, 17*middle, 19*middle, vmax]
 
   # if FR o RP
 
@@ -343,7 +322,7 @@ meta60  = './test/meta60/'
 namae = 'ART_2016293_163800'
 # fileToPng('./test/imgs/' + namae + '.FR', meta15, PATHpng)
 # fileToPng('./test/imgs/' + namae + '.RP', meta15, PATHpng)
-# fileToPng('./test/imgs/' + namae + '.T2', meta60, PATHpng)
+fileToPng('./test/imgs/' + namae + '.T2', meta60, PATHpng)
 fileToPng('./test/imgs/' + namae + '.T3', meta60, PATHpng)
-# fileToPng('./test/imgs/' + namae + '.T4', meta60, PATHpng)
-# fileToPng('./test/imgs/' + namae + '.T6', meta60, PATHpng)
+fileToPng('./test/imgs/' + namae + '.T4', meta60, PATHpng)
+fileToPng('./test/imgs/' + namae + '.T6', meta60, PATHpng)
