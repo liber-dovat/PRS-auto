@@ -293,7 +293,7 @@ meta60  = './test/meta60/'
 
 # frtopng('./test/imgs/ART_2016285_133500.FR', meta15, PATHpng)
 # frtopng('./test/imgs/ART_2016285_133500.RP', meta15, PATHpng)
-frtopng('./test/imgs/ART_2016285_133500.T2', meta60, PATHpng)
+# frtopng('./test/imgs/ART_2016285_133500.T2', meta60, PATHpng)
 frtopng('./test/imgs/ART_2016285_133500.T3', meta60, PATHpng)
-frtopng('./test/imgs/ART_2016285_133500.T4', meta60, PATHpng)
-frtopng('./test/imgs/ART_2016285_133500.T6', meta60, PATHpng)
+# frtopng('./test/imgs/ART_2016285_133500.T4', meta60, PATHpng)
+# frtopng('./test/imgs/ART_2016285_133500.T6', meta60, PATHpng)
