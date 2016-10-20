@@ -97,10 +97,6 @@ def tempToValueV2(temp, tMin, tMax, middle, pixelesColor, pixelesGris):
   i09 = -35
   i10 = -30
 
-  middle       = 38.5
-  pixelesColor = 770
-  pixelesGris  = 254
-
   # retorno un valor en el medio de la franja para no caer en un borde
   if temp < -75.:
     return middle
@@ -129,6 +125,54 @@ def tempToValueV2(temp, tMin, tMax, middle, pixelesColor, pixelesGris):
     return pixelesColor + offsetPixelGris
 
 # tempToValueV2
+
+#########################################
+#########################################
+#########################################
+
+# dado un valor de temperatura y una banda, mapeo el valor a un entero entre 0 y 1024
+def tempToValueV3(temp, tMin, tMax, middle, pixelesColor, pixelesGris):
+
+  # el rango de temperaturas es fijo, lo que cambia es el mapeo a color según la banda
+  i01 = -75
+  i02 = -70
+  i03 = -65
+  i04 = -60
+  i05 = -55
+  i06 = -50
+  i07 = -45
+  i08 = -40
+  i09 = -35
+  i10 = -30
+
+  # retorno un valor en el medio de la franja para no caer en un borde
+  if temp < -75.:
+    return middle
+  elif temp in range(i01, i02):
+    return 3*middle
+  elif temp in range(i02, i03):
+    return 5*middle
+  elif temp in range(i03, i04):
+    return 7*middle
+  elif temp in range(i04, i05):
+    return 9*middle
+  elif temp in range(i05, i06):
+    return 11*middle
+  elif temp in range(i06, i07):
+    return 13*middle
+  elif temp in range(i07, i08):
+    return 15*middle
+  elif temp in range(i08, i09):
+    return 17*middle
+  elif temp in range(i09, i10):
+    return 19*middle
+  else:
+
+    offsetPixelGris = (temp * pixelesGris) / tMax
+
+    return pixelesColor + offsetPixelGris
+
+# tempToValueV3
 
 #########################################
 #########################################
@@ -177,4 +221,18 @@ def pixelesFranjaV2(tMin, tMax):
 
   return middle, pixelesColor, pixelesGris
 
-# pixelesFranja
+# pixelesFranjaV2
+
+#########################################
+#########################################
+#########################################
+
+def pixelesFranjaV3(tMin, tMax):
+
+  middle       = 20
+  pixelesColor = 400
+  pixelesGris  = 624
+
+  return middle, pixelesColor, pixelesGris
+
+# pixelesFranjaV3

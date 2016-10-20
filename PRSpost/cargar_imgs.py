@@ -12,7 +12,7 @@ import os
 from funciones   import ymd
 from os.path     import basename
 from color_array import colorArray
-from temp_map    import tempToValue, tempToValueV2, pixelesFranja, pixelesFranjaV2
+from temp_map    import tempToValue, tempToValueV2, tempToValueV3, pixelesFranja, pixelesFranjaV2, pixelesFranjaV3
 from mpl_toolkits.basemap import Basemap
 
 # RUTAsat = '/sat/prd-sat/ART_G015x015GG_C015x015/'
@@ -229,6 +229,13 @@ def fileToPng(file, metaPath, outPngPath):
     cmap        = 'jet'
     ticks       = [0., 20., 40., 60., 80., 100.]
     ticksLabels = ticks
+  elif band == 'T3':
+    IMG  -= 273.
+    cmap = 'gray_r'
+    vmin = numpy.amin(IMG)
+    vmax = numpy.max(IMG)
+    ticks       = [vmin, vmax]
+    ticksLabels = ticks
   else:
     # Los datos de T2 a T6 estan en kelvin, asi que los paso a Celsius
     IMG  -= 273.
@@ -238,10 +245,10 @@ def fileToPng(file, metaPath, outPngPath):
     ticksLabels = ['-75', '-70', '-65', '-60', '-55', '-50', '-45', '-40', '-35', '-30', vmax]
 
     # calculo los rangos de los colores para usar en la funcion tempToValue
-    middle, pixelesColor, pixelesGris = pixelesFranjaV2(vmin,vmax)
+    middle, pixelesColor, pixelesGris = pixelesFranjaV3(vmin,vmax)
 
     # aplico el mapeo de temperatura a rangos de 1024
-    vfunc = numpy.vectorize(tempToValueV2)
+    vfunc = numpy.vectorize(tempToValueV3)
 
     # mapeo los valores de IMG a enteros entre 1 y 1024
     IMG   = vfunc(IMG,vmin,vmax,middle,pixelesColor,pixelesGris)
@@ -263,7 +270,7 @@ def fileToPng(file, metaPath, outPngPath):
 
   # agrego el colorbar
   cbar = ax1.colorbar(cs, location='bottom', pad='3%', ticks=ticks)
-  cbar.ax.set_xticklabels(ticksLabels, fontsize=10)
+  cbar.ax.set_xticklabels(ticksLabels, fontsize=5)
 
   # agrego el logo en el documento
   logo = plt.imread('/sat/PRS/libs/PRS-auto/PRSpng/imgs/les-logo.png')
@@ -309,9 +316,34 @@ PATHpng = './test/png/'
 meta15  = './test/meta15/'
 meta60  = './test/meta60/'
 
-# fileToPng('./test/imgs/ART_2016285_133500.FR', meta15, PATHpng)
-# fileToPng('./test/imgs/ART_2016285_133500.RP', meta15, PATHpng)
-fileToPng('./test/imgs/ART_2016285_133500.T2', meta60, PATHpng)
-fileToPng('./test/imgs/ART_2016285_133500.T3', meta60, PATHpng)
-fileToPng('./test/imgs/ART_2016285_133500.T4', meta60, PATHpng)
-fileToPng('./test/imgs/ART_2016285_133500.T6', meta60, PATHpng)
+# namae = 'ART_2016285_133500'
+# fileToPng('./test/imgs/' + namae + '.FR', meta15, PATHpng)
+# fileToPng('./test/imgs/' + namae + '.RP', meta15, PATHpng)
+# fileToPng('./test/imgs/' + namae + '.T2', meta60, PATHpng)
+# fileToPng('./test/imgs/' + namae + '.T3', meta60, PATHpng)
+# fileToPng('./test/imgs/' + namae + '.T4', meta60, PATHpng)
+# fileToPng('./test/imgs/' + namae + '.T6', meta60, PATHpng)
+
+# namae = 'ART_2016282_144500'
+# fileToPng('./test/imgs/' + namae + '.FR', meta15, PATHpng)
+# fileToPng('./test/imgs/' + namae + '.RP', meta15, PATHpng)
+# fileToPng('./test/imgs/' + namae + '.T2', meta60, PATHpng)
+# fileToPng('./test/imgs/' + namae + '.T3', meta60, PATHpng)
+# fileToPng('./test/imgs/' + namae + '.T4', meta60, PATHpng)
+# fileToPng('./test/imgs/' + namae + '.T6', meta60, PATHpng)
+
+# namae = 'ART_2016282_163500'
+# fileToPng('./test/imgs/' + namae + '.FR', meta15, PATHpng)
+# fileToPng('./test/imgs/' + namae + '.RP', meta15, PATHpng)
+# fileToPng('./test/imgs/' + namae + '.T2', meta60, PATHpng)
+# fileToPng('./test/imgs/' + namae + '.T3', meta60, PATHpng)
+# fileToPng('./test/imgs/' + namae + '.T4', meta60, PATHpng)
+# fileToPng('./test/imgs/' + namae + '.T6', meta60, PATHpng)
+
+namae = 'ART_2016293_163800'
+# fileToPng('./test/imgs/' + namae + '.FR', meta15, PATHpng)
+# fileToPng('./test/imgs/' + namae + '.RP', meta15, PATHpng)
+# fileToPng('./test/imgs/' + namae + '.T2', meta60, PATHpng)
+fileToPng('./test/imgs/' + namae + '.T3', meta60, PATHpng)
+# fileToPng('./test/imgs/' + namae + '.T4', meta60, PATHpng)
+# fileToPng('./test/imgs/' + namae + '.T6', meta60, PATHpng)

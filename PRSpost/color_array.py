@@ -234,11 +234,69 @@ def getInumetV2CR():
 #########################################
 #########################################
 
+# Inumet v3 color range
+
+def getInumetV3():
+  color_arr = []
+  
+  i01 = 40
+  i02 = 80
+  i03 = 120
+  i04 = 160
+  i05 = 200
+  i06 = 240
+  i07 = 280
+  i08 = 320
+  i09 = 360
+  i10 = 400
+  iT  = 1024
+  
+  for valor in range(1,i01):
+    color_arr.append([55/255., 0, 0])
+  for valor in range(i01, i02):
+    color_arr.append([153/255., 0, 0])
+  for valor in range(i02, i03):
+    color_arr.append([153/255., 0, 153/255.])
+  for valor in range(i03, i04):
+    color_arr.append([255/255., 0, 0])
+  for valor in range(i04, i05):
+    color_arr.append([255/255., 102/255., 0])
+  for valor in range(i05, i06):
+    color_arr.append([255/255., 255/255., 0])
+  for valor in range(i06, i07):
+    color_arr.append([0, 153/255., 0])
+  for valor in range(i07, i08):
+    color_arr.append([0, 255/255., 0])
+  for valor in range(i08, i09):
+    color_arr.append([0, 0, 255/255.])
+  for valor in range(i09, i10):
+    color_arr.append([0, 153/255., 153/255.])
+  
+  base = 0.85
+  step = base / (iT - i10)
+  
+  color_arr.append([base, base, base])
+  
+  # de gris a negro
+  for valor in range(i10, iT-1):
+    base -= step
+    color_arr.append([base, base, base])
+  
+  color_arr.append([0, 0, 0])
+  
+  return color_arr
+  
+# def getInumetV3()
+
+#########################################
+#########################################
+#########################################
+
 def colorArray(N, tMin, tMax):
 
   # col_seq = getInumetColorRange()
   # col_seq = getColorRange(tMin, tMax)
-  col_seq = getInumetV2CR()
+  col_seq = getInumetV3()
 
   seqLen  = len(col_seq)
   delta   = 1.0/(seqLen - 1)
