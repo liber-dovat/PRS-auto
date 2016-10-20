@@ -41,7 +41,7 @@ def getColorRange(tMin, tMax):
   iT  = 1024
   
   for valor in range(franjaMin,franjaMax):
-    color_arr.append([0, 0, 0])
+    color_arr.append([55/255., 0, 0])
 
   franjaMin = franjaMax
   franjaMax += pixelesPorFranja
@@ -134,7 +134,7 @@ def getInumetColorRange():
   iT  = 1024
   
   for valor in range(1,i01):
-    color_arr.append([0, 0, 0])
+    color_arr.append([55/255., 0, 0])
   for valor in range(i01, i02):
     color_arr.append([153/255., 0, 0])
   for valor in range(i02, i03):

@@ -48,23 +48,23 @@ def tempToValue(temp, tMin, tMax, middle, pixelesColor, pixelesGris):
   if temp < -75.:
     return middle
   elif temp in range(i01, i02):
-    return 2*middle
-  elif temp in range(i02, i03):
     return 3*middle
-  elif temp in range(i03, i04):
-    return 4*middle
-  elif temp in range(i04, i05):
+  elif temp in range(i02, i03):
     return 5*middle
-  elif temp in range(i05, i06):
-    return 6*middle
-  elif temp in range(i06, i07):
+  elif temp in range(i03, i04):
     return 7*middle
-  elif temp in range(i07, i08):
-    return 8*middle
-  elif temp in range(i08, i09):
+  elif temp in range(i04, i05):
     return 9*middle
+  elif temp in range(i05, i06):
+    return 11*middle
+  elif temp in range(i06, i07):
+    return 13*middle
+  elif temp in range(i07, i08):
+    return 15*middle
+  elif temp in range(i08, i09):
+    return 17*middle
   elif temp in range(i09, i10):
-    return 10*middle
+    return 19*middle
   else:
 
     offsetPixelGris = (temp * pixelesGris) / tMax
@@ -77,11 +77,15 @@ def tempToValue(temp, tMin, tMax, middle, pixelesColor, pixelesGris):
 #########################################
 
 def pixelesFranja(tMin, tMax):
+
   # hyaku es el 100% de la franja de temperatura que quiero representar
   hyaku = abs(tMax - tMin)
 
   # encuentro a que porcentaje se correspone el rango de temperaturas negativas de la escala
-  porcentajeColor = abs(tMin) * 100. / hyaku
+  if tMax < 0:
+    porcentajeColor = 100.
+  else:
+    porcentajeColor = abs(tMin) * 100. / hyaku
 
   # determino a cuantos pixeles se corresponde la franja de color de los 1024
   pixelesColor = porcentajeColor * 1024. / 100.

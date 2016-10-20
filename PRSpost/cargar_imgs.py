@@ -98,6 +98,12 @@ def getFolderExt(banda):
 #########################################
 #########################################
 
+'''
+Ésta función genera el tag que se utiliza como pie de página
+de la imágen generada.
+Ejemplo: CH3 T3 11-10-2016 13:35 UTC
+'''
+
 def nameTag(basename):
   name       = basename[:-3]
   name_split = name.split("_")
@@ -211,7 +217,7 @@ def frtopng(file, metaPath, outPngPath):
     cmap  = colorArray(1024, vmin, vmax)
 
     # defino las etiquetas del colorbar
-    ticksLabels = [vmin, 0., vmax]
+    ticksLabels = ['-75', '-70', '-65', '-60', '-55', '-50', '-45', '-40', '-35', '-30', vmax]
 
     # calculo los rangos de los colores para usar en la funcion tempToValue
     middle, pixelesColor, pixelesGris = pixelesFranja(vmin,vmax)
@@ -225,7 +231,7 @@ def frtopng(file, metaPath, outPngPath):
     # seteo los valores vmin y vmax para que coincidan con el mapeo
     vmin  = 1
     vmax  = 1024
-    ticks = [vmin, pixelesColor, vmax]
+    ticks = [middle, 3*middle, 5*middle, 7*middle, 9*middle, 11*middle, 13*middle, 15*middle, 17*middle, 19*middle, vmax]
 
   # if FR o RP
 
@@ -252,17 +258,22 @@ def frtopng(file, metaPath, outPngPath):
   # chequeo existsencia de ruta final y directorios intermedios, sino los creo
   bandFolder = getFolderExt(band)
 
-  if not os.path.isdir(outPngPath + bandFolder):
-    os.mkdir(outPngPath + bandFolder)
-  # if
+  testing = True
 
-  if not os.path.isdir(outPngPath + bandFolder + '/' + str(year)):
-    os.mkdir(outPngPath + bandFolder + "/" + str(year))
-  # if
+  if testing:
+    destFile = outPngPath + name[0:18]  + band+ '.png'
+  else:
+    if not os.path.isdir(outPngPath + bandFolder):
+      os.mkdir(outPngPath + bandFolder)
+    # if
 
-  outPath = outPngPath + bandFolder + "/" + str(year) + "/"
+    if not os.path.isdir(outPngPath + bandFolder + '/' + str(year)):
+      os.mkdir(outPngPath + bandFolder + "/" + str(year))
+    # if
 
-  destFile = outPath + name[0:18] + '.png' # genero la ruta y nombre del archivo a guardar
+    outPath = outPngPath + bandFolder + "/" + str(year) + "/"
+
+    destFile = outPath + name[0:18] + '.png' # genero la ruta y nombre del archivo a guardar
 
   tag = nameTag(name)
 
@@ -280,8 +291,8 @@ PATHpng = './test/png/'
 meta15  = './test/meta15/'
 meta60  = './test/meta60/'
 
-frtopng('./test/imgs/ART_2016285_133500.FR', meta15, PATHpng)
-frtopng('./test/imgs/ART_2016285_133500.RP', meta15, PATHpng)
+# frtopng('./test/imgs/ART_2016285_133500.FR', meta15, PATHpng)
+# frtopng('./test/imgs/ART_2016285_133500.RP', meta15, PATHpng)
 frtopng('./test/imgs/ART_2016285_133500.T2', meta60, PATHpng)
 frtopng('./test/imgs/ART_2016285_133500.T3', meta60, PATHpng)
 frtopng('./test/imgs/ART_2016285_133500.T4', meta60, PATHpng)
