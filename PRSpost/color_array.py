@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+  # -*- coding: utf-8 -*-
 
 import matplotlib as _mpl
 import matplotlib.colors as _mplc
@@ -175,10 +175,70 @@ def getInumetColorRange():
 #########################################
 #########################################
 
+# Inumet v2 color range
+
+def getInumetV2CR():
+  color_arr = []
+  
+  i01 = 77
+  i02 = 154
+  i03 = 231
+  i04 = 308
+  i05 = 385
+  i06 = 462
+  i07 = 539
+  i08 = 616
+  i09 = 693
+  i10 = 770
+  iT  = 1024
+  
+  for valor in range(1,i01):
+    color_arr.append([55/255., 0, 0])
+  for valor in range(i01, i02):
+    color_arr.append([153/255., 0, 0])
+  for valor in range(i02, i03):
+    color_arr.append([153/255., 0, 153/255.])
+  for valor in range(i03, i04):
+    color_arr.append([255/255., 0, 0])
+  for valor in range(i04, i05):
+    color_arr.append([255/255., 102/255., 0])
+  for valor in range(i05, i06):
+    color_arr.append([255/255., 255/255., 0])
+  for valor in range(i06, i07):
+    color_arr.append([0, 153/255., 0])
+  for valor in range(i07, i08):
+    color_arr.append([0, 255/255., 0])
+  for valor in range(i08, i09):
+    color_arr.append([0, 0, 255/255.])
+  for valor in range(i09, i10):
+    color_arr.append([0, 153/255., 153/255.])
+  
+  # 630 intervalos
+  base = 0.85
+  step = base / (iT - i10)
+  
+  color_arr.append([base, base, base])
+  
+  # de gris a negro
+  for valor in range(i10, iT-1):
+    base -= step
+    color_arr.append([base, base, base])
+  
+  color_arr.append([0, 0, 0])
+  
+  return color_arr
+  
+# def getInumetV2CR()
+
+#########################################
+#########################################
+#########################################
+
 def colorArray(N, tMin, tMax):
 
   # col_seq = getInumetColorRange()
-  col_seq = getColorRange(tMin, tMax)
+  # col_seq = getColorRange(tMin, tMax)
+  col_seq = getInumetV2CR()
 
   seqLen  = len(col_seq)
   delta   = 1.0/(seqLen - 1)

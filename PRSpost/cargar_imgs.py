@@ -12,7 +12,7 @@ import os
 from funciones   import ymd
 from os.path     import basename
 from color_array import colorArray
-from temp_map    import tempToValue, pixelesFranja
+from temp_map    import tempToValue, tempToValueV2, pixelesFranja, pixelesFranjaV2
 from mpl_toolkits.basemap import Basemap
 
 # RUTAsat = '/sat/prd-sat/ART_G015x015GG_C015x015/'
@@ -38,6 +38,24 @@ def rangoColorbar(band):
   elif band == 'T6':
     vmin = -68.
     vmax = 7.
+
+  return vmin, vmax
+
+# rangoColorbar
+
+#########################################
+#########################################
+#########################################
+
+def rangoColorbarV2(band):
+
+  # defino los rangos del colorbar en funcion del tipo de banda
+  if band == 'FR' or band == 'RP':
+    vmin = 0.
+    vmax = 100.
+  else:
+    vmin = -75.
+    vmax = 50.
 
   return vmin, vmax
 
@@ -125,7 +143,7 @@ def nameTag(basename):
 #########################################
 #########################################
 
-def frtopng(file, metaPath, outPngPath):
+def fileToPng(file, metaPath, outPngPath):
 
   # abro el archivo meta y guardo los datos
   fid = open(metaPath + '/T000gri.META', 'r')
@@ -204,7 +222,7 @@ def frtopng(file, metaPath, outPngPath):
   band = getExt(file)
 
   # defino el min y max en funcion de la banda
-  vmin, vmax = rangoColorbar(band)
+  vmin, vmax = rangoColorbarV2(band)
 
   # defino el colormap  y la disposicion de tick segun la banda
   if band == 'FR' or band == 'RP':
@@ -220,10 +238,10 @@ def frtopng(file, metaPath, outPngPath):
     ticksLabels = ['-75', '-70', '-65', '-60', '-55', '-50', '-45', '-40', '-35', '-30', vmax]
 
     # calculo los rangos de los colores para usar en la funcion tempToValue
-    middle, pixelesColor, pixelesGris = pixelesFranja(vmin,vmax)
+    middle, pixelesColor, pixelesGris = pixelesFranjaV2(vmin,vmax)
 
     # aplico el mapeo de temperatura a rangos de 1024
-    vfunc = numpy.vectorize(tempToValue)
+    vfunc = numpy.vectorize(tempToValueV2)
 
     # mapeo los valores de IMG a enteros entre 1 y 1024
     IMG   = vfunc(IMG,vmin,vmax,middle,pixelesColor,pixelesGris)
@@ -284,16 +302,16 @@ def frtopng(file, metaPath, outPngPath):
   plt.savefig(destFile, bbox_inches='tight', dpi=200)
   plt.close() # cierro el archivo
 
-# frtopng
+# fileToPng
 
 # PATHpng = '/sat/prd-sat/PNGs/'
 PATHpng = './test/png/'
 meta15  = './test/meta15/'
 meta60  = './test/meta60/'
 
-# frtopng('./test/imgs/ART_2016285_133500.FR', meta15, PATHpng)
-# frtopng('./test/imgs/ART_2016285_133500.RP', meta15, PATHpng)
-# frtopng('./test/imgs/ART_2016285_133500.T2', meta60, PATHpng)
-frtopng('./test/imgs/ART_2016285_133500.T3', meta60, PATHpng)
-# frtopng('./test/imgs/ART_2016285_133500.T4', meta60, PATHpng)
-# frtopng('./test/imgs/ART_2016285_133500.T6', meta60, PATHpng)
+# fileToPng('./test/imgs/ART_2016285_133500.FR', meta15, PATHpng)
+# fileToPng('./test/imgs/ART_2016285_133500.RP', meta15, PATHpng)
+fileToPng('./test/imgs/ART_2016285_133500.T2', meta60, PATHpng)
+fileToPng('./test/imgs/ART_2016285_133500.T3', meta60, PATHpng)
+fileToPng('./test/imgs/ART_2016285_133500.T4', meta60, PATHpng)
+fileToPng('./test/imgs/ART_2016285_133500.T6', meta60, PATHpng)
