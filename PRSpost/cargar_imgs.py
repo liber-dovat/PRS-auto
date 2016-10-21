@@ -142,6 +142,32 @@ def nameTag(basename):
 #########################################
 #########################################
 
+def testData(file, metaPath, outPngPath):
+
+  # abro el archivo file y lo guardo en data
+  fid  = open(file, 'r')
+  data = numpy.fromfile(fid, dtype='float32')
+  fid.close()
+
+  data -= 273.
+
+  plt.plot(data)
+  plt.show()
+
+  band = getExt(file)
+  name = basename(file)           # obtengo el nombre base del archivo
+  destFile = outPngPath + name[0:18]  + band + '.png'
+
+  plt.savefig(destFile, bbox_inches='tight', dpi=200)
+
+  plt.close()
+
+# testData
+
+#########################################
+#########################################
+#########################################
+
 def fileToPng(file, metaPath, outPngPath):
 
   # abro el archivo meta y guardo los datos
@@ -319,9 +345,17 @@ meta60  = './test/meta60/'
 # fileToPng('./test/imgs/' + namae + '.T6', meta60, PATHpng)
 
 namae = 'ART_2016293_163800'
-# fileToPng('./test/imgs/' + namae + '.FR', meta15, PATHpng)
-# fileToPng('./test/imgs/' + namae + '.RP', meta15, PATHpng)
+fileToPng('./test/imgs/' + namae + '.FR', meta15, PATHpng)
+fileToPng('./test/imgs/' + namae + '.RP', meta15, PATHpng)
 fileToPng('./test/imgs/' + namae + '.T2', meta60, PATHpng)
 fileToPng('./test/imgs/' + namae + '.T3', meta60, PATHpng)
 fileToPng('./test/imgs/' + namae + '.T4', meta60, PATHpng)
 fileToPng('./test/imgs/' + namae + '.T6', meta60, PATHpng)
+
+# namae = 'ART_2016293_163800'
+# testData('./test/imgs/' + namae + '.FR', meta15, PATHpng)
+# testData('./test/imgs/' + namae + '.RP', meta15, PATHpng)
+# testData('./test/imgs/' + namae + '.T2', meta60, PATHpng)
+# testData('./test/imgs/' + namae + '.T3', meta60, PATHpng)
+# testData('./test/imgs/' + namae + '.T4', meta60, PATHpng)
+# testData('./test/imgs/' + namae + '.T6', meta60, PATHpng)
