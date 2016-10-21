@@ -26,17 +26,17 @@ def rangoColorbar(band):
     vmin = 0.
     vmax = 100.
   elif band == 'T2':
-    vmin = -68.
-    vmax = 47. 
+    vmin = -70.
+    vmax = 70. 
   elif band == 'T3':
-    vmin = -68.
-    vmax = -8.
+    vmin = -95.
+    vmax = 25.
   elif band == 'T4':
-    vmin = -80.
-    vmax = 50.
+    vmin = -95.
+    vmax = 70.
   elif band == 'T6':
-    vmin = -68.
-    vmax = 7.
+    vmin = -95.
+    vmax = 70.
 
   return vmin, vmax
 
@@ -247,7 +247,7 @@ def fileToPng(file, metaPath, outPngPath):
   band = getExt(file)
 
   # defino el min y max en funcion de la banda
-  vmin, vmax = rangoColorbarV2(band)
+  vmin, vmax = rangoColorbar(band)
 
   # defino el colormap  y la disposicion de tick segun la banda
   if band == 'FR' or band == 'RP':
@@ -259,8 +259,8 @@ def fileToPng(file, metaPath, outPngPath):
     # cmap        = 'gray_r'
     cmap = colorArray(1024, vmin, vmax)
 
-    ticks       = [-80,-75.2,-70.2,-65,-60,-55,-49.9,-44.9,-39.7,-34.7,-29.7,-25,-20,-15,-10,-5,0,5,10,15,20,25,30,35,40,45,50]
-    ticksLabels = [-80,-75,-70,-65,-60,-55,-50,-45,-40,-35,-30,-25,-20,-15,-10,-5,0,5,10,15,20,25,30,35,40,45,50]
+    ticks       = [-90,-85,-80,-75.2,-70.2,-65,-60,-55,-49.9,-44.9,-39.7,-34.7,-29.7,-25,-20,-15,-10,-5,0,5,10,15,20,25,30,35,40,45,50,55,60,65,70]
+    ticksLabels = [-90,-85,-80,-75,-70,-65,-60,-55,-50,-45,-40,-35,-30,-25,-20,-15,-10,-5,0,5,10,15,20,25,30,35,40,45,50,55,60,65,70]
   # if FR o RP
 
   print "MAX: " + str(numpy.amax(IMG))
