@@ -53,7 +53,7 @@ def rangoColorbarV2(band):
     vmin = 0.
     vmax = 100.
   else:
-    vmin = -75.
+    vmin = -80.
     vmax = 50.
 
   return vmin, vmax
@@ -221,7 +221,7 @@ def fileToPng(file, metaPath, outPngPath):
   band = getExt(file)
 
   # defino el min y max en funcion de la banda
-  vmin, vmax = rangoColorbar(band)
+  vmin, vmax = rangoColorbarV2(band)
 
   # defino el colormap  y la disposicion de tick segun la banda
   if band == 'FR' or band == 'RP':
@@ -230,16 +230,15 @@ def fileToPng(file, metaPath, outPngPath):
     ticksLabels = ticks
   else:
     IMG         -= 273.
-    vmin        = numpy.amin(IMG)
-    vmax        = numpy.max(IMG)
     # cmap        = 'gray_r'
     cmap = colorArray(1024, vmin, vmax)
-    ticks       = [vmin, vmax]
-    ticksLabels = ticks
 
+    ticks       = [-80,-75.2,-70.2,-65,-60,-55,-49.9,-44.9,-39.7,-34.7,-29.7,-25,-20,-15,-10,-5,0,5,10,15,20,25,30,35,40,45,50]
+    ticksLabels = [-80,-75,-70,-65,-60,-55,-50,-45,-40,-35,-30,-25,-20,-15,-10,-5,0,5,10,15,20,25,30,35,40,45,50]
   # if FR o RP
 
   print "MAX: " + str(numpy.amax(IMG))
+  print "MIN: " + str(numpy.amin(IMG))
 
   # grafico IMG1 usando lon como vector x y lat como vector y
   cs = ax1.pcolormesh(x, y, IMG, vmin=vmin, vmax=vmax, cmap=cmap)
@@ -249,7 +248,7 @@ def fileToPng(file, metaPath, outPngPath):
 
   # agrego el colorbar
   cbar = ax1.colorbar(cs, location='bottom', pad='3%', ticks=ticks)
-  cbar.ax.set_xticklabels(ticksLabels, fontsize=5)
+  cbar.ax.set_xticklabels(ticksLabels, fontsize=6)
 
   # agrego el logo en el documento
   logo = plt.imread('/sat/PRS/libs/PRS-auto/PRSpng/imgs/les-logo.png')

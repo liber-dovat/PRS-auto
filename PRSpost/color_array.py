@@ -294,9 +294,9 @@ def getInumetV3():
 
 def colorArray(N, tMin, tMax):
 
-  col_seq = getInumetColorRange()
+  # col_seq = getInumetColorRange()
   # col_seq = getColorRange(tMin, tMax)
-  # col_seq = getInumetV3()
+  col_seq = getInumetV3()
 
   seqLen  = len(col_seq)
   delta   = 1.0/(seqLen - 1)
