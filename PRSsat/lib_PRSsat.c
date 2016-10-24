@@ -375,7 +375,8 @@ int procesar_VIS_gri(double * FRmat, double * RPmat, double * CZmat, int * MSKma
 
 	// ENMASCARADOS VARIOS
 	sumaMK = 0;
-	enmascarar_por_CZ(RPmat, CZmat, Ct);
+	enmascarar_por_CZ(RPmat, CZmat, Ct, coszTHR);
+	enmascarar_por_CZ(FRmat, CZmat, Ct, 0);
 	generar_mascara(CNT1mat, CNT2mat, Ct, MSKmat, &sumaMK);
 
 	// ASIGNACION DE TAG
@@ -474,10 +475,10 @@ int realizar_promedio(double * SUMA, int * CNT, int Ct){
 	return 1;
 }
 
-int enmascarar_por_CZ(double * VAR, double * CZ, int Ct){
+int enmascarar_por_CZ(double * VAR, double * CZ, int Ct, int thr){
 	int 	h1;
 	for (h1=0;h1<(Ct);h1++){
-		if (CZ[h1] < coszTHR){
+		if (CZ[h1] < thr){
 			VAR[h1] = 0;
 		}
 	}
