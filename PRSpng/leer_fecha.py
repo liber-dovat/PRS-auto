@@ -195,55 +195,56 @@ def lastReceived():
 lastReceived()
 arreglo = getDateArray()
 
-for file in arreglo:
+if len(arreglo) >= 5:
+  for file in arreglo:
 
-  print file
-  netcdf2png(file,'/sat/PRS/libs/PRS-auto/PRSpng/png/')
+    print file
+    netcdf2png(file,'/sat/PRS/libs/PRS-auto/PRSpng/png/')
 
-  root = "/sat/PRS/libs/PRS-auto/PRSpng/png/"
+    root = "/sat/PRS/libs/PRS-auto/PRSpng/png/"
 
-  if file == arreglo[-1]:
-    filename   = basename(file)
-    name_split = filename.split(".")
-    name_split = name_split[1:4]
-    print name_split
-    month = ymd(int(name_split[0]), int(name_split[1]))
-    name_split.insert(1, str(month[1]).zfill(2))
-    # print name_split[0]+'.'+name_split[1]+'.'+name_split[2]+'.'+name_split[3]+'\n'
+    if file == arreglo[-1]:
+      filename   = basename(file)
+      name_split = filename.split(".")
+      name_split = name_split[1:4]
+      print name_split
+      month = ymd(int(name_split[0]), int(name_split[1]))
+      name_split.insert(1, str(month[1]).zfill(2))
+      # print name_split[0]+'.'+name_split[1]+'.'+name_split[2]+'.'+name_split[3]+'\n'
 
-    # genero los paths para los directorios base
-    data_path     = "/sat/PRS/libs/PRS-auto/data/"
-    abs_file_path = os.path.abspath(data_path)
+      # genero los paths para los directorios base
+      data_path     = "/sat/PRS/libs/PRS-auto/data/"
+      abs_file_path = os.path.abspath(data_path)
 
-    # declaro los paths para los dos archivos
-    prs_path = os.path.join(abs_file_path, 'last-image-prs')
+      # declaro los paths para los dos archivos
+      prs_path = os.path.join(abs_file_path, 'last-image-prs')
 
-    # abro los dos archivos para trabajar con ellos
-    # el primero es de solo lectura, y el segundo es de lectura escritura
-    tsmp = name_split[0]+'.'+name_split[1]+'.'+name_split[2]+'.'+name_split[3]
-    ultima_procesada = open(prs_path, 'w')
-    ultima_procesada.write(tsmp + '\n')
+      # abro los dos archivos para trabajar con ellos
+      # el primero es de solo lectura, y el segundo es de lectura escritura
+      tsmp = name_split[0]+'.'+name_split[1]+'.'+name_split[2]+'.'+name_split[3]
+      ultima_procesada = open(prs_path, 'w')
+      ultima_procesada.write(tsmp + '\n')
 
-    timestamp_html = open(root + 'timestamp.html', 'w')
-    timestamp_html.write(tsmp)
+      timestamp_html = open(root + 'timestamp.html', 'w')
+      timestamp_html.write(tsmp)
 
-  if file == arreglo[-5]:
-      pattern = re.compile(".*BAND_01\.nc$")
-      if pattern.match(file):
-        copyfile(root + basename(file) + ".png", root + "BAND_01.png")
-  elif file == arreglo[-4]:
-      pattern = re.compile(".*BAND_02\.nc$")
-      if pattern.match(file):
-        copyfile(root + basename(file) + ".png", root + "BAND_02.png")
-  elif file == arreglo[-3]:
-      pattern = re.compile(".*BAND_03\.nc$")
-      if pattern.match(file):
-        copyfile(root + basename(file) + ".png", root + "BAND_03.png")
-  elif file == arreglo[-2]:
-      pattern = re.compile(".*BAND_04\.nc$")
-      if pattern.match(file):
-        copyfile(root + basename(file) + ".png", root + "BAND_04.png")
-  elif file == arreglo[-1]:
-      pattern = re.compile(".*BAND_06\.nc$")
-      if pattern.match(file):
-        copyfile(root + basename(file) + ".png", root + "BAND_06.png")
+    if file == arreglo[-5]:
+        pattern = re.compile(".*BAND_01\.nc$")
+        if pattern.match(file):
+          copyfile(root + basename(file) + ".png", root + "BAND_01.png")
+    elif file == arreglo[-4]:
+        pattern = re.compile(".*BAND_02\.nc$")
+        if pattern.match(file):
+          copyfile(root + basename(file) + ".png", root + "BAND_02.png")
+    elif file == arreglo[-3]:
+        pattern = re.compile(".*BAND_03\.nc$")
+        if pattern.match(file):
+          copyfile(root + basename(file) + ".png", root + "BAND_03.png")
+    elif file == arreglo[-2]:
+        pattern = re.compile(".*BAND_04\.nc$")
+        if pattern.match(file):
+          copyfile(root + basename(file) + ".png", root + "BAND_04.png")
+    elif file == arreglo[-1]:
+        pattern = re.compile(".*BAND_06\.nc$")
+        if pattern.match(file):
+          copyfile(root + basename(file) + ".png", root + "BAND_06.png")

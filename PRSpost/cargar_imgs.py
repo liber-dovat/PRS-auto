@@ -321,41 +321,14 @@ meta15  = './test/meta15/'
 meta60  = './test/meta60/'
 
 # namae = 'ART_2016285_133500'
-# fileToPng('./test/imgs/' + namae + '.FR', meta15, PATHpng)
-# fileToPng('./test/imgs/' + namae + '.RP', meta15, PATHpng)
-# fileToPng('./test/imgs/' + namae + '.T2', meta60, PATHpng)
-# fileToPng('./test/imgs/' + namae + '.T3', meta60, PATHpng)
-# fileToPng('./test/imgs/' + namae + '.T4', meta60, PATHpng)
-# fileToPng('./test/imgs/' + namae + '.T6', meta60, PATHpng)
-
 # namae = 'ART_2016282_144500'
-# fileToPng('./test/imgs/' + namae + '.FR', meta15, PATHpng)
-# fileToPng('./test/imgs/' + namae + '.RP', meta15, PATHpng)
-# fileToPng('./test/imgs/' + namae + '.T2', meta60, PATHpng)
-# fileToPng('./test/imgs/' + namae + '.T3', meta60, PATHpng)
-# fileToPng('./test/imgs/' + namae + '.T4', meta60, PATHpng)
-# fileToPng('./test/imgs/' + namae + '.T6', meta60, PATHpng)
-
 # namae = 'ART_2016282_163500'
-# fileToPng('./test/imgs/' + namae + '.FR', meta15, PATHpng)
-# fileToPng('./test/imgs/' + namae + '.RP', meta15, PATHpng)
-# fileToPng('./test/imgs/' + namae + '.T2', meta60, PATHpng)
-# fileToPng('./test/imgs/' + namae + '.T3', meta60, PATHpng)
-# fileToPng('./test/imgs/' + namae + '.T4', meta60, PATHpng)
-# fileToPng('./test/imgs/' + namae + '.T6', meta60, PATHpng)
+# namae = 'ART_2016293_163800'
+namae = 'ART_2016298_110800'
 
-namae = 'ART_2016293_163800'
 fileToPng('./test/imgs/' + namae + '.FR', meta15, PATHpng)
 fileToPng('./test/imgs/' + namae + '.RP', meta15, PATHpng)
 fileToPng('./test/imgs/' + namae + '.T2', meta60, PATHpng)
 fileToPng('./test/imgs/' + namae + '.T3', meta60, PATHpng)
 fileToPng('./test/imgs/' + namae + '.T4', meta60, PATHpng)
 fileToPng('./test/imgs/' + namae + '.T6', meta60, PATHpng)
-
-# namae = 'ART_2016293_163800'
-# testData('./test/imgs/' + namae + '.FR', meta15, PATHpng)
-# testData('./test/imgs/' + namae + '.RP', meta15, PATHpng)
-# testData('./test/imgs/' + namae + '.T2', meta60, PATHpng)
-# testData('./test/imgs/' + namae + '.T3', meta60, PATHpng)
-# testData('./test/imgs/' + namae + '.T4', meta60, PATHpng)
-# testData('./test/imgs/' + namae + '.T6', meta60, PATHpng)

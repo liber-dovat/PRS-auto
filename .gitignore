@@ -11,3 +11,4 @@ PRSpng/test
 PRSpng/channel_info.txt
 PRSsat/*.o
 PRSpost/test
+PRSpost/copy.sh
