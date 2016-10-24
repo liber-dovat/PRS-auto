@@ -29,7 +29,7 @@ elif band == 'T6':
 '''
 
 # dado un valor de temperatura y una banda, mapeo el valor a un entero entre 0 y 1024
-def tempToValue(temp, tMin, tMax, middle, pixelesColor, pixelesGris):
+def tempToValue(temp, tMin, tMax, pixelesPorFranja, pixelesColor, pixelesGris):
 
   # print "middle: " + str(middle)
   # print "pixelesColor: " + str(pixelesColor)
@@ -46,6 +46,8 @@ def tempToValue(temp, tMin, tMax, middle, pixelesColor, pixelesGris):
   i08 = -40
   i09 = -35
   i10 = -30
+
+  middle = pixelesPorFranja / 2
 
   # retorno un valor en el medio de la franja para no caer en un borde
   if temp < -75.:
@@ -68,13 +70,11 @@ def tempToValue(temp, tMin, tMax, middle, pixelesColor, pixelesGris):
     return 17*middle
   elif temp in range(i09, i10):
     return 19*middle
-  elif temp >= i10:
+  else:
 
     offsetPixelGris = (temp * pixelesGris) / tMax
 
     return pixelesColor + offsetPixelGris
-  else:
-    return 512
 
 # tempToValue
 
@@ -83,7 +83,7 @@ def tempToValue(temp, tMin, tMax, middle, pixelesColor, pixelesGris):
 #########################################
 
 # dado un valor de temperatura y una banda, mapeo el valor a un entero entre 0 y 1024
-def tempToValueV2(temp, tMin, tMax, middle, pixelesColor, pixelesGris):
+def tempToValueV2(temp, tMin, tMax, pixelesPorFranja, pixelesColor, pixelesGris):
 
   # el rango de temperaturas es fijo, lo que cambia es el mapeo a color según la banda
   i01 = -75
@@ -96,6 +96,8 @@ def tempToValueV2(temp, tMin, tMax, middle, pixelesColor, pixelesGris):
   i08 = -40
   i09 = -35
   i10 = -30
+
+  middle = pixelesPorFranja / 2
 
   # retorno un valor en el medio de la franja para no caer en un borde
   if temp < -75.:
@@ -131,7 +133,7 @@ def tempToValueV2(temp, tMin, tMax, middle, pixelesColor, pixelesGris):
 #########################################
 
 # dado un valor de temperatura y una banda, mapeo el valor a un entero entre 0 y 1024
-def tempToValueV3(temp, tMin, tMax, middle, pixelesColor, pixelesGris):
+def tempToValueV3(temp, tMin, tMax, pixelesPorFranja, pixelesColor, pixelesGris):
 
   # el rango de temperaturas es fijo, lo que cambia es el mapeo a color según la banda
   i01 = -75
@@ -144,6 +146,8 @@ def tempToValueV3(temp, tMin, tMax, middle, pixelesColor, pixelesGris):
   i08 = -40
   i09 = -35
   i10 = -30
+
+  middle = pixelesPorFranja / 2
 
   # retorno un valor en el medio de la franja para no caer en un borde
   if temp < -75.:
@@ -190,7 +194,8 @@ def pixelesFranja(tMin, tMax):
     hyaku = abs(tMax - tMin)
 
     # encuentro a que porcentaje se correspone el rango de temperaturas negativas de la escala
-    porcentajeColor = abs(tMin) * 100. / hyaku
+    # los colores llegan dede min hasta el -30
+    porcentajeColor = (-30 - tMin) * 100. / hyaku
 
     # determino a cuantos pixeles se corresponde la franja de color de los 1024
     pixelesColor = porcentajeColor * 1024. / 100.
@@ -201,11 +206,9 @@ def pixelesFranja(tMin, tMax):
     # determino la cantidad de pixeles correspondientes a la escala de grises
     pixelesGris = 1024 - (pixelesPorFranja * 10)
 
-    middle = pixelesPorFranja / 2
-
   # if
 
-  return middle, pixelesColor, pixelesGris
+  return pixelesPorFranja, pixelesColor, pixelesGris
 
 # pixelesFranja
 
@@ -215,11 +218,11 @@ def pixelesFranja(tMin, tMax):
 
 def pixelesFranjaV2(tMin, tMax):
 
-  middle       = 38.5
-  pixelesColor = 770
-  pixelesGris  = 254
+  pixelesPorFranja = 77
+  pixelesColor     = 770
+  pixelesGris      = 254
 
-  return middle, pixelesColor, pixelesGris
+  return pixelesPorFranja, pixelesColor, pixelesGris
 
 # pixelesFranjaV2
 
@@ -229,10 +232,10 @@ def pixelesFranjaV2(tMin, tMax):
 
 def pixelesFranjaV3(tMin, tMax):
 
-  middle       = 20
-  pixelesColor = 400
-  pixelesGris  = 624
+  pixelesPorFranja = 40
+  pixelesColor     = 400
+  pixelesGris      = 624
 
-  return middle, pixelesColor, pixelesGris
+  return pixelesPorFranja, pixelesColor, pixelesGris
 
 # pixelesFranjaV3

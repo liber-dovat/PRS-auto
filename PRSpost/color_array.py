@@ -23,7 +23,7 @@ def getColorRange(tMin, tMax):
   hyaku = abs(tMax - tMin)
 
   # encuentro a que porcentaje se correspone el rango de temperaturas negativas de la escala
-  porcentajeColor = abs(tMin) * 100. / hyaku
+  porcentajeColor = (-30 - tMin) * 100. / hyaku
 
   # determino a cuantos pixeles se corresponde la franja de color de los 1024
   pixelesColor = porcentajeColor * 1024. / 100.
@@ -295,8 +295,8 @@ def getInumetV3():
 def colorArray(N, tMin, tMax):
 
   # col_seq = getInumetColorRange()
-  # col_seq = getColorRange(tMin, tMax)
-  col_seq = getInumetV3()
+  col_seq = getColorRange(tMin, tMax)
+  # col_seq = getInumetV3()
 
   seqLen  = len(col_seq)
   delta   = 1.0/(seqLen - 1)
