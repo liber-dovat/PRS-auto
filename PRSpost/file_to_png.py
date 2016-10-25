@@ -14,11 +14,6 @@ from os.path     import basename
 from color_array import colorArray
 from mpl_toolkits.basemap import Basemap
 
-# RUTAsat = '/sat/prd-sat/ART_G015x015GG_C015x015/'
-# PATHfr  = RUTAsat + 'B01-FR/2016/ART_2016275_143500.FR'
-
-# print PATHfr
-
 def rangoColorbar(band):
 
   # defino los rangos del colorbar en funcion del tipo de banda
@@ -27,34 +22,16 @@ def rangoColorbar(band):
     vmax = 100.
   elif band == 'T2':
     vmin = -70.
-    vmax = 40. 
+    vmax = 70. 
   elif band == 'T3':
     vmin = -95.
     vmax = 25.
   elif band == 'T4':
     vmin = -80.
-    vmax = 40.
+    vmax = 70.
   elif band == 'T6':
     vmin = -95.
-    vmax = 40.
-
-  return vmin, vmax
-
-# rangoColorbar
-
-#########################################
-#########################################
-#########################################
-
-def rangoColorbarV2(band):
-
-  # defino los rangos del colorbar en funcion del tipo de banda
-  if band == 'FR' or band == 'RP':
-    vmin = 0.
-    vmax = 100.
-  else:
-    vmin = -80.
-    vmax = 50.
+    vmax = 70.
 
   return vmin, vmax
 
@@ -273,22 +250,17 @@ def fileToPng(file, metaPath, outPngPath):
   # chequeo existsencia de ruta final y directorios intermedios, sino los creo
   bandFolder = getFolderExt(band)
 
-  testing = True
+  if not os.path.isdir(outPngPath + bandFolder):
+    os.mkdir(outPngPath + bandFolder)
+  # if
 
-  if testing:
-    destFile = outPngPath + name[0:18]  + band+ '.png'
-  else:
-    if not os.path.isdir(outPngPath + bandFolder):
-      os.mkdir(outPngPath + bandFolder)
-    # if
+  if not os.path.isdir(outPngPath + bandFolder + '/' + str(year)):
+    os.mkdir(outPngPath + bandFolder + "/" + str(year))
+  # if
 
-    if not os.path.isdir(outPngPath + bandFolder + '/' + str(year)):
-      os.mkdir(outPngPath + bandFolder + "/" + str(year))
-    # if
+  outPath = outPngPath + bandFolder + "/" + str(year) + "/"
 
-    outPath = outPngPath + bandFolder + "/" + str(year) + "/"
-
-    destFile = outPath + name[0:18] + '.png' # genero la ruta y nombre del archivo a guardar
+  destFile = outPath + name[0:18] + '.png' # genero la ruta y nombre del archivo a guardar
 
   tag = nameTag(name)
 
@@ -300,22 +272,3 @@ def fileToPng(file, metaPath, outPngPath):
   plt.close() # cierro el archivo
 
 # fileToPng
-
-# PATHpng = '/sat/prd-sat/PNGs/'
-PATHpng = './test/png/'
-meta15  = './test/meta15/'
-meta60  = './test/meta60/'
-
-# namae = 'ART_2016285_133500'
-# namae = 'ART_2016282_144500'
-# namae = 'ART_2016282_163500'
-# namae = 'ART_2016293_163800'
-namae = 'ART_2016298_110800'
-# namae = 'ART_2016298_213800'
-
-fileToPng('./test/imgs/' + namae + '.FR', meta15, PATHpng)
-fileToPng('./test/imgs/' + namae + '.RP', meta15, PATHpng)
-fileToPng('./test/imgs/' + namae + '.T2', meta60, PATHpng)
-fileToPng('./test/imgs/' + namae + '.T3', meta60, PATHpng)
-fileToPng('./test/imgs/' + namae + '.T4', meta60, PATHpng)
-fileToPng('./test/imgs/' + namae + '.T6', meta60, PATHpng)
