@@ -27,16 +27,16 @@ def rangoColorbar(band):
     vmax = 100.
   elif band == 'T2':
     vmin = -70.
-    vmax = 70. 
+    vmax = 40. 
   elif band == 'T3':
     vmin = -95.
     vmax = 25.
   elif band == 'T4':
     vmin = -80.
-    vmax = 70.
+    vmax = 40.
   elif band == 'T6':
     vmin = -95.
-    vmax = 70.
+    vmax = 40.
 
   return vmin, vmax
 
