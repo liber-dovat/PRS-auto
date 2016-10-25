@@ -260,24 +260,10 @@ def fileToPng(file, metaPath, outPngPath):
     # Los datos de T2 a T6 estan en kelvin, asi que los paso a Celsius
     IMG  -= 273.15
     cmap  = colorArray(1024, vmin, vmax)
-    ticks = [vmin, 0., vmax]
-    print "MIN: " + str(numpy.amin(IMG))
-    # calculo los rangos de los colores para usar en la funcion tempToValue
-    pixelesPorFranja, pixelesColor, pixelesGris = pixelesFranja(vmin,vmax)
 
-    # aplico el mapeo de temperatura a rangos de 1024
-    vfunc = numpy.vectorize(tempToValue)
-
-    # mapeo los valores de IMG a enteros entre 1 y 1024
-    IMG = vfunc(IMG,vmin,vmax,pixelesPorFranja,pixelesColor,pixelesGris)
-
-    # reinicio los valos vmin y vmax para dibujar la escala 
-    vmin = 1
-    vmax = 1024
-    ppf  = pixelesPorFranja
-    ticks = [ppf, 2*ppf, 3*ppf, 4*ppf, 5*ppf, 6*ppf, 7*ppf, 8*ppf, 9*ppf, 10*ppf, vmax]
+    ticks = [-75, -70, -65, -60, -55, -50, -45, -40, -35, -30, 0, vmax]
     # defino las etiquetas del colorbar
-    ticksLabels = ['-75', '-70', '-65', '-60', '-55', '-50', '-45', '-40', '-35', '-30', vmax]
+    ticksLabels = ticks
   else:
     # Los datos de T2 a T6 estan en kelvin, asi que los paso a Celsius
     IMG        -= 273.15
@@ -297,7 +283,7 @@ def fileToPng(file, metaPath, outPngPath):
 
   # agrego el colorbar
   cbar = ax.colorbar(cs, location='bottom', pad='3%', ticks=ticks)
-  cbar.ax.set_xticklabels(ticksLabels, rotation=45, fontsize=6)
+  cbar.ax.set_xticklabels(ticksLabels, rotation=45, fontsize=7)
 
   # agrego el logo en el documento
   logo = plt.imread('/sat/PRS/libs/PRS-auto/PRSpng/imgs/les-logo.png')
