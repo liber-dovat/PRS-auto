@@ -33,7 +33,7 @@ def rangoColorbar(band):
     vmin = -95.
     vmax = 25.
   elif band == 'T4':
-    vmin = -95.
+    vmin = -80.
     vmax = 70.
   elif band == 'T6':
     vmin = -95.
@@ -261,9 +261,9 @@ def fileToPng(file, metaPath, outPngPath):
     IMG  -= 273.15
     cmap  = colorArray(1024, vmin, vmax)
 
-    ticks = [-75, -70, -65, -60, -55, -50, -45, -40, -35, -30, 0, vmax]
+    ticks = [-75.2, -70.2, -65.2, -60.2, -55.2, -50.2, -45.2, -40.2, -35.2, -30.2, 0, vmax]
     # defino las etiquetas del colorbar
-    ticksLabels = ticks
+    ticksLabels = ['-75$^\circ$C', -70, -65, -60, -55, -50, -45, -40, -35, -30, 0, 70]
   else:
     # Los datos de T2 a T6 estan en kelvin, asi que los paso a Celsius
     IMG        -= 273.15

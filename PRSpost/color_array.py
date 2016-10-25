@@ -36,7 +36,7 @@ def getColorRange(tMin, tMax):
 
   color_arr = []
   
-  franjaMin = 1
+  franjaMin = 0
   franjaMax = pixelesPorFranja
   iT  = 1024
   
