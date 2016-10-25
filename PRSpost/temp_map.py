@@ -47,35 +47,41 @@ def tempToValue(temp, tMin, tMax, pixelesPorFranja, pixelesColor, pixelesGris):
   i09 = -35
   i10 = -30
 
-  middle = pixelesPorFranja / 2
+  ppf = pixelesPorFranja
+  middle = ppf / 2.
 
   # retorno un valor en el medio de la franja para no caer en un borde
   if temp < -75.:
-    return middle
+    return 20
   elif temp in range(i01, i02):
-    return 3*middle
+    return 60
   elif temp in range(i02, i03):
-    return 5*middle
+    return 100
   elif temp in range(i03, i04):
-    return 7*middle
+    return 140
   elif temp in range(i04, i05):
-    return 9*middle
+    return 180
   elif temp in range(i05, i06):
-    return 11*middle
+    return 220
   elif temp in range(i06, i07):
-    return 13*middle
+    return 260
   elif temp in range(i07, i08):
-    return 15*middle
+    return 300
   elif temp in range(i08, i09):
-    return 17*middle
+    return 340
   elif temp in range(i09, i10):
-    return 19*middle
+    return 380
   else:
 
-    offsetPixelGris = (temp * pixelesGris) / tMax
+    # calculo el porcentaje de temp dentro del rango - tMin hasta tMax
+    percentageTemp  = (temp * 100) / tMax - tMin
 
+    # calculo la cantidad de pixeles para ese porcentaje dentro del rango
+    offsetPixelGris = (percentageTemp * pixelesGris) / 100
+
+    # el valor para la temperatura es el offset de color mas el valor de gris
     return pixelesColor + offsetPixelGris
-
+ 
 # tempToValue
 
 #########################################
