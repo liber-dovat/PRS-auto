@@ -12,7 +12,6 @@ import os
 from funciones   import ymd
 from os.path     import basename
 from color_array import colorArray
-from temp_map    import pixelesFranja, tempToValue
 from mpl_toolkits.basemap import Basemap
 
 # RUTAsat = '/sat/prd-sat/ART_G015x015GG_C015x015/'
@@ -143,32 +142,6 @@ def nameTag(basename):
 #########################################
 #########################################
 
-def testData(file, metaPath, outPngPath):
-
-  # abro el archivo file y lo guardo en data
-  fid  = open(file, 'r')
-  data = numpy.fromfile(fid, dtype='float32')
-  fid.close()
-
-  data -= 273.
-
-  plt.plot(data)
-  plt.show()
-
-  band = getExt(file)
-  name = basename(file)           # obtengo el nombre base del archivo
-  destFile = outPngPath + name[0:18]  + band + '.png'
-
-  plt.savefig(destFile, bbox_inches='tight', dpi=200)
-
-  plt.close()
-
-# testData
-
-#########################################
-#########################################
-#########################################
-
 def fileToPng(file, metaPath, outPngPath):
 
   # abro el archivo meta y guardo los datos
@@ -250,10 +223,10 @@ def fileToPng(file, metaPath, outPngPath):
   # defino el min y max en funcion de la banda
   vmin, vmax = rangoColorbar(band)
 
-  # defino el colormap  y la disposicion de tick segun la banda
+  # defino el colormap  y la disposicion de los ticks segun la banda
   if band == 'FR' or band == 'RP':
     cmap        = 'jet'
-    ticks       = [0., 20., 40., 60., 80., 100.]
+    ticks       = [0, 20, 40, 60, 80, 100]
     ticksLabels = ticks
   elif band == 'T4':
 
@@ -261,9 +234,9 @@ def fileToPng(file, metaPath, outPngPath):
     IMG  -= 273.15
     cmap  = colorArray(1024, vmin, vmax)
 
-    ticks = [-75.2, -70.2, -65.2, -60.2, -55.2, -50.2, -45.2, -40.2, -35.2, -30.2,-25,-20,-15,-10,-5,0,5,10,15,20,25,30,35,40,45,50,55,60,65,70]
+    ticks = [-80, -75.2, -70.2, -65.2, -60.2, -55.2, -50.2, -45.2, -40.2, -35.2, -30.2,-25,-20,-15,-10,-5,0,5,10,15,20,25,30,35,40,45,50,55,60,65,70]
     # defino las etiquetas del colorbar
-    ticksLabels = [-75, -70, -65, -60, -55, -50, -45, -40, -35, -30,-25,-20,-15,-10,-5,0,5,10,15,20,25,30,35,40,45,50,55,60,65,70]
+    ticksLabels = [-80, -75, -70, -65, -60, -55, -50, -45, -40, -35, -30,-25,-20,-15,-10,-5,0,5,10,15,20,25,30,35,40,45,50,55,60,65,70]
   else:
     # Los datos de T2 a T6 estan en kelvin, asi que los paso a Celsius
     IMG        -= 273.15
@@ -283,7 +256,11 @@ def fileToPng(file, metaPath, outPngPath):
 
   # agrego el colorbar
   cbar = ax.colorbar(cs, location='bottom', pad='3%', ticks=ticks)
-  cbar.ax.set_xticklabels(ticksLabels, rotation=45, fontsize=7)
+
+  if band == 'FR' or band == 'RP':
+    cbar.ax.set_xticklabels(ticksLabels, fontsize=7)
+  else:
+    cbar.ax.set_xticklabels(ticksLabels, rotation=45, fontsize=7)
 
   # agrego el logo en el documento
   logo = plt.imread('/sat/PRS/libs/PRS-auto/PRSpng/imgs/les-logo.png')
