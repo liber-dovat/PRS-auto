@@ -261,10 +261,9 @@ def fileToPng(file, metaPath, outPngPath):
     IMG  -= 273.15
     cmap  = colorArray(1024, vmin, vmax)
 
-    ticks = [-75.2, -70.2, -65.2, -60.2, -55.2, -50.2, -45.2, -40.2, -35.2, -30.2, 0, vmax]
+    ticks = [-75.2, -70.2, -65.2, -60.2, -55.2, -50.2, -45.2, -40.2, -35.2, -30.2,-25,-20,-15,-10,-5,0,5,10,15,20,25,30,35,40,45,50,55,60,65,70]
     # defino las etiquetas del colorbar
-    ticksLabels = [-75, -70, -65, -60, -55, -50, -45, -40, -35, -30, 0, 70]
-    ax.set_xlabel('Temperatura en $^\circ$C')
+    ticksLabels = [-75, -70, -65, -60, -55, -50, -45, -40, -35, -30,-25,-20,-15,-10,-5,0,5,10,15,20,25,30,35,40,45,50,55,60,65,70]
   else:
     # Los datos de T2 a T6 estan en kelvin, asi que los paso a Celsius
     IMG        -= 273.15
@@ -337,9 +336,9 @@ meta60  = './test/meta60/'
 namae = 'ART_2016298_110800'
 # namae = 'ART_2016298_213800'
 
-# fileToPng('./test/imgs/' + namae + '.FR', meta15, PATHpng)
-# fileToPng('./test/imgs/' + namae + '.RP', meta15, PATHpng)
-# fileToPng('./test/imgs/' + namae + '.T2', meta60, PATHpng)
-# fileToPng('./test/imgs/' + namae + '.T3', meta60, PATHpng)
+fileToPng('./test/imgs/' + namae + '.FR', meta15, PATHpng)
+fileToPng('./test/imgs/' + namae + '.RP', meta15, PATHpng)
+fileToPng('./test/imgs/' + namae + '.T2', meta60, PATHpng)
+fileToPng('./test/imgs/' + namae + '.T3', meta60, PATHpng)
 fileToPng('./test/imgs/' + namae + '.T4', meta60, PATHpng)
-# fileToPng('./test/imgs/' + namae + '.T6', meta60, PATHpng)
+fileToPng('./test/imgs/' + namae + '.T6', meta60, PATHpng)
