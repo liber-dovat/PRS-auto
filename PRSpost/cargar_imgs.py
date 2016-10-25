@@ -263,7 +263,8 @@ def fileToPng(file, metaPath, outPngPath):
 
     ticks = [-75.2, -70.2, -65.2, -60.2, -55.2, -50.2, -45.2, -40.2, -35.2, -30.2, 0, vmax]
     # defino las etiquetas del colorbar
-    ticksLabels = ['-75$^\circ$C', -70, -65, -60, -55, -50, -45, -40, -35, -30, 0, 70]
+    ticksLabels = [-75, -70, -65, -60, -55, -50, -45, -40, -35, -30, 0, 70]
+    ax.set_xlabel('Temperatura en $^\circ$C')
   else:
     # Los datos de T2 a T6 estan en kelvin, asi que los paso a Celsius
     IMG        -= 273.15
