@@ -74,9 +74,9 @@ def getExt(url):
 def getFolderExt(banda):
 
   if banda == 'FR':
-    return "FR"
+    return "B01-FR"
   elif banda == 'RP':
-    return "RP"
+    return "B01-RP"
   elif banda == 'T2':
     return "B02"
   elif banda == 'T3':
@@ -218,8 +218,8 @@ def fileToPng(file, metaPath, outPngPath):
     # Los datos de T2 a T6 estan en kelvin, asi que los paso a Celsius
     IMG        -= 273.15
     cmap        = 'gray_r'
-    ticks       = [-90,-85,-80,-75.2,-70.2,-65,-60,-55,-49.9,-44.9,-39.7,-34.7,-29.7,-25,-20,-15,-10,-5,0,5,10,15,20,25,30,35,40,45,50,55,60,65,70]
-    ticksLabels = [-90,-85,-80,-75,-70,-65,-60,-55,-50,-45,-40,-35,-30,-25,-20,-15,-10,-5,0,5,10,15,20,25,30,35,40,45,50,55,60,65,70]
+    ticks       = [-95,-90,-85,-80,-75.2,-70.2,-65,-60,-55,-49.9,-44.9,-39.7,-34.7,-29.7,-25,-20,-15,-10,-5,0,5,10,15,20,25,30,35,40,45,50,55,60,65,70]
+    ticksLabels = [-95,-90,-85,-80,-75,-70,-65,-60,-55,-50,-45,-40,-35,-30,-25,-20,-15,-10,-5,0,5,10,15,20,25,30,35,40,45,50,55,60,65,70]
   # if FR o RP
 
   print "MAX: " + str(numpy.amax(IMG))
