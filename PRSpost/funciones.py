@@ -3,6 +3,7 @@
 
 import calendar
 from datetime import date, datetime
+from os import listdir
 
 def doy(Y,M,D):
   """ given year, month, day return day of year
@@ -60,3 +61,16 @@ def datespan(startDate, endDate, delta):
   while C <= endDate:
     yield C.year, C.month, doy(C.year, C.month, C.day), C.hour, C.minute, C.second 
     C += delta
+
+# ---------------------------------------
+# ---------------------------------------
+# ---------------------------------------
+
+def getLastFile(basedir):
+
+  year     = sorted(listdir(basedir))[-1]
+  rootname = sorted(listdir(basedir + year + '/'))[-1]
+
+  return year, rootname[:18]
+
+# getLastFileFRPath
