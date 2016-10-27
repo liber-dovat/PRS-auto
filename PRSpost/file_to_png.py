@@ -22,7 +22,7 @@ def rangoColorbar(band):
     vmax = 100
   elif band == 'T2':
     vmin = -70
-    vmax = 70 
+    vmax = 70
   elif band == 'T3':
     vmin = -100
     vmax = 30
