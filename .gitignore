@@ -11,4 +11,6 @@ PRSpng/test
 PRSpng/channel_info.txt
 PRSsat/*.o
 PRSpost/test
+PRSpost/test.py
 PRSpost/copy.sh
+

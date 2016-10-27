@@ -18,20 +18,20 @@ def rangoColorbar(band):
 
   # defino los rangos del colorbar en funcion del tipo de banda
   if band == 'FR' or band == 'RP':
-    vmin = 0.
-    vmax = 100.
+    vmin = 0
+    vmax = 100
   elif band == 'T2':
-    vmin = -70.
-    vmax = 70. 
+    vmin = -70
+    vmax = 70 
   elif band == 'T3':
-    vmin = -95.
-    vmax = 25.
+    vmin = -100
+    vmax = 30
   elif band == 'T4':
-    vmin = -80.
-    vmax = 70.
+    vmin = -80
+    vmax = 70
   elif band == 'T6':
-    vmin = -95.
-    vmax = 70.
+    vmin = -100
+    vmax = 70
 
   return vmin, vmax
 
@@ -211,15 +211,15 @@ def fileToPng(file, metaPath, outPngPath):
     IMG  -= 273.15
     cmap  = colorArray(1024, vmin, vmax)
 
-    ticks = [-80, -75.2, -70.2, -65.2, -60.2, -55.2, -50.2, -45.2, -40.2, -35.2, -30.2,-25,-20,-15,-10,-5,0,5,10,15,20,25,30,35,40,45,50,55,60,65,70]
+    ticks = [-80, -75.2, -70.2, -65.2, -60.2, -55.2, -50.2, -45.2, -40.2, -35.2, -30.2,-20,-10,0,10,20,30,40,50,60,70]
     # defino las etiquetas del colorbar
-    ticksLabels = [-80, -75, -70, -65, -60, -55, -50, -45, -40, -35, -30,-25,-20,-15,-10,-5,0,5,10,15,20,25,30,35,40,45,50,55,60,65,70]
+    ticksLabels = [-80, -75, -70, -65, -60, -55, -50, -45, -40, -35, -30,-20,-10,0,10,20,30,40,50,60,70]
   else:
     # Los datos de T2 a T6 estan en kelvin, asi que los paso a Celsius
     IMG        -= 273.15
     cmap        = 'gray_r'
-    ticks       = [-95,-90,-85,-80,-75.2,-70.2,-65,-60,-55,-49.9,-44.9,-39.7,-34.7,-29.7,-25,-20,-15,-10,-5,0,5,10,15,20,25,30,35,40,45,50,55,60,65,70]
-    ticksLabels = [-95,-90,-85,-80,-75,-70,-65,-60,-55,-50,-45,-40,-35,-30,-25,-20,-15,-10,-5,0,5,10,15,20,25,30,35,40,45,50,55,60,65,70]
+    ticks       = numpy.arange(vmin,vmax+10,10)
+    ticksLabels = ticks
   # if FR o RP
 
   print "MAX: " + str(numpy.amax(IMG))
@@ -234,10 +234,10 @@ def fileToPng(file, metaPath, outPngPath):
   # agrego el colorbar
   cbar = ax.colorbar(cs, location='bottom', pad='3%', ticks=ticks)
 
-  if band == 'FR' or band == 'RP':
-    cbar.ax.set_xticklabels(ticksLabels, fontsize=7)
-  else:
+  if band == 'T4':
     cbar.ax.set_xticklabels(ticksLabels, rotation=45, fontsize=7)
+  else:
+    cbar.ax.set_xticklabels(ticksLabels, fontsize=7)
 
   # agrego el logo en el documento
   logo = plt.imread('/sat/PRS/libs/PRS-auto/PRSpng/imgs/les-logo.png')
