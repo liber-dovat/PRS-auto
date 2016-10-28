@@ -264,6 +264,11 @@ def fileToPng(file, metaPath, outPngPath):
 
   tag = nameTag(name)
 
+  # si todas las entradas del vector data son cero, entonces es noche y agrego el texto NOCHE
+  if numpy.sum(data) == 0.:
+    plt.annotate("NOCHE", (0,0), (245, 15), color='white', xycoords='axes fraction', textcoords='offset points', va='top', fontsize=10, family='monospace')
+    print "es noche"
+
   # genero el pie de la imagen, con el logo y la info del archivo
   plt.annotate(tag, (0,0), (140, -50), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=10, family='monospace')
 
