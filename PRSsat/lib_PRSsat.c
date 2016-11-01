@@ -475,7 +475,7 @@ int realizar_promedio(double * SUMA, int * CNT, int Ct){
 	return 1;
 }
 
-int enmascarar_por_CZ(double * VAR, double * CZ, int Ct, int thr){
+int enmascarar_por_CZ(double * VAR, double * CZ, int Ct, double thr){
 	int 	h1;
 	for (h1=0;h1<(Ct);h1++){
 		if (CZ[h1] < thr){
