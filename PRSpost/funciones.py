@@ -3,7 +3,8 @@
 
 import calendar
 from datetime import date, datetime
-from os import listdir
+from os       import listdir
+from shutil   import copyfile
 
 def doy(Y,M,D):
   """ given year, month, day return day of year
@@ -92,12 +93,10 @@ def copiar_frames(carpeta_base, carpeta_destino):
   if len(dir_elemens) < 88:
     indice = len(dir_elemens)
 
-  ultimas = [-indice:]
+  ultimas = dir_elemens[-indice:]
 
   i = 0
 
   for f in ultimas:
-    print carpeta_base + '/' + f
-    print carpeta_destino + '/' + str(i).zfill(3) + '.png'
-    i++
-    # copyfile(carpeta_base + '/' + f, carpeta_destino)
+    copyfile(carpeta_base + '/' + f, carpeta_destino + '/' + str(i).zfill(3) + '.png')
+    i += 1
