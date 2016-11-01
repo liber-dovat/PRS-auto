@@ -80,9 +80,6 @@ def getLastFile(basedir):
 # ---------------------------------------
 # ---------------------------------------
 
-# convert -crop 948x1132+0+0 +repage '*.png' resized%03d.png
-# ffmpeg -framerate 5 -i resized%03d.png -c:v libx264 -vf fps=25 -pix_fmt yuv420p out.mp4
-
 def copiar_frames(carpeta_base, carpeta_destino):
 
   # habia usado 92 elems en las pruebas que eran cerca de tres dias
