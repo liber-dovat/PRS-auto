@@ -59,3 +59,5 @@ tsmp  = year + '.' + str(month).zfill(2) + '.' + str(doy).zfill(3) + '.' + hms
 timestamp_html = open(PATHpng + 'timestamp.html', 'w')
 timestamp_html.write(tsmp)
 timestamp_html.close()
+
+copiar_frames(PATHpng + 'B04/' + year + '/')
