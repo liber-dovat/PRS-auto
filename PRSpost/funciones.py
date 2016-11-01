@@ -94,6 +94,10 @@ def copiar_frames(carpeta_base, carpeta_destino):
 
   ultimas = [-indice:]
 
+  i = 0
+
   for f in ultimas:
-    print f
+    print carpeta_base + '/' + f
+    print carpeta_destino + '/' + str(i).zfill(3) + '.png'
+    i++
     # copyfile(carpeta_base + '/' + f, carpeta_destino)
