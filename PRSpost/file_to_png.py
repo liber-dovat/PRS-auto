@@ -92,6 +92,19 @@ def getFolderExt(banda):
 #########################################
 #########################################
 
+def getBandlabel(band):
+  if band == 'FR':
+    return "Factor de reflectancia (%)"
+  elif band == 'RP':
+    return "Reflectancia planetaria (%)"
+  else:
+    return "Temperatura de brillo ($^\circ$C)"
+# getBandlabel
+
+#########################################
+#########################################
+#########################################
+
 '''
 Ésta función genera el tag que se utiliza como pie de página
 de la imágen generada.
@@ -239,6 +252,8 @@ def fileToPng(file, metaPath, outPngPath):
   else:
     cbar.ax.set_xticklabels(ticksLabels, fontsize=7)
 
+  cbar.ax.set_xlabel(getBandlabel(band), fontsize=7)
+
   # agrego el logo en el documento
   logo = plt.imread('/sat/PRS/libs/PRS-auto/PRSpng/imgs/les-logo.png')
   plt.figimage(logo, 5, 5)
@@ -270,7 +285,7 @@ def fileToPng(file, metaPath, outPngPath):
     print "es noche"
 
   # genero el pie de la imagen, con el logo y la info del archivo
-  plt.annotate(tag, (0,0), (140, -50), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=10, family='monospace')
+  plt.annotate(tag, (0,0), (140, -60), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=10, family='monospace')
 
   # guardo la imagen en la ruta destino
   plt.savefig(destFile, bbox_inches='tight', dpi=200)
