@@ -25,42 +25,50 @@ B03path = baseIR  + 'B03-T3/' + year + '/' + rootname + '.T3'
 B04path = baseIR  + 'B04-T4/' + year + '/' + rootname + '.T4'
 B06path = baseIR  + 'B06-T6/' + year + '/' + rootname + '.T6'
 
-fileToPng(FRpath,  meta15, PATHpng)
-fileToPng(RPpath,  meta15, PATHpng)
-fileToPng(B02path, meta60, PATHpng)
-fileToPng(B03path, meta60, PATHpng)
-fileToPng(B04path, meta60, PATHpng)
-fileToPng(B06path, meta60, PATHpng)
-
-# genero una copia de cada imagen para subir a la web
-file = PATHpng + 'B01-FR/' + year + '/' + rootname + '.png'
-copyfile(file, PATHpng + "BAND_01-FR.png")
-
-file = PATHpng + 'B01-RP/' + year + '/' + rootname + '.png'
-copyfile(file, PATHpng + "BAND_01-RP.png")
-
-file = PATHpng + 'B02/' + year + '/' + rootname + '.png'
-copyfile(file, PATHpng + "BAND_02.png")
-
-file = PATHpng + 'B03/' + year + '/' + rootname + '.png'
-copyfile(file, PATHpng + "BAND_03.png")
-
-file = PATHpng + 'B04/' + year + '/' + rootname + '.png'
-copyfile(file, PATHpng + "BAND_04.png")
-
-file = PATHpng + 'B06/' + year + '/' + rootname + '.png'
-copyfile(file, PATHpng + "BAND_06.png")
-
 # escribo el archivo timestamp con los datos de las imagenes
+timestamp_html = open(PATHpng + 'timestamp.html', 'r+')
+old_timestamp  = timestamp_html.read()
+timestamp_html.close()
+
 doy   = rootname[8:11]                  # obtengo el doy del rootname
 hms   = rootname[12:18]                 # obtengo la hora minuto y segundo del rootname
 month = ymd(int(year), int(doy))[1]     # obtengo el mes usando la funcion ymd
-tsmp  = year + '.' + str(month).zfill(2) + '.' + str(doy).zfill(3) + '.' + hms
-timestamp_html = open(PATHpng + 'timestamp.html', 'r+')
-old_timestamp = timestamp_html.read()
-print "Old timestamp: " + old_timestamp
-timestamp_html.write(tsmp)
-timestamp_html.close()
+new_timestamp  = year + '.' + str(month).zfill(2) + '.' + str(doy).zfill(3) + '.' + hms
 
-if old_timestamp != tsmp:
+if old_timestamp != new_timestamp:
+
+  fileToPng(FRpath,  meta15, PATHpng)
+  fileToPng(RPpath,  meta15, PATHpng)
+  fileToPng(B02path, meta60, PATHpng)
+  fileToPng(B03path, meta60, PATHpng)
+  fileToPng(B04path, meta60, PATHpng)
+  fileToPng(B06path, meta60, PATHpng)
+
+  # genero una copia de cada imagen para subir a la web
+  file = PATHpng + 'B01-FR/' + year + '/' + rootname + '.png'
+  copyfile(file, PATHpng + "BAND_01-FR.png")
+
+  file = PATHpng + 'B01-RP/' + year + '/' + rootname + '.png'
+  copyfile(file, PATHpng + "BAND_01-RP.png")
+
+  file = PATHpng + 'B02/' + year + '/' + rootname + '.png'
+  copyfile(file, PATHpng + "BAND_02.png")
+
+  file = PATHpng + 'B03/' + year + '/' + rootname + '.png'
+  copyfile(file, PATHpng + "BAND_03.png")
+
+  file = PATHpng + 'B04/' + year + '/' + rootname + '.png'
+  copyfile(file, PATHpng + "BAND_04.png")
+
+  file = PATHpng + 'B06/' + year + '/' + rootname + '.png'
+  copyfile(file, PATHpng + "BAND_06.png")
+
   actualizarFrames(PATHpng + 'B04/' + year, PATHpng + 'B04/mp4')
+  actualizarFrames(PATHpng + 'B01-FR/' + year, PATHpng + 'B01-FR/mp4')
+  actualizarFrames(PATHpng + 'B01-RP/' + year, PATHpng + 'B01-RP/mp4')
+
+  timestamp_html = open(PATHpng + 'timestamp.html', 'w')
+  timestamp_html.write(new_timestamp)
+  timestamp_html.close()
+
+# if
