@@ -3,7 +3,7 @@
 
 import calendar
 from datetime import date, datetime
-from os       import listdir
+from os       import listdir, remove
 from shutil   import copyfile
 
 def doy(Y,M,D):
@@ -97,3 +97,22 @@ def copiar_frames(carpeta_base, carpeta_destino):
   for f in ultimas:
     copyfile(carpeta_base + '/' + f, carpeta_destino + '/' + str(i).zfill(3) + '.png')
     i += 1
+
+# ---------------------------------------
+# ---------------------------------------
+# ---------------------------------------
+
+'''
+borra el primer frame de la carpeta, y copia el ultimo frame
+de la carpeta de procesados
+'''
+
+def actualizarFrames(carpeta_base, carpeta_destino):
+
+  # borro el primer frame de la carpeta de procesados
+  primero = sorted(listdir(carpeta_destino))[0]
+  os.remove(carpeta_destino + '/' + primero)
+
+  # obtengo el ultimo elemento de la carpeta de procesados y lo copio en frames
+  ultima = sorted(listdir(carpeta_base))[-1]
+  copyfile(carpeta_base + '/' + ultima, carpeta_destino + '/' + str(i).zfill(3) + '.png')
