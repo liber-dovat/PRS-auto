@@ -3,7 +3,7 @@
 
 from file_to_png import fileToPng
 from shutil      import copyfile
-from funciones   import ymd, getLastFile, copiar_frames, actualizarFrames
+from funciones   import ymd, getLastFile, copiar_frames
 
 year, rootname = getLastFile('/sat/prd-sat/ART_G015x015GG_C015x015/B01-FR/')
 
@@ -63,9 +63,9 @@ if old_timestamp != new_timestamp:
   file = PATHpng + 'B06/' + year + '/' + rootname + '.png'
   copyfile(file, PATHpng + "BAND_06.png")
 
-  actualizarFrames(PATHpng + 'B04/' + year, PATHpng + 'B04/mp4')
-  actualizarFrames(PATHpng + 'B01-FR/' + year, PATHpng + 'B01-FR/mp4')
-  actualizarFrames(PATHpng + 'B01-RP/' + year, PATHpng + 'B01-RP/mp4')
+  copiar_frames(PATHpng + 'B04/' + year, PATHpng + 'B04/mp4')
+  copiar_frames(PATHpng + 'B01-FR/' + year, PATHpng + 'B01-FR/mp4')
+  copiar_frames(PATHpng + 'B01-RP/' + year, PATHpng + 'B01-RP/mp4')
 
   timestamp_html = open(PATHpng + 'timestamp.html', 'w')
   timestamp_html.write(new_timestamp)
