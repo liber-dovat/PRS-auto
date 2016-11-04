@@ -57,7 +57,10 @@ hms   = rootname[12:18]                 # obtengo la hora minuto y segundo del r
 month = ymd(int(year), int(doy))[1]     # obtengo el mes usando la funcion ymd
 tsmp  = year + '.' + str(month).zfill(2) + '.' + str(doy).zfill(3) + '.' + hms
 timestamp_html = open(PATHpng + 'timestamp.html', 'w')
+old_timestamp = timestamp_html.read()
+print "Old timestamp: " + old_timestamp
 timestamp_html.write(tsmp)
 timestamp_html.close()
 
-actualizarFrames(PATHpng + 'B04/' + year, PATHpng + 'B04/mp4')
+if old_timestamp != tsmp:
+  actualizarFrames(PATHpng + 'B04/' + year, PATHpng + 'B04/mp4')
