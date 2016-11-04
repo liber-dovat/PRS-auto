@@ -56,7 +56,7 @@ doy   = rootname[8:11]                  # obtengo el doy del rootname
 hms   = rootname[12:18]                 # obtengo la hora minuto y segundo del rootname
 month = ymd(int(year), int(doy))[1]     # obtengo el mes usando la funcion ymd
 tsmp  = year + '.' + str(month).zfill(2) + '.' + str(doy).zfill(3) + '.' + hms
-timestamp_html = open(PATHpng + 'timestamp.html', 'w')
+timestamp_html = open(PATHpng + 'timestamp.html', 'r+')
 old_timestamp = timestamp_html.read()
 print "Old timestamp: " + old_timestamp
 timestamp_html.write(tsmp)

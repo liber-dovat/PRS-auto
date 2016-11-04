@@ -111,8 +111,8 @@ def actualizarFrames(carpeta_base, carpeta_destino):
 
   # borro el primer frame de la carpeta de procesados
   primero = sorted(listdir(carpeta_destino))[0]
-  os.remove(carpeta_destino + '/' + primero)
+  remove(carpeta_destino + '/' + primero)
 
   # obtengo el ultimo elemento de la carpeta de procesados y lo copio en frames
   ultima = sorted(listdir(carpeta_base))[-1]
-  copyfile(carpeta_base + '/' + ultima, carpeta_destino + '/' + str(i).zfill(3) + '.png')
+  copyfile(carpeta_base + '/' + ultima, carpeta_destino + '/' + ultima)
