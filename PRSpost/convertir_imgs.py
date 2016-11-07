@@ -63,9 +63,10 @@ if old_timestamp != new_timestamp:
   file = PATHpng + 'B06/' + year + '/' + rootname + '.png'
   copyfile(file, PATHpng + "BAND_06.png")
 
-  copiar_frames(PATHpng + 'B04/' + year, PATHpng + 'B04/mp4')
-  copiar_frames(PATHpng + 'B01-FR/' + year, PATHpng + 'B01-FR/mp4')
-  copiar_frames(PATHpng + 'B01-RP/' + year, PATHpng + 'B01-RP/mp4')
+  # copio los frames a la carpeta que esta montada en memoria /tmp/videos
+  copiar_frames(PATHpng + 'B04/' + year, '/tmp/videos/B04/mp4')
+  copiar_frames(PATHpng + 'B01-FR/' + year, '/tmp/videos/B01-FR/mp4')
+  copiar_frames(PATHpng + 'B01-RP/' + year, '/tmp/videos/B01-RP/mp4')
 
   timestamp_html = open(PATHpng + 'timestamp.html', 'w')
   timestamp_html.write(new_timestamp)
