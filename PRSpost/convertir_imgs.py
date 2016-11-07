@@ -4,6 +4,8 @@
 from file_to_png import fileToPng
 from shutil      import copyfile
 from funciones   import ymd, getLastFile, copiar_frames
+from os          import mkdir
+from os.path     import isdir
 
 year, rootname = getLastFile('/sat/prd-sat/ART_G015x015GG_C015x015/B01-FR/')
 
@@ -62,6 +64,16 @@ if old_timestamp != new_timestamp:
 
   file = PATHpng + 'B06/' + year + '/' + rootname + '.png'
   copyfile(file, PATHpng + "BAND_06.png")
+
+  # Si no existe la carpeta destino la creo
+  if not isdir('/tmp/videos/B04/mp4'):
+    mkdir('/tmp/videos/B04')
+    mkdir('/tmp/videos/B04/mp4')
+    mkdir('/tmp/videos/B01-FR')
+    mkdir('/tmp/videos/B01-FR/mp4')
+    mkdir('/tmp/videos/B01-RP')
+    mkdir('/tmp/videos/B01-RP/mp4')
+  # if
 
   # copio los frames a la carpeta que esta montada en memoria /tmp/videos
   copiar_frames(PATHpng + 'B04/' + year, '/tmp/videos/B04/mp4')

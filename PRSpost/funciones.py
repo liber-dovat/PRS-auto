@@ -85,11 +85,6 @@ def copiar_frames(carpeta_base, carpeta_destino):
   # habia usado 92 elems en las pruebas que eran cerca de tres dias
   # tambien se puede pensar que son 44 por dia
 
-  # Si no existe la carpeta destino la creo
-  if not os.path.isdir(carpeta_destino):
-    os.mkdir(carpeta_destino)
-  # if
-
   dir_elemens = sorted(listdir(carpeta_base))
   indice      = 88
   if len(dir_elemens) < 88:
@@ -100,7 +95,7 @@ def copiar_frames(carpeta_base, carpeta_destino):
   i = 0
 
   for f in ultimas:
-    copyfile(carpeta_base + '/' + f, carpeta_destino + '/' + str(i).zfill(3) + '.png')
+    copyfile(carpeta_base + '/' + f, carpeta_destino + '/' + f)
     i += 1
 
 # ---------------------------------------
