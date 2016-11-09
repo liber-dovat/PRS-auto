@@ -13,9 +13,9 @@ baseVIS = '/sat/prd-sat/ART_G015x015GG_C015x015/'
 
 meta15  = baseVIS + 'meta/'
 
-# /sat/PRS/libs/PRS-auto/data/job_imglist_VIS1
+# lista = open(sys.argv[1], 'r')
 
-lista = open(sys.argv[1], 'r')
+lista = open('/sat/PRS/libs/PRS-auto/data/job_imglist_VIS1', 'r')
 
 for f in lista:
 
@@ -43,9 +43,9 @@ for f in lista:
     copiar_frames(PATHpng + 'B01-FR/' + year, PATHpng + 'B01-FR/mp4')
     copiar_frames(PATHpng + 'B01-RP/' + year, PATHpng + 'B01-RP/mp4')
 
-    doy   = rootname[8:11]                  # obtengo el doy del rootname
-    hms   = rootname[12:18]                 # obtengo la hora minuto y segundo del rootname
-    month = ymd(int(year), int(doy))[1]     # obtengo el mes usando la funcion ymd
+    doy       = rootname[8:11]                  # obtengo el doy del rootname
+    hms       = rootname[12:18]                 # obtengo la hora minuto y segundo del rootname
+    month     = ymd(int(year), int(doy))[1]     # obtengo el mes usando la funcion ymd
     timestamp = year + '.' + str(month).zfill(2) + '.' + str(doy).zfill(3) + '.' + hms
 
     timestamp_file = open(PATHpng + 'timestamp.html', 'w')

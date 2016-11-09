@@ -116,3 +116,21 @@ def actualizarFrames(carpeta_base, carpeta_destino):
   # obtengo el ultimo elemento de la carpeta de procesados y lo copio en frames
   ultima = sorted(listdir(carpeta_base))[-1]
   copyfile(carpeta_base + '/' + ultima, carpeta_destino + '/' + ultima)
+
+# ---------------------------------------
+# ---------------------------------------
+# ---------------------------------------
+
+'''
+Convertir 2016/10/goes13.2016.275.143506.BAND_02.nc
+a         2016 y ART_2016275_143506
+'''
+
+def getYearRoot(basedir):
+  year     = basedir.split('/')[0]
+  name     = basedir.split('/')[2].split('.')
+  rootname = "ART_" + name[1] + name[2] + "_" + name[3]
+
+  return year, rootname
+
+# getYearRoot
