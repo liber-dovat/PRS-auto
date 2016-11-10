@@ -43,14 +43,15 @@ for f in lista:
     copyfile(fileFR, PATHpng + "BAND_01-FR.png")
     copyfile(fileRP, PATHpng + "BAND_01-RP.png")
 
+    subprocess.call("/sat/PRS/libs/PRS-auto/PRSpost/rmframes.sh", shell=True)
     copiar_frames(PATHpng + 'B01-FR/' + year, PATHpng + 'B01-FR/mp4')
     copiar_frames(PATHpng + 'B01-RP/' + year, PATHpng + 'B01-RP/mp4')
 
     timestamp = makeTimestamp(year, rootname)
 
     timestamp_file = open(PATHpng + 'timestamp.html', 'w')
-    timestamp_html.write(timestamp)
-    timestamp_html.close()
+    timestamp_file.write(timestamp)
+    timestamp_file.close()
 
     subprocess.call("/sat/PRS/libs/PRS-auto/PRSpost/videoandcopy.sh", shell=True)
   # if
