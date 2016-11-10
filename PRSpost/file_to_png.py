@@ -171,8 +171,8 @@ def fileToPng(file, metaPath, outPngPath):
   min_lat = numpy.amin(LATdeg_vec)
   max_lat = numpy.amax(LATdeg_vec)
 
-  print "Lon min:" + str(min_lon) + ", Lon max:" + str(max_lon)
-  print "Lat min:" + str(min_lat) + ", Lat max:" + str(max_lat)
+  # print "Lon min:" + str(min_lon) + ", Lon max:" + str(max_lon)
+  # print "Lat min:" + str(min_lat) + ", Lat max:" + str(max_lat)
 
   # seteo los minimos y maximos de la imagen en funcion de los min y max de lat y long
   axes = plt.gca()
@@ -235,8 +235,8 @@ def fileToPng(file, metaPath, outPngPath):
     ticksLabels = ticks
   # if FR o RP
 
-  print "MAX: " + str(numpy.amax(IMG))
-  print "MIN: " + str(numpy.amin(IMG))
+  # print "MAX: " + str(numpy.amax(IMG))
+  # print "MIN: " + str(numpy.amin(IMG))
 
   # grafico IMG1 usando lon como vector x y lat como vector y
   cs = ax.pcolormesh(x, y, IMG, vmin=vmin, vmax=vmax, cmap=cmap)
@@ -265,10 +265,12 @@ def fileToPng(file, metaPath, outPngPath):
   # chequeo existsencia de ruta final y directorios intermedios, sino los creo
   bandFolder = getFolderExt(band)
 
+  # si no existe la carpeta asociada a la banda la creo
   if not os.path.isdir(outPngPath + bandFolder):
     os.mkdir(outPngPath + bandFolder)
   # if
 
+  # si no existe la carpeta asociada al ano la creo
   if not os.path.isdir(outPngPath + bandFolder + '/' + str(year)):
     os.mkdir(outPngPath + bandFolder + "/" + str(year))
   # if
@@ -282,7 +284,7 @@ def fileToPng(file, metaPath, outPngPath):
   # si todas las entradas del vector data son cero, entonces es noche y agrego el texto NOCHE
   if numpy.sum(data) == 0.:
     plt.annotate("NOCHE", (0,0), (245, 15), color='white', xycoords='axes fraction', textcoords='offset points', va='top', fontsize=10, family='monospace')
-    print "es noche"
+    # print "es noche"
 
   # genero el pie de la imagen, con el logo y la info del archivo
   plt.annotate(tag, (0,0), (140, -60), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=10, family='monospace')

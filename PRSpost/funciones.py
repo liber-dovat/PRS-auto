@@ -134,3 +134,22 @@ def getYearRoot(basedir):
   return year, rootname
 
 # getYearRoot
+
+# ---------------------------------------
+# ---------------------------------------
+# ---------------------------------------
+
+'''
+Genero un string de timestamp a partir del ano y el nombre base del archivo
+'''
+
+def makeTimestamp(year, rootname):
+
+  doy       = rootname[8:11]                  # obtengo el doy del rootname
+  hms       = rootname[12:18]                 # obtengo la hora minuto y segundo del rootname
+  month     = ymd(int(year), int(doy))[1]     # obtengo el mes usando la funcion ymd
+  timestamp = year + '.' + str(month).zfill(2) + '.' + str(doy).zfill(3) + '.' + hms
+
+  return timestamp
+
+# makeTimestamp
