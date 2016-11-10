@@ -3,6 +3,7 @@
 
 import sys
 import os.path
+import subprocess
 
 from file_to_png import fileToPng
 from shutil      import copyfile
@@ -20,8 +21,6 @@ meta15  = baseVIS + 'meta/'
 
 # abro el archivo y remuevo las lineas vacias
 lista = filter(None, (line.rstrip() for line in open(sys.argv[1], 'r')))
-
-print lista
 
 for f in lista:
 
@@ -52,6 +51,8 @@ for f in lista:
     timestamp_file = open(PATHpng + 'timestamp.html', 'w')
     timestamp_html.write(timestamp)
     timestamp_html.close()
+
+    subprocess.call("/sat/PRS/libs/PRS-auto/PRSpost/videoandcopy.sh", shell=True)
   # if
 
 # if

@@ -3,6 +3,7 @@
 
 import sys
 import os.path
+import subprocess
 
 from file_to_png import fileToPng
 from shutil      import copyfile
@@ -56,6 +57,8 @@ for f in lista:
     timestamp_file = open(PATHpng + 'timestamp.html', 'w')
     timestamp_html.write(timestamp)
     timestamp_html.close()
+
+    subprocess.call("/sat/PRS/libs/PRS-auto/PRSpost/videoandcopy.sh", shell=True)
   # if
 
 # if
