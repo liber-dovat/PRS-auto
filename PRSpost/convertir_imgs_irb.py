@@ -6,7 +6,7 @@ import os.path
 
 from file_to_png import fileToPng
 from shutil      import copyfile
-from funciones   import copiar_frames, makeTimestamp
+from funciones   import copiar_frames, makeTimestamp, getYearRoot
 
 PATHpng = '/sat/prd-sat/PNGs/'
 
@@ -16,7 +16,10 @@ meta60  = baseIR + 'meta/'
 
 # abro el archivo cuya ruta es el primer parametro
 # debe ser el archivo job_imglist_IRB1
-lista = open(sys.argv[1], 'r')
+# lista = open(sys.argv[1], 'r')
+
+# abro el archivo y remuevo las lineas vacias
+lista = filter(None, (line.rstrip() for line in open(sys.argv[1], 'r')))
 
 for f in lista:
 
