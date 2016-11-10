@@ -126,12 +126,22 @@ Convertir 2016/10/goes13.2016.275.143506.BAND_02.nc
 a         2016 y ART_2016275_143506
 '''
 
-def getYearRoot(basedir):
+def getYearRootBand(basedir):
   year     = basedir.split('/')[0]
   name     = basedir.split('/')[2].split('.')
   rootname = "ART_" + name[1] + name[2] + "_" + name[3]
+  banda    = name[4]
 
-  return year, rootname
+  if banda == "BAND_02":
+    band = "B02-T2"
+  elif banda == "BAND_03":
+    band = "B03-T3"
+  elif banda == "BAND_04":
+    band = "B04-T4"
+  elif banda == "BAND_06":
+    band = "B06-T6"
+
+  return year, rootname, band
 
 # getYearRoot
 

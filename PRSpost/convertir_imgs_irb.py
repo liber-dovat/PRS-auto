@@ -7,7 +7,7 @@ import subprocess
 
 from file_to_png import fileToPng
 from shutil      import copyfile
-from funciones   import copiar_frames, makeTimestamp, getYearRoot
+from funciones   import copiar_frames, makeTimestamp, getYearRootBand
 
 PATHpng = '/sat/prd-sat/PNGs/'
 
@@ -24,17 +24,11 @@ lista = filter(None, (line.rstrip() for line in open(sys.argv[1], 'r')))
 
 for f in lista:
 
-  year, rootname = getYearRoot(f)
+  year, rootname, band = getYearRootBand(f)
+  extension            = band.split('-')[1]
+  path                 = baseIR + band + '/' + year + '/' + rootname + '.' + extension
 
-  B02path = baseIR  + 'B02-T2/' + year + '/' + rootname + '.T2'
-  B03path = baseIR  + 'B03-T3/' + year + '/' + rootname + '.T3'
-  B04path = baseIR  + 'B04-T4/' + year + '/' + rootname + '.T4'
-  B06path = baseIR  + 'B06-T6/' + year + '/' + rootname + '.T6'
-
-  fileToPng(B02path, meta60, PATHpng)
-  fileToPng(B03path, meta60, PATHpng)
-  fileToPng(B04path, meta60, PATHpng)
-  fileToPng(B06path, meta60, PATHpng)
+  fileToPng(path, meta60, PATHpng)
 
   # si es el ultimo archivo procesado
   # y ya estan procesados los archivos de VIS
