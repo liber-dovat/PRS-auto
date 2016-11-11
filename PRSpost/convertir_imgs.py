@@ -3,72 +3,93 @@
 
 from file_to_png import fileToPng
 from shutil      import copyfile
-from funciones   import ymd, getLastFile, copiar_frames
+from funciones   import ymd, getLastFile, copiar_frames, getYearRootBand, getDateArray, lastReceived
 
-year, rootname = getLastFile('/sat/prd-sat/ART_G015x015GG_C015x015/B01-FR/')
+lastReceived()
 
-print year
-print rootname
+prs_path  = '/sat/PRS/libs/PRS-auto/data/last-image-prs'
+rcv_path  = '/sat/PRS/libs/PRS-auto/data/last-image-rcv'
+file_path = '/sat/prd-sat/ART_G015x015GG_C015x015/B01-FR/'
+lista     = getDateArray(prs_path, rcv_path, file_path)
 
-PATHpng = '/sat/prd-sat/PNGs/'
+for f in lista:
 
-baseVIS = '/sat/prd-sat/ART_G015x015GG_C015x015/'
-baseIR  = '/sat/prd-sat/ART_G060x060GG_C060x060/'
+  year, rootname, band = getYearRootBand(f)
 
-meta15  = baseVIS + 'meta/'
-meta60  = baseIR  + 'meta/'
+  print year
+  print rootname
 
-FRpath  = baseVIS + 'B01-FR/' + year + '/' + rootname + '.FR'
-RPpath  = baseVIS + 'B01-RP/' + year + '/' + rootname + '.RP'
-B02path = baseIR  + 'B02-T2/' + year + '/' + rootname + '.T2'
-B03path = baseIR  + 'B03-T3/' + year + '/' + rootname + '.T3'
-B04path = baseIR  + 'B04-T4/' + year + '/' + rootname + '.T4'
-B06path = baseIR  + 'B06-T6/' + year + '/' + rootname + '.T6'
+  PATHpng = '/sat/prd-sat/PNGs/'
 
-# escribo el archivo timestamp con los datos de las imagenes
-timestamp_html = open(PATHpng + 'timestamp.html', 'r+')
-old_timestamp  = timestamp_html.read()
-timestamp_html.close()
+  baseVIS = '/sat/prd-sat/ART_G015x015GG_C015x015/'
+  baseIR  = '/sat/prd-sat/ART_G060x060GG_C060x060/'
 
-doy   = rootname[8:11]                  # obtengo el doy del rootname
-hms   = rootname[12:18]                 # obtengo la hora minuto y segundo del rootname
-month = ymd(int(year), int(doy))[1]     # obtengo el mes usando la funcion ymd
-new_timestamp  = year + '.' + str(month).zfill(2) + '.' + str(doy).zfill(3) + '.' + hms
+  meta15  = baseVIS + 'meta/'
+  meta60  = baseIR  + 'meta/'
 
-if old_timestamp != new_timestamp:
+  FRpath  = baseVIS + 'B01-FR/' + year + '/' + rootname + '.FR'
+  RPpath  = baseVIS + 'B01-RP/' + year + '/' + rootname + '.RP'
+  B02path = baseIR  + 'B02-T2/' + year + '/' + rootname + '.T2'
+  B03path = baseIR  + 'B03-T3/' + year + '/' + rootname + '.T3'
+  B04path = baseIR  + 'B04-T4/' + year + '/' + rootname + '.T4'
+  B06path = baseIR  + 'B06-T6/' + year + '/' + rootname + '.T6'
 
-  fileToPng(FRpath,  meta15, PATHpng)
-  fileToPng(RPpath,  meta15, PATHpng)
-  fileToPng(B02path, meta60, PATHpng)
-  fileToPng(B03path, meta60, PATHpng)
-  fileToPng(B04path, meta60, PATHpng)
-  fileToPng(B06path, meta60, PATHpng)
+  # si no existen los pngs los creo
+  if not os.path.isfile(PATHpng + 'B01-FR/' + year + '/' + rootname + '.png'):
+    fileToPng(FRpath,  meta15, PATHpng)
 
-  # genero una copia de cada imagen para subir a la web
-  file = PATHpng + 'B01-FR/' + year + '/' + rootname + '.png'
-  copyfile(file, PATHpng + "BAND_01-FR.png")
+  if not os.path.isfile(PATHpng + 'B01-RP/' + year + '/' + rootname + '.png'):
+    fileToPng(RPpath,  meta15, PATHpng)
 
-  file = PATHpng + 'B01-RP/' + year + '/' + rootname + '.png'
-  copyfile(file, PATHpng + "BAND_01-RP.png")
+  if not os.path.isfile(PATHpng + 'B02/' + year + '/' + rootname + '.png'):
+    fileToPng(B02path, meta60, PATHpng)
 
-  file = PATHpng + 'B02/' + year + '/' + rootname + '.png'
-  copyfile(file, PATHpng + "BAND_02.png")
+  if not os.path.isfile(PATHpng + 'B03/' + year + '/' + rootname + '.png'):
+    fileToPng(B03path, meta60, PATHpng)
 
-  file = PATHpng + 'B03/' + year + '/' + rootname + '.png'
-  copyfile(file, PATHpng + "BAND_03.png")
+  if not os.path.isfile(PATHpng + 'B04/' + year + '/' + rootname + '.png'):
+    fileToPng(B04path, meta60, PATHpng)
 
-  file = PATHpng + 'B04/' + year + '/' + rootname + '.png'
-  copyfile(file, PATHpng + "BAND_04.png")
+  if not os.path.isfile(PATHpng + 'B06/' + year + '/' + rootname + '.png'):
+    fileToPng(B06path, meta60, PATHpng)
 
-  file = PATHpng + 'B06/' + year + '/' + rootname + '.png'
-  copyfile(file, PATHpng + "BAND_06.png")
+  # escribo la ultima procesada
+  ultima_procesada = open(prs_path, 'w')
+  ultima_procesada.write(f)
+  ultima_procesada.close()
 
-  copiar_frames(PATHpng + 'B04/' + year, PATHpng + 'B04/mp4')
-  copiar_frames(PATHpng + 'B01-FR/' + year, PATHpng + 'B01-FR/mp4')
-  copiar_frames(PATHpng + 'B01-RP/' + year, PATHpng + 'B01-RP/mp4')
+  # si procese el ultimo elemento de la lista
+  if f == lista[-1]:
 
-  timestamp_html = open(PATHpng + 'timestamp.html', 'w')
-  timestamp_html.write(new_timestamp)
-  timestamp_html.close()
+    # genero una copia de cada imagen para subir a la web
+    fileFR = PATHpng + 'B01-FR/' + year + '/' + rootname + '.png'
+    fileRP = PATHpng + 'B01-RP/' + year + '/' + rootname + '.png'
+    file02 = PATHpng + 'B02/'    + year + '/' + rootname + '.png'
+    file03 = PATHpng + 'B03/'    + year + '/' + rootname + '.png'
+    file04 = PATHpng + 'B04/'    + year + '/' + rootname + '.png'
+    file06 = PATHpng + 'B06/'    + year + '/' + rootname + '.png'
+
+    copyfile(fileFR, PATHpng + "BAND_01-FR.png")
+    copyfile(fileRP, PATHpng + "BAND_01-RP.png")
+    copyfile(file02, PATHpng + "BAND_02.png")
+    copyfile(file03, PATHpng + "BAND_03.png")
+    copyfile(file04, PATHpng + "BAND_04.png")
+    copyfile(file06, PATHpng + "BAND_06.png")
+
+    # copio los frames
+    copiar_frames(PATHpng + 'B04/'    + year, PATHpng + 'B04/mp4')
+    copiar_frames(PATHpng + 'B01-FR/' + year, PATHpng + 'B01-FR/mp4')
+    copiar_frames(PATHpng + 'B01-RP/' + year, PATHpng + 'B01-RP/mp4')
+
+    # genero el timestamp
+    doy   = rootname[8:11]                  # obtengo el doy del rootname
+    hms   = rootname[12:18]                 # obtengo la hora minuto y segundo del rootname
+    month = ymd(int(year), int(doy))[1]     # obtengo el mes usando la funcion ymd
+    timestamp  = year + '.' + str(month).zfill(2) + '.' + str(doy).zfill(3) + '.' + hms
+
+    timestamp_html = open(PATHpng + 'timestamp.html', 'w')
+    timestamp_html.write(timestamp)
+    timestamp_html.close()
+  # if
 
 # if

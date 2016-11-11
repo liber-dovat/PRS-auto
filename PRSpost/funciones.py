@@ -163,3 +163,137 @@ def makeTimestamp(year, rootname):
   return timestamp
 
 # makeTimestamp
+
+# ---------------------------------------
+# ---------------------------------------
+# ---------------------------------------
+
+'''
+Escribo en el archivo /sat/PRS/libs/PRS-auto/data/last-image-rcv el patron
+de la ultima imagen recibida
+'''
+
+def lastReceived():
+
+  path  = "/sat/prd-sat/ART_G015x015GG_C015x015/B01-FR/"
+  years = sorted(listdir(path))
+
+  if len(years) > 0:
+    path  += years[-1] + "/"
+
+    files = sorted(listdir(path))
+
+    # ART_2016316_143800.FR
+    if len(files) > 0:
+
+      file = files[-1]
+      basename = file.split(".")[0]
+
+      print basename
+
+      # ultima_recibida = open('/sat/PRS/libs/PRS-auto/data/last-image-rcv', 'w')
+      # ultima_recibida.write(basename)
+
+# lastReceived
+
+# ---------------------------------------
+# ---------------------------------------
+# ---------------------------------------
+
+'''
+retorna una lista de elementos con el siguiente formato: ART_2016316_140800
+'''
+
+def getDateArray(prs_path, rcv_path, file_path):
+
+  # abro los dos archivos para trabajar con ellos
+  # el primero es de solo lectura, y el segundo es de lectura escritura
+  prs = open(prs_path, 'r')
+  rcv = open(rcv_path, 'r+')
+
+  #########################################
+  #########################################
+  # Recorro las lineas de los documentos y las imprimo
+  #########################################
+
+  # tomo la linea y genero un arreglo con sus palabras
+  prs_read = prs.read()
+  prs_split = prs_read.split("_")
+
+  # tomo la linea y genero un arreglo con sus palabras
+  rcv_read = rcv.read()
+  rcv_split = rcv_read.split("_")
+
+  prs.close()
+  rcv.close()
+
+  #########################################
+  #########################################
+
+  prs_year  = prs_split[1][0:4]
+  prs_doy   = prs_split[1][4:7]
+  prs_hms   = prs_split[2]
+
+  rcv_year  = rcv_split[1][0:4]
+  rcv_doy   = rcv_split[1][4:7]
+  rcv_hms   = rcv_split[2]
+
+  #########################################
+  #########################################
+  # Genero los datatypes date para iterar entre ellos y leo las carpetas
+  #########################################
+
+  # genero los numeros enteros para realizar el chequeo de archivos que quiero
+  #                 ano                mes            doy            hora+minuto+segundo
+  start_timestamp = int(prs_year + prs_doy + prs_hms)
+  end_timestamp   = int(rcv_year + rcv_doy + rcv_hms)
+
+  print start_timestamp
+  print end_timestamp
+
+  files_list = []
+
+  # hago un doble for de anos y meses
+  # los anos iteran desde el primero hasta el ultimo
+  # range no considera el ultimo elemento en el rango, por eso para incluirlo usamos el +1
+  for year in range(int(prs_year), int(rcv_year) + 1):
+
+    # Path a los raw: day[0] = year, day[1] = month (completado con ceros hasta tener dos char)
+    path_string = file_path + str(year) + "/"
+
+    for f in listdir(path_string):
+
+      tmp_nm  = f.split(".")[0]
+      nombre  = tmp_nm.split("_") # separo el nombre del archivo en palabras separadas
+      ano     = nombre[1][0:4]
+      doy     = nombre[1][4:7]
+      hms     = nombre[2]
+
+      # genero su timestamp a partir de su nombre
+      timestamp = int(ano + doy + hms)
+
+      # si el timestamp esta dentro de los rangos definidos por los archivos lo agrego a la lista
+      if timestamp > start_timestamp and timestamp <= end_timestamp:
+        files_list.extend([f[0:18]])
+      # if
+
+    # for
+
+  # for year
+
+  lista_retorno = sorted(files_list)
+
+  # escribo en archivo rcv_path la fecha de la ultima imagen recibida
+  if len(lista_retorno) > 0:
+    ultimo_elem     = lista_retorno[-1]
+
+    ultima_recibida = open(rcv_path, 'w')
+    ultima_recibida.write(ultimo_elem)
+    ultima_recibida.close()
+  # if
+
+  print lista_retorno
+
+  return lista_retorno
+
+# getDateArray

@@ -24,7 +24,7 @@ lista = filter(None, (line.rstrip() for line in open(sys.argv[1], 'r')))
 
 for f in lista:
 
-  year, rootname = getYearRootBand(f)
+  year, rootname, band = getYearRootBand(f)
 
   FRpath  = baseVIS + 'B01-FR/' + year + '/' + rootname + '.FR'
   RPpath  = baseVIS + 'B01-RP/' + year + '/' + rootname + '.RP'
