@@ -189,15 +189,14 @@ Escribo en el archivo /sat/PRS/libs/PRS-auto/data/last-image-rcv el patron
 de la ultima imagen recibida
 '''
 
-def lastReceived():
+def lastReceived(file_path, rcv_path):
 
-  path  = "/sat/prd-sat/ART_G015x015GG_C015x015/B01-FR/"
-  years = sorted(listdir(path))
+  years = sorted(listdir(file_path))
 
   if len(years) > 0:
-    path  += years[-1] + "/"
+    file_path  += years[-1] + "/"
 
-    files = sorted(listdir(path))
+    files = sorted(listdir(file_path))
 
     # ART_2016316_143800.FR
     if len(files) > 0:
@@ -205,10 +204,10 @@ def lastReceived():
       file = files[-1]
       basename = file.split(".")[0]
 
-      print basename
+      ultima_recibida = open(rcv_path, 'w')
+      ultima_recibida.write(basename)
 
-      # ultima_recibida = open('/sat/PRS/libs/PRS-auto/data/last-image-rcv', 'w')
-      # ultima_recibida.write(basename)
+    # if
 
 # lastReceived
 

@@ -1,13 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import subprocess
 import os
+
 from os.path     import isfile
 from file_to_png import fileToPng
 from shutil      import copyfile
 from funciones   import ymd, getLastFile, copiar_frames, getRootnameYear, getDateArray, lastReceived
-
-lastReceived()
 
 prs_path  = '/sat/PRS/libs/PRS-auto/data/last-image-prs'
 rcv_path  = '/sat/PRS/libs/PRS-auto/data/last-image-rcv'
@@ -17,15 +17,9 @@ PATHpng = '/sat/prd-sat/PNGs/'
 baseVIS = '/sat/prd-sat/ART_G015x015GG_C015x015/'
 baseIR  = '/sat/prd-sat/ART_G060x060GG_C060x060/'
 
-# prs_path  = '/sat/PRS/dev/PRS-auto/PRSpost/test/data/last-image-prs'
-# rcv_path  = '/sat/PRS/dev/PRS-auto/PRSpost/test/data/last-image-rcv'
-# file_path = '/sat/prd-sat/ART_G015x015GG_C015x015/B01-FR/'
+lastReceived(file_path, rcv_path)
 
-# PATHpng = '/sat/PRS/dev/PRS-auto/PRSpost/test/png/'
-# baseVIS = '/sat/prd-sat/ART_G015x015GG_C015x015/'
-# baseIR  = '/sat/prd-sat/ART_G060x060GG_C060x060/'
-
-lista   = getDateArray(prs_path, rcv_path, file_path)
+lista = getDateArray(prs_path, rcv_path, file_path)
 
 for rootname in lista:
 
@@ -66,7 +60,7 @@ for rootname in lista:
   ultima_procesada = open(prs_path, 'w')
   ultima_procesada.write(rootname)
   ultima_procesada.close()
-'''
+
   # si procese el ultimo elemento de la lista
   if rootname == lista[-1]:
 
@@ -85,6 +79,8 @@ for rootname in lista:
     copyfile(file04, PATHpng + "BAND_04.png")
     copyfile(file06, PATHpng + "BAND_06.png")
 
+    subprocess.call("/sat/PRS/libs/PRS-auto/PRSpost/rmframes.sh", shell=True)
+
     # copio los frames
     copiar_frames(PATHpng + 'B04/'    + year, PATHpng + 'B04/mp4')
     copiar_frames(PATHpng + 'B01-FR/' + year, PATHpng + 'B01-FR/mp4')
@@ -99,7 +95,8 @@ for rootname in lista:
     timestamp_html = open(PATHpng + 'timestamp.html', 'w')
     timestamp_html.write(timestamp)
     timestamp_html.close()
+
+    subprocess.call("/sat/PRS/libs/PRS-auto/PRSpost/videoandcopy.sh", shell=True)
   # if
-  '''
 
 # if
