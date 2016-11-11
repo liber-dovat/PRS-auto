@@ -1,28 +1,37 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import os
+from os.path     import isfile
 from file_to_png import fileToPng
 from shutil      import copyfile
-from funciones   import ymd, getLastFile, copiar_frames, getYearRootBand, getDateArray, lastReceived
+from funciones   import ymd, getLastFile, copiar_frames, getRootnameYear, getDateArray, lastReceived
 
 lastReceived()
 
 prs_path  = '/sat/PRS/libs/PRS-auto/data/last-image-prs'
 rcv_path  = '/sat/PRS/libs/PRS-auto/data/last-image-rcv'
 file_path = '/sat/prd-sat/ART_G015x015GG_C015x015/B01-FR/'
-lista     = getDateArray(prs_path, rcv_path, file_path)
 
-for f in lista:
+PATHpng = '/sat/prd-sat/PNGs/'
+baseVIS = '/sat/prd-sat/ART_G015x015GG_C015x015/'
+baseIR  = '/sat/prd-sat/ART_G060x060GG_C060x060/'
 
-  year, rootname, band = getYearRootBand(f)
+# prs_path  = '/sat/PRS/dev/PRS-auto/PRSpost/test/data/last-image-prs'
+# rcv_path  = '/sat/PRS/dev/PRS-auto/PRSpost/test/data/last-image-rcv'
+# file_path = '/sat/prd-sat/ART_G015x015GG_C015x015/B01-FR/'
 
-  print year
+# PATHpng = '/sat/PRS/dev/PRS-auto/PRSpost/test/png/'
+# baseVIS = '/sat/prd-sat/ART_G015x015GG_C015x015/'
+# baseIR  = '/sat/prd-sat/ART_G060x060GG_C060x060/'
+
+lista   = getDateArray(prs_path, rcv_path, file_path)
+
+for rootname in lista:
+
+  year = getRootnameYear(rootname)
+
   print rootname
-
-  PATHpng = '/sat/prd-sat/PNGs/'
-
-  baseVIS = '/sat/prd-sat/ART_G015x015GG_C015x015/'
-  baseIR  = '/sat/prd-sat/ART_G060x060GG_C060x060/'
 
   meta15  = baseVIS + 'meta/'
   meta60  = baseIR  + 'meta/'
@@ -35,31 +44,31 @@ for f in lista:
   B06path = baseIR  + 'B06-T6/' + year + '/' + rootname + '.T6'
 
   # si no existen los pngs los creo
-  if not os.path.isfile(PATHpng + 'B01-FR/' + year + '/' + rootname + '.png'):
+  if not os.path.isfile(PATHpng + 'B01-FR/' + year + '/' + rootname + '.png') and os.path.isfile(FRpath):
     fileToPng(FRpath,  meta15, PATHpng)
 
-  if not os.path.isfile(PATHpng + 'B01-RP/' + year + '/' + rootname + '.png'):
+  if not os.path.isfile(PATHpng + 'B01-RP/' + year + '/' + rootname + '.png') and os.path.isfile(RPpath):
     fileToPng(RPpath,  meta15, PATHpng)
 
-  if not os.path.isfile(PATHpng + 'B02/' + year + '/' + rootname + '.png'):
+  if not os.path.isfile(PATHpng + 'B02/' + year + '/' + rootname + '.png') and os.path.isfile(B02path):
     fileToPng(B02path, meta60, PATHpng)
 
-  if not os.path.isfile(PATHpng + 'B03/' + year + '/' + rootname + '.png'):
+  if not os.path.isfile(PATHpng + 'B03/' + year + '/' + rootname + '.png') and os.path.isfile(B03path):
     fileToPng(B03path, meta60, PATHpng)
 
-  if not os.path.isfile(PATHpng + 'B04/' + year + '/' + rootname + '.png'):
+  if not os.path.isfile(PATHpng + 'B04/' + year + '/' + rootname + '.png') and os.path.isfile(B04path):
     fileToPng(B04path, meta60, PATHpng)
 
-  if not os.path.isfile(PATHpng + 'B06/' + year + '/' + rootname + '.png'):
+  if not os.path.isfile(PATHpng + 'B06/' + year + '/' + rootname + '.png') and os.path.isfile(B06path):
     fileToPng(B06path, meta60, PATHpng)
 
   # escribo la ultima procesada
   ultima_procesada = open(prs_path, 'w')
-  ultima_procesada.write(f)
+  ultima_procesada.write(rootname)
   ultima_procesada.close()
-
+'''
   # si procese el ultimo elemento de la lista
-  if f == lista[-1]:
+  if rootname == lista[-1]:
 
     # genero una copia de cada imagen para subir a la web
     fileFR = PATHpng + 'B01-FR/' + year + '/' + rootname + '.png'
@@ -91,5 +100,6 @@ for f in lista:
     timestamp_html.write(timestamp)
     timestamp_html.close()
   # if
+  '''
 
 # if

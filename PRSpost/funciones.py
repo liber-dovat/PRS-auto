@@ -150,6 +150,22 @@ def getYearRootBand(basedir):
 # ---------------------------------------
 
 '''
+ART_2016275_143506
+'''
+
+def getRootnameYear(rootname):
+  nombre = rootname.split("_") # separo el nombre del archivo en palabras separadas
+  year   = nombre[1][0:4]
+
+  return year
+
+# getRootnameYear
+
+# ---------------------------------------
+# ---------------------------------------
+# ---------------------------------------
+
+'''
 Genero un string de timestamp a partir del ano y el nombre base del archivo
 '''
 
