@@ -86,8 +86,8 @@ def copiar_frames(carpeta_base, carpeta_destino):
   # tambien se puede pensar que son 44 por dia
 
   dir_elemens = sorted(listdir(carpeta_base))
-  indice      = 88
-  if len(dir_elemens) < 88:
+  indice      = 44
+  if len(dir_elemens) < 44:
     indice = len(dir_elemens)
 
   ultimas = dir_elemens[-indice:]
