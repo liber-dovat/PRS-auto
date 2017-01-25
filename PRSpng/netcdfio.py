@@ -185,7 +185,7 @@ def netcdf2png(url, dirDest):
   cbar.ax.set_xticklabels([vmin, vmax], fontsize=10)
 
   # agrego el logo en el documento
-  logo = plt.imread('/sat/PRS/libs/PRS-auto/PRSpng/imgs/les-logo.png')
+  logo = plt.imread('/sat/PRS/libs/PRS-auto/PRSpng/imgs/les_151.png')
   plt.figimage(logo, 5, 5)
 
   # genero los datos para escribir el pie de pagina
@@ -207,8 +207,8 @@ def netcdf2png(url, dirDest):
   tag = str_chnl + " " + str_day + "-" + str_month + "-" + year + " " + str_hm + " UTC"
 
   # agego el pie de pagina usando annotate
-  plt.annotate(tag, (0,0), (140, -50), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=10, family='monospace')
-  plt.savefig(destFile, bbox_inches='tight', dpi=200)
+  plt.annotate(tag, (0,0), (100, -50), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=14, family='monospace')
+  plt.savefig(destFile, bbox_inches='tight', dpi=200, transparent=True)
   plt.close()
 
 # def netcdf2png
