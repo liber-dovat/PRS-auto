@@ -132,6 +132,15 @@ def nameTag(basename):
 #########################################
 #########################################
 
+def setcolor(x, color):
+  for m in x:
+    for t in x[m][1]:
+      t.set_color(color)
+
+#########################################
+#########################################
+#########################################
+
 def fileToPng(file, metaPath, outPngPath):
 
   # abro el archivo meta y guardo los datos
@@ -199,8 +208,11 @@ def fileToPng(file, metaPath, outPngPath):
   ax.drawcountries()
 
   # dibujo los valores de latitudes y longitudes al margen de la imagen
-  ax.drawparallels(numpy.arange(-45, -20, 5), labels=[1,0,0,0], linewidth=0.0, fontsize=10)
-  ax.drawmeridians(numpy.arange(-70, -45, 5), labels=[0,0,1,0], linewidth=0.0, fontsize=10)
+  par = ax.drawparallels(numpy.arange(-45, -20, 5), labels=[1,0,0,0], linewidth=0.0, fontsize=10, color='white')
+  mer = ax.drawmeridians(numpy.arange(-70, -45, 5), labels=[0,0,1,0], linewidth=0.0, fontsize=10, color='white')
+
+  setcolor(par,'white')
+  setcolor(mer,'white')
 
   # genero un meshgrid a partir de LonVec y LatVec
   lons2d, lats2d = numpy.meshgrid(LONdeg_vec, LATdeg_vec)
@@ -248,14 +260,17 @@ def fileToPng(file, metaPath, outPngPath):
   cbar = ax.colorbar(cs, location='bottom', pad='3%', ticks=ticks)
 
   if band == 'T4':
-    cbar.ax.set_xticklabels(ticksLabels, rotation=45, fontsize=7)
+    cbar.ax.set_xticklabels(ticksLabels, rotation=45, fontsize=7, color='white')
   else:
-    cbar.ax.set_xticklabels(ticksLabels, fontsize=7)
+    cbar.ax.set_xticklabels(ticksLabels, fontsize=7, color='white')
 
-  cbar.ax.set_xlabel(getBandlabel(band), fontsize=7)
+  cbar.ax.set_xlabel(getBandlabel(band), fontsize=7, color='white')
+
+  if band == 'T4':
+    cbar.ax.xaxis.labelpad = 0
 
   # agrego el logo en el documento
-  logo = plt.imread('/sat/PRS/libs/PRS-auto/PRSpng/imgs/les-logo.png')
+  logo = plt.imread('/sat/PRS/libs/PRS-auto/PRSpng/imgs/les_191.png')
   plt.figimage(logo, 5, 5)
 
   # genero los datos para escribir el pie de pagina
@@ -287,10 +302,10 @@ def fileToPng(file, metaPath, outPngPath):
     # print "es noche"
 
   # genero el pie de la imagen, con el logo y la info del archivo
-  plt.annotate(tag, (0,0), (140, -60), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=10, family='monospace')
+  plt.annotate(tag, (0,0), (80, -60), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=14, family='monospace', color='white')
 
   # guardo la imagen en la ruta destino
-  plt.savefig(destFile, bbox_inches='tight', dpi=200)
+  plt.savefig(destFile, bbox_inches='tight', dpi=200, transparent=True)
   plt.close() # cierro el archivo
 
 # fileToPng
