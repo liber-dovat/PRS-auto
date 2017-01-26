@@ -270,7 +270,7 @@ def fileToPng(file, metaPath, outPngPath):
     cbar.ax.xaxis.labelpad = 0
 
   # agrego el logo en el documento
-  logo = plt.imread('/sat/PRS/libs/PRS-auto/PRSpng/imgs/les_191.png')
+  logo = plt.imread('/sat/PRS/libs/PRS-auto/PRSpng/imgs/les_191_bw.png')
   plt.figimage(logo, 5, 5)
 
   # genero los datos para escribir el pie de pagina
