@@ -19,7 +19,7 @@ def getDateArray():
   #########################################
 
   # genero los paths para los directorios base
-  data_path     = "/sat/PRS/libs/PRS-auto/data/"
+  data_path     = "/sat/PRS/libs/PRS-sat/data/"
   abs_file_path = os.path.abspath(data_path)
 
   # declaro los paths para los dos archivos
@@ -180,7 +180,7 @@ def lastReceived():
         name_split.insert(1, str(month[1]).zfill(2))
 
         # genero los paths para los directorios base
-        data_path     = "/sat/PRS/libs/PRS-auto/data/"
+        data_path     = "/sat/PRS/libs/PRS-sat/data/"
         abs_file_path = os.path.abspath(data_path)
 
         # declaro los paths para los dos archivos
@@ -199,9 +199,9 @@ if len(arreglo) >= 5:
   for file in arreglo:
 
     print file
-    netcdf2png(file,'/sat/PRS/libs/PRS-auto/PRSpng/png/')
+    netcdf2png(file,'/sat/PRS/libs/PRS-sat/PRSpng/png/')
 
-    root = "/sat/PRS/libs/PRS-auto/PRSpng/png/"
+    root = "/sat/PRS/libs/PRS-sat/PRSpng/png/"
 
     if file == arreglo[-1]:
       filename   = basename(file)
@@ -213,7 +213,7 @@ if len(arreglo) >= 5:
       # print name_split[0]+'.'+name_split[1]+'.'+name_split[2]+'.'+name_split[3]+'\n'
 
       # genero los paths para los directorios base
-      data_path     = "/sat/PRS/libs/PRS-auto/data/"
+      data_path     = "/sat/PRS/libs/PRS-sat/data/"
       abs_file_path = os.path.abspath(data_path)
 
       # declaro los paths para los dos archivos

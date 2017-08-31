@@ -185,7 +185,7 @@ def makeTimestamp(year, rootname):
 # ---------------------------------------
 
 '''
-Escribo en el archivo /sat/PRS/libs/PRS-auto/data/last-image-rcv el patron
+Escribo en el archivo /sat/PRS/libs/PRS-sat/data/last-image-rcv el patron
 de la ultima imagen recibida
 '''
 

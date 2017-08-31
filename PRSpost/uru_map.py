@@ -146,6 +146,6 @@ def uruMap(outPngPathAndName):
 
 # fileToPng
 
-path = "/home/ldovat/dev/PRS-auto/PRSpost/test/mapa/mapaUruguay.png"
+path = "/home/ldovat/dev/PRS-sat/PRSpost/test/mapa/mapaUruguay.png"
 
 uruMap(path)

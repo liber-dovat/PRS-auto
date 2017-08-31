@@ -185,7 +185,7 @@ def netcdf2png(url, dirDest):
   cbar.ax.set_xticklabels([vmin, vmax], fontsize=10)
 
   # agrego el logo en el documento
-  logo = plt.imread('/sat/PRS/libs/PRS-auto/PRSpng/imgs/les_151.png')
+  logo = plt.imread('/sat/PRS/libs/PRS-sat/PRSpng/imgs/les_151.png')
   plt.figimage(logo, 5, 5)
 
   # genero los datos para escribir el pie de pagina

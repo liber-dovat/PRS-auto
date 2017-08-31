@@ -9,8 +9,8 @@ from file_to_png import fileToPng
 from shutil      import copyfile
 from funciones   import ymd, getLastFile, copiar_frames, getRootnameYear, getDateArray, lastReceived
 
-prs_path  = '/sat/PRS/libs/PRS-auto/data/last-image-prs'
-rcv_path  = '/sat/PRS/libs/PRS-auto/data/last-image-rcv'
+prs_path  = '/sat/PRS/libs/PRS-sat/data/last-image-prs'
+rcv_path  = '/sat/PRS/libs/PRS-sat/data/last-image-rcv'
 file_path = '/sat/prd-sat/ART_G015x015GG_C015x015/B01-FR/'
 
 PATHpng = '/sat/prd-sat/PNGs/'
@@ -79,7 +79,7 @@ for rootname in lista:
     copyfile(file04, PATHpng + "BAND_04.png")
     copyfile(file06, PATHpng + "BAND_06.png")
 
-    subprocess.call("/sat/PRS/libs/PRS-auto/PRSpost/rmframes.sh", shell=True)
+    subprocess.call("/sat/PRS/libs/PRS-sat/PRSpost/rmframes.sh", shell=True)
 
     # copio los frames
     copiar_frames(PATHpng + 'B04/'    + year, PATHpng + 'B04/mp4')
@@ -96,7 +96,7 @@ for rootname in lista:
     timestamp_html.write(timestamp)
     timestamp_html.close()
 
-    subprocess.call("/sat/PRS/libs/PRS-auto/PRSpost/videoandcopy.sh", shell=True)
+    subprocess.call("/sat/PRS/libs/PRS-sat/PRSpost/videoandcopy.sh", shell=True)
   # if
 
 # if

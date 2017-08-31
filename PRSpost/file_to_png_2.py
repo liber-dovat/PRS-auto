@@ -312,7 +312,7 @@ def fileToPng(file, metaPath, outPngPath):
   # defino el colormap  y la disposicion de los ticks segun la banda
   if band == 'FR' or band == 'RP':
     # cmap        = 'jet'
-    cmap        = gmtColormap('GHIscale','/home/ldovat/dev/PRS-auto/PRSpost',1100)
+    cmap        = gmtColormap('GHIscale','/home/ldovat/dev/PRS-sat/PRSpost',1100)
     ticks       = [0, 20, 40, 60, 80, 100]
     ticksLabels = ticks
   elif band == 'T4':
@@ -355,7 +355,7 @@ def fileToPng(file, metaPath, outPngPath):
     cbar.ax.xaxis.labelpad = 0
 
   # agrego el logo en el documento
-  logo = plt.imread('/sat/PRS/libs/PRS-auto/PRSpng/imgs/les_191_bw.png')
+  logo = plt.imread('/sat/PRS/libs/PRS-sat/PRSpng/imgs/les_191_bw.png')
   plt.figimage(logo, 5, 5)
 
   # genero los datos para escribir el pie de pagina
