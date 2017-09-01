@@ -3,8 +3,8 @@
 #Versión 1.0. 10/2016. Rodrigo Alonso Suárez
 
 # PROGRAMAS
-main='/rolo/Wsate/PRS/server-sat-01/libs/PRS-sat/PRSbase/PRSbase_VIS_test';
-libs='/rolo/Wsate/PRS/server-sat-01/libs/PRS-sat/PRSbase/lib_PRSbase';
+main='/rolo/Wsate/PRS/server-sat-01/libs/PRS-sat/PRSbase/PRSsat_VIS_test';
+libs='/rolo/Wsate/PRS/server-sat-01/libs/PRS-sat/PRSbase/lib_PRSsat';
 
 # PARAMETROS
 folders='/rolo/Wsate/PRS/server-sat-01/libs/PRS-sat/PRSbase/data/job_folders_ALL_test';
