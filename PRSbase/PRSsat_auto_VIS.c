@@ -142,14 +142,19 @@ int main(int argc, char *argv[]){
 	   		CALvis_iniYEA, CALvis_iniDOY, CALvis_Xspace,
 	  		CALvis_M, CALvis_K, CALvis_alfa, CALvis_beta);
 
+		// SI NO SE USA, BORRO
+		free(FRmat); free(RPmat); free(N1mat); free(CZmat);
+		free(MSKmat); free(CNT1mat); free(CNT2mat);
+
+		// FINAL IMAGEN
 		printf("IMAGEN : %s. TAG = [%d]. OK = [%d].\n", &PATHimg[0], tag, OK);
 	}
 	printf("-----------------------------------------------------------------------------------\n");
-	printf("---- Lista de imagenes ------------------------------------------------------------\n");
-	for (h1=0; h1<Cimgs; h1++){
-		printf("%s\n", array_imgs[h1]);
-	}
-	printf("-----------------------------------------------------------------------------------\n");
+//	printf("---- Lista de imagenes ------------------------------------------------------------\n");
+//	for (h1=0; h1<Cimgs; h1++){
+//		printf("%s\n", array_imgs[h1]);
+//	}
+//	printf("-----------------------------------------------------------------------------------\n");
 
 	//printf("---- Vectores Regulares -----------------------------------------------------------\n");
 	//printf("LATITUDES:\n");

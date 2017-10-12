@@ -287,6 +287,9 @@ int open_NetCDF_file(char PATH[CMAXstr],
 	strncpy(strSTE, FileName+4, 2);
 	*ste = atoi(strSTE); // SATELITE
 
+	// LIBERO MEMORIA
+	free(BAND); free(DATE); free(TIME);
+	free(str2token);
 	return 1;
 }
 

@@ -3,13 +3,13 @@
 #Versión 1.0. 10/2016. Rodrigo Alonso Suárez
 
 # PROGRAMAS
-main='/rolo/Wsate/PRS/server-sat-01/libs/PRS-sat/PRSbase/PRSsat_auto_IRB';
-libs='/rolo/Wsate/PRS/server-sat-01/libs/PRS-sat/PRSbase/lib_PRSsat';
+main='/rolo/Wsatelite/PRS/dev/PRS-sat/PRSbase/PRSsat_auto_IRB';
+libs='/rolo/Wsatelite/PRS/dev/PRS-sat/PRSbase/lib_PRSsat';
 
 # PARAMETROS
-folders='/rolo/Wsate/PRS/server-sat-01/libs/PRS-sat/PRSbase/data/job_folders_ALL1';
-spatial='/rolo/Wsate/PRS/server-sat-01/libs/PRS-sat/PRSbase/data/job_spatial_IRB1';
-imglist='/rolo/Wsate/PRS/server-sat-01/libs/PRS-sat/PRSbase/data/job_imglist_IRB1';
+folders='/rolo/Wsatelite/PRS/dev/PRS-sat/data/job_folders_ALL1';
+spatial='/rolo/Wsatelite/PRS/dev/PRS-sat/data/job_spatial_IRB1';
+imglist='/rolo/Wsatelite/PRS/dev/PRS-sat/data/job_imglist_IRB1';
 product=('/B02-T2/' '/B02-MK/' '/B03-T3/' '/B03-MK/' '/B04-T4/' '/B04-MK/' '/B06-T6/' '/B06-MK/');
 
 echo '2016/10/goes13.2016.275.143506.BAND_02.nc' >> $imglist; # EMULO DESCARGA NOAA

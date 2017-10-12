@@ -136,6 +136,10 @@ int main(int argc, char *argv[]){
 	   		Ct, Ci, Cj, PATHimg, RUTAsal, 
 	   		CALirb_m, CALirb_n, CALirb_a, CALirb_b1, CALirb_b2);
 
+		// SI NO SE USA, BORRO
+		free(TXmat); free(MSKmat); free(CNT1mat); free(CNT2mat);
+
+		// FINAL IMAGEN
 		printf("IMAGEN : %s. TAG = [%d]. OK = [%d].\n", &PATHimg[0], tag, OK);
 	}
 	printf("-----------------------------------------------------------------------------------\n");
