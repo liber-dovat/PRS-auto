@@ -5,11 +5,18 @@
 # PROGRAMAS
 main='/rolo/Wsatelite/PRS/dev/PRS-sat/PRSbase/PRSsat_auto_VIS';
 libs='/rolo/Wsatelite/PRS/dev/PRS-sat/PRSbase/lib_PRSsat';
+#main='/sat/PRS/libs/PRS-sat/PRSbase/PRSsat_auto_VIS';
+#libs='/sat/PRS/libs/PRS-sat/PRSbase/lib_PRSsat';
 
 # PARAMETROS
 folders='/rolo/Wsatelite/PRS/dev/PRS-sat/data/job_folders_ALL1';
 spatial='/rolo/Wsatelite/PRS/dev/PRS-sat/data/job_spatial_VIS1';
 imglist='/rolo/Wsatelite/PRS/dev/PRS-sat/data/job_imglist_VIS1';
+#folders='/sat/PRS/libs/PRS-sat/data/job_folders_ALL1';
+#spatial='/sat/PRS/libs/PRS-sat/data/job_spatial_VIS1';
+#imglist='/sat/PRS/libs/PRS-sat/data/job_imglist_VIS1';
+
+# PRODUCTOS
 product=('/B01-FR/' '/B01-RP/' '/B01-N1/' '/B01-MK/');
 
 echo '2016/10/goes13.2016.275.143506.BAND_01.nc' >> $imglist; # EMULO DESCARGA NOAA
