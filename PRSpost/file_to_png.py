@@ -180,8 +180,8 @@ def fileToPng(file, metaPath, outPngPath):
   min_lat = numpy.amin(LATdeg_vec)
   max_lat = numpy.amax(LATdeg_vec)
 
-  # print "Lon min:" + str(min_lon) + ", Lon max:" + str(max_lon)
-  # print "Lat min:" + str(min_lat) + ", Lat max:" + str(max_lat)
+  print "Lon min:" + str(min_lon) + ", Lon max:" + str(max_lon)
+  print "Lat min:" + str(min_lat) + ", Lat max:" + str(max_lat)
 
   # seteo los minimos y maximos de la imagen en funcion de los min y max de lat y long
   axes = plt.gca()
