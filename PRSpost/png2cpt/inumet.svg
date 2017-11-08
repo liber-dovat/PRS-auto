@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="774"
+   height="31"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="inumet.svg"
+   inkscape:export-filename="/home/chrono/Escritorio/graficas/netcdf/cpt/inumet.png"
+   inkscape:export-xdpi="119.06977"
+   inkscape:export-ydpi="119.06977">
+  <defs
+     id="defs4">
+    <linearGradient
+       id="linearGradient3851">
+      <stop
+         style="stop-color:#d8d8d8;stop-opacity:1;"
+         offset="0"
+         id="stop3853" />
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="1"
+         id="stop3855" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3851"
+       id="linearGradient3857"
+       x1="279.22916"
+       y1="367.39069"
+       x2="793.22916"
+       y2="367.39069"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="3.0261321"
+     inkscape:cx="211.11189"
+     inkscape:cy="4.502018"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:snap-bbox="true"
+     inkscape:bbox-paths="true"
+     inkscape:snap-page="true"
+     inkscape:window-width="1600"
+     inkscape:window-height="823"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="1"
+     inkscape:bbox-nodes="true"
+     inkscape:snap-global="false">
+    <inkscape:grid
+       type="xygrid"
+       id="grid3079"
+       empspacing="5"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-19.229156,-351.89069)">
+    <rect
+       style="fill:#370000;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="rect3035"
+       width="33.60046"
+       height="31.000006"
+       x="19.229156"
+       y="351.89069" />
+    <rect
+       y="351.89069"
+       x="45.229156"
+       height="31.000006"
+       width="34.261372"
+       id="rect3037"
+       style="fill:#990000;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+    <rect
+       style="fill:#990099;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="rect3039"
+       width="33.60046"
+       height="31.000006"
+       x="71.229156"
+       y="351.89069" />
+    <rect
+       y="351.89069"
+       x="97.229156"
+       height="31.000006"
+       width="34.922279"
+       id="rect3041"
+       style="fill:#ff0000;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+    <rect
+       style="fill:#ff6600;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="rect3043"
+       width="35.913647"
+       height="31.000006"
+       x="123.22916"
+       y="351.89069" />
+    <rect
+       y="351.89069"
+       x="149.22916"
+       height="31.000006"
+       width="38.557285"
+       id="rect3045"
+       style="fill:#ffff00;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+    <rect
+       style="fill:#009900;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="rect3047"
+       width="35.913647"
+       height="31.000006"
+       x="175.22916"
+       y="351.89069" />
+    <rect
+       y="351.89069"
+       x="201.22916"
+       height="31.000006"
+       width="37.896374"
+       id="rect3049"
+       style="fill:#00ff00;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+    <rect
+       style="fill:#0000ff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="rect3051"
+       width="35.252735"
+       height="31.000006"
+       x="227.22916"
+       y="351.89069" />
+    <rect
+       y="351.89069"
+       x="253.22916"
+       height="31.000006"
+       width="31.948187"
+       id="rect3053"
+       style="fill:#009999;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+    <rect
+       style="opacity:1;fill:url(#linearGradient3857);fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="rect3081"
+       width="514"
+       height="31.000004"
+       x="279.22916"
+       y="351.89069"
+       inkscape:export-filename="/home/chrono/Escritorio/graficas/netcdf/cpt/inumet_02.png"
+       inkscape:export-xdpi="119.03224"
+       inkscape:export-ydpi="119.03224" />
+  </g>
+</svg>
