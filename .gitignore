@@ -13,4 +13,5 @@ PRSsat/*.o
 PRSpost/test
 PRSpost/test.py
 PRSpost/copy.sh
-
+PRSpost/netcdf_goes16/*.png
+PRSpost/netcdf_goes16/goes-r
