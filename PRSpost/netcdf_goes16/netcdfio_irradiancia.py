@@ -11,6 +11,7 @@ import numpy
 import math
 import os
 import gc
+import re
 
 from mpl_toolkits.basemap import Basemap, shiftgrid
 from os.path              import basename
@@ -181,6 +182,24 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
   # and create an instance of the ncCDF4 class
   nc_fid = netCDF4.Dataset(url, 'r')
 
+  if data_name == 'Band1':
+    name = basename(url)           # obtengo el nombre base del archivo
+  else:
+    t_coverage = repr(nc_fid.getncattr('time_coverage_end'))
+    # print t_coverage
+
+    ds_name = repr(nc_fid.getncattr('dataset_name'))
+    # print ds_name
+
+    date = re.search('\'(.*?)\'', t_coverage).group(1)
+    print date
+
+    channel = re.search('-M\d(.*?)_', ds_name).group(1)
+    print channel
+
+    name = channel + "_" + date
+  # if name
+
   # extract/copy the data
   lats = nc_fid.variables[lat_name][:]
   lons = nc_fid.variables[lon_name][:]
@@ -189,12 +208,15 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
   if data_name == 'CMI' or data_name == 'DQF':
     # Satellite height
     sat_h = nc_fid.variables['goes_imager_projection'].perspective_point_height
+    sat_h -= 10000
     # Satellite longitude
     sat_lon = nc_fid.variables['goes_imager_projection'].longitude_of_projection_origin
     # Satellite sweep
     sat_sweep = nc_fid.variables['goes_imager_projection'].sweep_angle_axis
     X = nc_fid.variables[lon_name][:] * sat_h # longitud, eje X
     Y = nc_fid.variables[lat_name][:] * sat_h # latitud, eje Y
+
+    print "sat_h: " + str(sat_h)
 
     # if nc_fid.variables[data_name].units == "K":
       # data = map(lambda d: d-273, data) # paso data a grados C
@@ -262,7 +284,7 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
 
     x, y = numpy.meshgrid(XX,YY)
 
-    ax1 = Basemap(projection='geos', lon_0=sat_lon,\
+    ax1 = Basemap(projection='geos', lon_0=sat_lon, satellite_height=sat_h,\
                   llcrnrx=-x.max()/2,llcrnry=-y.max()/2,\
                   urcrnrx=x.max()/2,urcrnry=y.max()/2,\
                   resolution='l')
@@ -278,8 +300,8 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
 
     # parche para alinear la fotografía con las coordenadas geográficas
     # supongo que una vez esté calibrado el satélite hay que eliminar estas líneas
-    X = map(lambda x: x+10000, X) # incremento X
-    Y = map(lambda y: y+10000, Y) # incremento Y
+    # X = map(lambda x: x+10000, X) # incremento X
+    # Y = map(lambda y: y+10000, Y) # incremento Y
 
     print "min_Y: " + str(min_Y)
     print "max_Y: " + str(max_Y)
@@ -326,7 +348,7 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
   # dibujo img en las coordenadas x e y calculadas
 
   cmap = gmtColormap(colormapName,colormapPath, 1100)
-  cs = ax1.pcolormesh(x, y, data, vmin=vmin, vmax=vmax, cmap=cmap)
+  cs   = ax1.pcolormesh(x, y, data, vmin=vmin, vmax=vmax, cmap=cmap)
 
   # cs.set_array(None)
 
@@ -346,11 +368,9 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
   cbar = ax1.colorbar(cs, location='bottom', pad='3%', ticks=[vmin, vmax])
   cbar.ax.set_xticklabels([math.floor(vmin), math.floor(vmax)], fontsize=3)
 
-  name = basename(url)           # obtengo el nombre base del archivo
-
   # si estoy dibujando toda la proyección geos adjunto el string al nombre del archivo
   if geos:
-    name = name+ "_geos"
+    name = name + "_geos"
 
   destFile = dirDest + name + '.png' # determino el nombre del archivo a escribir
 
@@ -359,7 +379,7 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
 
   print destFile
 
-  plt.savefig(destFile, bbox_inches='tight', dpi=300, transparent=True) #, transparent=True
+  plt.savefig(destFile, bbox_inches='tight', dpi=300, transparent=True)
   plt.close()
 
 # def netcdf2png
