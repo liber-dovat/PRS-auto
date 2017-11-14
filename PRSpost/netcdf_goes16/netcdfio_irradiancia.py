@@ -186,7 +186,7 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
   lons = nc_fid.variables[lon_name][:]
   data = nc_fid.variables[data_name][:]
 
-  if data_name == 'CMI':
+  if data_name == 'CMI' or data_name == 'DQF':
     # Satellite height
     sat_h = nc_fid.variables['goes_imager_projection'].perspective_point_height
     # Satellite longitude
@@ -196,7 +196,10 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
     X = nc_fid.variables[lon_name][:] * sat_h # longitud, eje X
     Y = nc_fid.variables[lat_name][:] * sat_h # latitud, eje Y
 
-    print "Sat_lon: " + str(sat_lon);
+    # if nc_fid.variables[data_name].units == "K":
+      # data = map(lambda d: d-273, data) # paso data a grados C
+
+    print "Sat_lon: "   + str(sat_lon);
 
   # end if data_name == 'CMI'
 
@@ -207,10 +210,10 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
   min_lat = numpy.amin(lats)
   max_lat = numpy.amax(lats)
 
-  print min_lat
-  print max_lat
-  print min_lon
-  print max_lon
+  print "min_lat: " + str(min_lon)
+  print "max_lat: " + str(max_lon)
+  print "min_lon: " + str(min_lat)
+  print "max_lon: " + str(max_lat)
 
   # for i in data:
   #   print i
@@ -225,13 +228,16 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
 
   if data_name == 'Band1': # para archivos nc ya proyectados a mercator
 
+    X = map(lambda x: x+0.11, lons) # incremento X
+    Y = map(lambda y: y+0.11, lats) # incremento Y
+
     ax1 = Basemap(projection='merc',\
                   llcrnrlat=-42.94,urcrnrlat=-22.0,\
                   llcrnrlon=-67.0,urcrnrlon=-45.04,\
-                  resolution='l')
+                  resolution='f')
     # resolution: c, l, i, h, f
 
-    lons2d, lats2d = numpy.meshgrid(lons, lats)
+    lons2d, lats2d = numpy.meshgrid(X, Y)
     # dadas las lat y lon del archivo, obtengo las coordenadas x y para
     # la ventana seleccionada como proyeccion
     x, y = ax1(lons2d,lats2d)
@@ -246,10 +252,10 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
     XX = map(lambda x: x+max_X, X) # incremento X
     YY = map(lambda y: y+max_Y, Y) # incremento Y
 
-    print min_Y
-    print max_Y
-    print min_X
-    print max_X
+    print "min_Y: " + str(min_Y)
+    print "max_Y: " + str(max_Y)
+    print "min_X: " + str(min_X)
+    print "max_X: " + str(max_X)
 
     print numpy.amin(XX)
     print numpy.amin(YY)
@@ -261,22 +267,24 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
                   urcrnrx=x.max()/2,urcrnry=y.max()/2,\
                   resolution='l')
 
-  else:
+  else: # proyecto con mercator en la región del río de la plata
 
-    # # https://github.com/blaylockbk/pyBKB_v2/blob/master/BB_goes16/mapping_GOES16_data.ipynb
+    # https://github.com/blaylockbk/pyBKB_v2/blob/master/BB_goes16/mapping_GOES16_data.ipynb
 
     min_Y = numpy.amin(Y)
     max_Y = numpy.amax(Y)
     min_X = numpy.amin(X)
     max_X = numpy.amax(X)
 
-    XX = map(lambda x: x+max_X, X) # incremento X
-    YY = map(lambda y: y+max_Y, Y) # incremento Y
+    # parche para alinear la fotografía con las coordenadas geográficas
+    # supongo que una vez esté calibrado el satélite hay que eliminar estas líneas
+    X = map(lambda x: x+10000, X) # incremento X
+    Y = map(lambda y: y+10000, Y) # incremento Y
 
-    print min_Y
-    print max_Y
-    print min_X
-    print max_X
+    print "min_Y: " + str(min_Y)
+    print "max_Y: " + str(max_Y)
+    print "min_X: " + str(min_X)
+    print "max_X: " + str(max_X)
 
     print numpy.amin(X)
     print numpy.amin(Y)
@@ -287,10 +295,17 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
 
     lons, lats = projection(x_mesh, y_mesh, inverse=True)
 
+    # Región
     ax1 = Basemap(projection='merc',\
             llcrnrlat=-42.94,urcrnrlat=-22.0,\
             llcrnrlon=-67.0,urcrnrlon=-45.04,\
-            resolution='l')
+            resolution='f')
+
+    # Uruguay
+    # ax1 = Basemap(projection='merc',\
+    #         llcrnrlat=-35.0830,urcrnrlat=-30.0387,\
+    #         llcrnrlon=-58.6475,urcrnrlon=-53.01174,\
+    #         resolution='f')
 
     x, y = ax1(lons, lats)
 
@@ -300,6 +315,7 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
   gc.collect()
 
   vmin = numpy.amin(data)
+  # vmin = 250.
   vmax = numpy.amax(data)
 
   print numpy.amin(data)
@@ -318,7 +334,7 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
   plt.clim(vmin, vmax)
 
   # agrego los vectores de las costas, departamentos/estados/provincias y paises
-  ax1.drawcoastlines(linewidth=0.50)
+  ax1.drawcoastlines(linewidth=0.25)
   ax1.drawcountries(linewidth=0.50)
   ax1.drawstates(linewidth=0.25)
 

@@ -9,10 +9,9 @@ nc       = 'S10635335_201710251430.nc'
 dirDest  = './'
 cmapPath = dirDest + '/cmaps/'
 
-# ncdump(path + nc)
-# netcdf2png(path + nc, cmapPath, 'Ribbon-Colors', dirDest, 'lat', 'lon','Band1')
 
-#--
+# ncdump(path + nc)
+# netcdf2png(path + nc, cmapPath, 'jet', dirDest, 'lat', 'lon','Band1')
 
 # MEM ERROR - Memoria insuficiente
 # file02 = goespath + 'band02/' + 'OR_ABI-L2-CMIPF-M4C02_G16_s20171971905222_e20171971910023_c20171971910090-114300_0.nc'
@@ -40,7 +39,7 @@ ncdump(file13)
 netcdf2png(file13, cmapPath, 'inumet', dirDest, 'y', 'x','CMI')
 netcdf2png(file13, cmapPath, 'inumet', dirDest, 'y', 'x','CMI', geos=True)
 
-file14 = goespath + 'band14/' + 'OR_ABI-L2-CMIPF-M4C14_G16_s20171971905222_e20171971910023_c20171971912326.nc'
+file14 = goespath + 'band14/' + 'OR_ABI-L2-CMIPF-M3C14_G16_s20171921700382_e20171921711149_c20171921711230.nc'
 ncdump(file14)
 netcdf2png(file14, cmapPath, 'inumet', dirDest, 'y', 'x','CMI')
 netcdf2png(file14, cmapPath, 'inumet', dirDest, 'y', 'x','CMI', geos=True)
