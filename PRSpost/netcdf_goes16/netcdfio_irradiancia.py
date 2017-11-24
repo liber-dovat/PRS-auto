@@ -5,8 +5,8 @@ import matplotlib
 matplotlib.use('Agg')
 
 import matplotlib.pyplot as plt
-import netCDF4
 import struct
+import netCDF4
 import numpy
 import math
 import os
@@ -16,161 +16,7 @@ import re
 from mpl_toolkits.basemap import Basemap, shiftgrid
 from os.path              import basename
 from pyproj               import Proj
-# from funciones            import ymd
-# from inumet_color         import _get_inumet
-# from calibracion          import calibrarData
-
-# http://scipy-cookbook.readthedocs.io/items/Matplotlib_Loading_a_colormap_dynamically.html
-def gmtColormap(fileName,GMTPath = None,segmentos = 1024):
-      import colorsys
-      import numpy
-      N = numpy
-      if type(GMTPath) == type(None):
-          filePath = "/usr/local/cmaps/"+ fileName+".cpt"
-      else:
-          filePath = GMTPath+"/"+ fileName +".cpt"
-      try:
-          f = open(filePath)
-      except:
-          print "file ",filePath, "not found"
-          return None
-
-      lines = f.readlines()
-      f.close()
-
-      x = []
-      r = []
-      g = []
-      b = []
-      colorModel = "RGB"
-      for l in lines:
-          ls = l.split()
-          if l[0] == "#":
-             if ls[-1] == "HSV":
-                 colorModel = "HSV"
-                 continue
-             else:
-                 continue
-          if ls[0] == "B" or ls[0] == "F" or ls[0] == "N":
-             pass
-          else:
-              x.append(float(ls[0]))
-              r.append(float(ls[1]))
-              g.append(float(ls[2]))
-              b.append(float(ls[3]))
-              xtemp = float(ls[4])
-              rtemp = float(ls[5])
-              gtemp = float(ls[6])
-              btemp = float(ls[7])
-
-      x.append(xtemp)
-      r.append(rtemp)
-      g.append(gtemp)
-      b.append(btemp)
-
-      nTable = len(r)
-      x = N.array( x , N.float)
-      r = N.array( r , N.float)
-      g = N.array( g , N.float)
-      b = N.array( b , N.float)
-      if colorModel == "HSV":
-         for i in range(r.shape[0]):
-             rr,gg,bb = colorsys.hsv_to_rgb(r[i]/360.,g[i],b[i])
-             r[i] = rr ; g[i] = gg ; b[i] = bb
-      if colorModel == "HSV":
-         for i in range(r.shape[0]):
-             rr,gg,bb = colorsys.hsv_to_rgb(r[i]/360.,g[i],b[i])
-             r[i] = rr ; g[i] = gg ; b[i] = bb
-      if colorModel == "RGB":
-          r = r/255.
-          g = g/255.
-          b = b/255.
-      xNorm = (x - x[0])/(x[-1] - x[0])
-
-      red = []
-      blue = []
-      green = []
-      for i in range(len(x)):
-          red.append([xNorm[i],r[i],r[i]])
-          green.append([xNorm[i],g[i],g[i]])
-          blue.append([xNorm[i],b[i],b[i]])
-      colorDict = {"red":red, "green":green, "blue":blue}
-      cwm = matplotlib.colors.LinearSegmentedColormap(fileName, colorDict, segmentos)
-      return cwm
-
-# gmtColormap
-
-def ncdump(url, verb=True):
-    '''
-    http://schubert.atmos.colostate.edu/~cslocum/netcdf_example.html
-    ncdump outputs dimensions, variables and their attribute information.
-    The information is similar to that of NCAR's ncdump utility.
-    ncdump requires a valid instance of Dataset.
-
-    Parameters
-    ----------
-    nc_fid : netCDF4.Dataset
-        A netCDF4 dateset object
-    verb : Boolean
-        whether or not nc_attrs, nc_dims, and nc_vars are printed
-
-    Returns
-    -------
-    nc_attrs : list
-        A Python list of the NetCDF file global attributes
-    nc_dims : list
-        A Python list of the NetCDF file dimensions
-    nc_vars : list
-        A Python list of the NetCDF file variables
-    '''
-    def print_ncattr(key):
-        """
-        Prints the NetCDF file attributes for a given key
-
-        Parameters
-        ----------
-        key : unicode
-            a valid netCDF4.Dataset.variables key
-        """
-        try:
-            print "\t\ttype:", repr(nc_fid.variables[key].dtype)
-            for ncattr in nc_fid.variables[key].ncattrs():
-                print '\t\t%s:' % ncattr,\
-                      repr(nc_fid.variables[key].getncattr(ncattr))
-        except KeyError:
-            print "\t\tWARNING: %s does not contain variable attributes" % key
-    # def print_ncattr
-
-    # NetCDF global attributes
-    nc_fid = netCDF4.Dataset(url, 'r')
-    nc_attrs = nc_fid.ncattrs()
-    if verb:
-        print "NetCDF Global Attributes:"
-        for nc_attr in nc_attrs:
-            print '\t%s:' % nc_attr, repr(nc_fid.getncattr(nc_attr))
-    nc_dims = [dim for dim in nc_fid.dimensions]  # list of nc dimensions
-
-    # Dimension shape information.
-    if verb:
-        print "NetCDF dimension information:"
-        for dim in nc_dims:
-            print "\tName:", dim 
-            print "\t\tsize:", len(nc_fid.dimensions[dim])
-            print_ncattr(dim)
-
-    # Variable information.
-    nc_vars = [var for var in nc_fid.variables]  # list of nc variables
-    if verb:
-        print "NetCDF variable information:"
-        for var in nc_vars:
-            if var not in nc_dims:
-                print '\tName:', var
-                print "\t\tdimensions:", nc_fid.variables[var].dimensions
-                print "\t\tsize:", nc_fid.variables[var].size
-                print_ncattr(var)
-    return nc_attrs, nc_dims, nc_vars
-
-# def ncdump
+from utils                import gmtColormap, ncdump
 
 #########################################
 #########################################
@@ -205,7 +51,7 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
   lons = nc_fid.variables[lon_name][:]
   data = nc_fid.variables[data_name][:]
 
-  if data_name == 'CMI' or data_name == 'DQF':
+  if data_name == 'CMI':
     # Satellite height
     sat_h = nc_fid.variables['goes_imager_projection'].perspective_point_height
     sat_h -= 10000
@@ -215,6 +61,17 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
     sat_sweep = nc_fid.variables['goes_imager_projection'].sweep_angle_axis
     X = nc_fid.variables[lon_name][:] * sat_h # longitud, eje X
     Y = nc_fid.variables[lat_name][:] * sat_h # latitud, eje Y
+
+    # si el canal es el 2 divido las dimensiones de los elementos
+    # if channel == 'C15':
+    #   X = X[::4]
+    #   Y = Y[::4]
+    #   data = data[::4, ::4]
+
+    # if not geos:
+    #   X = X[::4]
+    #   Y = Y[::4]
+    #   data = data[::4, ::4]
 
     print "sat_h: " + str(sat_h)
 
@@ -244,9 +101,11 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
   print "Data max: " + str(numpy.amax(data))
 
   # seteo los minimos y maximos de la imagen en funcion de los min y max de lat y long
-  axes = plt.gca()
-  axes.set_xlim([min_lon, max_lon])
-  axes.set_ylim([min_lat, max_lat])
+  # axes = plt.gca()
+  # axes.set_xlim([min_lon, max_lon])
+  # axes.set_ylim([min_lat, max_lat])
+
+  zona = 'sur'
 
   if data_name == 'Band1': # para archivos nc ya proyectados a mercator
 
@@ -265,6 +124,7 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
     x, y = ax1(lons2d,lats2d)
 
   elif geos: # proyecto toda la foto completa de geo estacionario
+    print "Ventana Globo geoestacionario"
 
     min_Y = numpy.amin(Y)
     max_Y = numpy.amax(Y)
@@ -289,7 +149,8 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
                   urcrnrx=x.max()/2,urcrnry=y.max()/2,\
                   resolution='l')
 
-  else: # proyecto con mercator en la región del río de la plata
+  elif zona == 'plata': # proyecto con mercator en la región del río de la plata
+    print "Ventana Ŕío de la Plata"
 
     # https://github.com/blaylockbk/pyBKB_v2/blob/master/BB_goes16/mapping_GOES16_data.ipynb
 
@@ -300,8 +161,8 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
 
     # parche para alinear la fotografía con las coordenadas geográficas
     # supongo que una vez esté calibrado el satélite hay que eliminar estas líneas
-    # X = map(lambda x: x+10000, X) # incremento X
-    # Y = map(lambda y: y+10000, Y) # incremento Y
+    X = map(lambda x: x+10000, X) # incremento X
+    Y = map(lambda y: y+10000, Y) # incremento Y
 
     print "min_Y: " + str(min_Y)
     print "max_Y: " + str(max_Y)
@@ -311,34 +172,103 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
     print numpy.amin(X)
     print numpy.amin(Y)
 
-    projection = Proj(proj='geos', h=sat_h, lon_0=sat_lon, sweep=sat_sweep)
-
-    x_mesh, y_mesh = numpy.meshgrid(X,Y)
-
-    lons, lats = projection(x_mesh, y_mesh, inverse=True)
-
     # Región
     ax1 = Basemap(projection='merc',\
             llcrnrlat=-42.94,urcrnrlat=-22.0,\
             llcrnrlon=-67.0,urcrnrlon=-45.04,\
             resolution='f')
 
-    # Uruguay
-    # ax1 = Basemap(projection='merc',\
-    #         llcrnrlat=-35.0830,urcrnrlat=-30.0387,\
-    #         llcrnrlon=-58.6475,urcrnrlon=-53.01174,\
-    #         resolution='f')
+    projection     = Proj(proj='geos', h=sat_h, lon_0=sat_lon, sweep=sat_sweep)
+    x_mesh, y_mesh = numpy.meshgrid(X,Y)
+    lons, lats     = projection(x_mesh, y_mesh, inverse=True)
+    x, y           = ax1(lons, lats)
 
-    x, y = ax1(lons, lats)
+  elif zona == 'sur': # proyecto con mercator en la región del río de la plata
+    print "Ventana Sur"
+
+    # https://github.com/blaylockbk/pyBKB_v2/blob/master/BB_goes16/mapping_GOES16_data.ipynb
+
+    min_Y = numpy.amin(Y)
+    max_Y = numpy.amax(Y)
+    min_X = numpy.amin(X)
+    max_X = numpy.amax(X)
+
+    # parche para alinear la fotografía con las coordenadas geográficas
+    # supongo que una vez esté calibrado el satélite hay que eliminar estas líneas
+    X = map(lambda x: x+10000, X) # incremento X
+    Y = map(lambda y: y+10000, Y) # incremento Y
+
+    print "min_Y: " + str(min_Y)
+    print "max_Y: " + str(max_Y)
+    print "min_X: " + str(min_X)
+    print "max_X: " + str(max_X)
+
+    print numpy.amin(X)
+    print numpy.amin(Y)
+
+    # Región
+    ax1 = Basemap(projection='merc',\
+            llcrnrlat=-49.4947,urcrnrlat=-13.6169,\
+            llcrnrlon=-73.4699,urcrnrlon=-39.2205,\
+            resolution='f')
+
+    projection     = Proj(proj='geos', h=sat_h, lon_0=sat_lon, sweep=sat_sweep)
+    x_mesh, y_mesh = numpy.meshgrid(X,Y)
+    lons, lats     = projection(x_mesh, y_mesh, inverse=True)
+    x, y           = ax1(lons, lats)
+
+  else: # proyecto con mercator en la región del río de la plata
+    print "Ventana Uruguay"
+
+    # https://github.com/blaylockbk/pyBKB_v2/blob/master/BB_goes16/mapping_GOES16_data.ipynb
+
+    min_Y = numpy.amin(Y)
+    max_Y = numpy.amax(Y)
+    min_X = numpy.amin(X)
+    max_X = numpy.amax(X)
+
+    # parche para alinear la fotografía con las coordenadas geográficas
+    # supongo que una vez esté calibrado el satélite hay que eliminar estas líneas
+    X = map(lambda x: x+10000, X) # incremento X
+    Y = map(lambda y: y+10000, Y) # incremento Y
+
+    print "min_Y: " + str(min_Y)
+    print "max_Y: " + str(max_Y)
+    print "min_X: " + str(min_X)
+    print "max_X: " + str(max_X)
+
+    print numpy.amin(X)
+    print numpy.amin(Y)
+
+    # Región
+    ax1 = Basemap(projection='merc',\
+            llcrnrlat=-35.2138,urcrnrlat=-29.7466,\
+            llcrnrlon=-58.9073,urcrnrlon=-52.7591,\
+            # llcrnrx=-x.max()/2,llcrnry=-y.max()/2,\
+            # urcrnrx=x.max()/2,urcrnry=y.max()/2,\
+            resolution='f')
+
+    projection     = Proj(proj='geos', h=sat_h, lon_0=sat_lon, sweep=sat_sweep)
+    x_mesh, y_mesh = numpy.meshgrid(X,Y)
+    lons, lats     = projection(x_mesh, y_mesh, inverse=True)
+    x, y           = ax1(lons, lats)
 
   # end if
 
   # llamo al garbage collector para que borre los elementos que ya no se van a usar
   gc.collect()
 
+  # Los datos de estan en kelvin, asi que los paso a Celsius
+  data -= 273.15
+
   vmin = numpy.amin(data)
-  # vmin = 250.
   vmax = numpy.amax(data)
+
+  # vmin = .0
+  # vmax = 50
+
+  # vmin = 200.
+  # vmax = 300.
 
   print numpy.amin(data)
   print numpy.amax(data)
@@ -347,13 +277,13 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
 
   # dibujo img en las coordenadas x e y calculadas
 
-  cmap = gmtColormap(colormapName,colormapPath, 1100)
+  cmap = gmtColormap(colormapName, colormapPath, 2048)
   cs   = ax1.pcolormesh(x, y, data, vmin=vmin, vmax=vmax, cmap=cmap)
 
   # cs.set_array(None)
 
   # seteo los limites del colorbar
-  plt.clim(vmin, vmax)
+  # plt.clim(vmin, vmax)
 
   # agrego los vectores de las costas, departamentos/estados/provincias y paises
   ax1.drawcoastlines(linewidth=0.25)
