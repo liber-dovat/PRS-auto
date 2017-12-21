@@ -14,7 +14,7 @@ cmapPath = dirDest + '/cmaps/'
 # netcdf2png(path + nc, cmapPath, 'jet', dirDest, 'lat', 'lon','Band1')
 
 # MEM ERROR - Memoria insuficiente
-file02 = goespath + 'band02/' + 'OR_ABI-L2-CMIPF-M4C02_G16_s20171971905222_e20171971910023_c20171971910090-114300_0.nc'
+file02 = goespath + 'band02/' + 'OR_ABI-L2-CMIPF-M3C02_G16_s20171971400382_e20171971411149_c20171971411224-114300_0.nc'
 ncdump(file02)
 netcdf2png(file02, cmapPath, 'jet', dirDest, 'y', 'x','CMI')
 netcdf2png(file02, cmapPath, 'jet', dirDest, 'y', 'x','CMI', geos=True)

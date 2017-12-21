@@ -22,6 +22,81 @@ from utils                import gmtColormap, ncdump
 #########################################
 #########################################
 
+def channelInfo(channelNumber):
+  if channelNumber == 'C02':
+    print "ABI L2+ Cloud and moisture imagery reflectance factor"
+    print "Range: 0.0166056 to 0.9999 1"
+    print "Wavelength: 0.64 um"
+
+  elif channelNumber == 'C07':
+    print "ABI L2+ Cloud and moisture imagery brightness temperature"
+    print "Range: 244.253 to 323.885 K"
+    print "Wavelength: 3.89 um"
+
+  elif channelNumber == 'C08':
+    print "ABI L2+ Cloud and moisture imagery brightness temperature"
+    print "Range: 205.704 to 248.755 K"
+    print "Wavelength: 6.17 um"
+
+  elif channelNumber == 'C09':
+    print "ABI L2+ Cloud and moisture imagery brightness temperature"
+    print "Range: 206.136 to 258.388 K"
+    print "Wavelength: 6.93 um"
+
+  elif channelNumber == 'C13':
+    print "ABI L2+ Cloud and moisture imagery brightness temperature"
+    print "Range: 206.647 to 313.627 K"
+    print "Wavelength: 10.33 um"
+
+  elif channelNumber == 'C14':
+    print "ABI L2+ Cloud and moisture imagery brightness temperature"
+    print "Range: 206.018 to 311.465 K"
+    print "Wavelength: 11.19 um"
+
+  elif channelNumber == 'C15':
+    print "ABI L2+ Cloud and moisture imagery brightness temperature"
+    print "Range: 204.171 to 307.612 K"
+    print "Wavelength: 12.27 um"
+
+# end channelInfo
+
+#########################################
+#########################################
+#########################################
+
+def rangoColorbar(channel):
+
+  # defino los rangos del colorbar en funcion del tipo de banda
+  if channel == 'C02':
+    vmin = 0
+    vmax = 100
+  elif channel == 'C07':
+    vmin = -70
+    vmax = 70
+  elif channel == 'C08':
+    vmin = -100
+    vmax = 30
+  elif channel == 'C09':
+    vmin = -100
+    vmax = 30
+  elif channel == 'C13':
+    vmin = -80
+    vmax = 70
+  elif channel == 'C14':
+    vmin = -100
+    vmax = 70
+  elif channel == 'C15':
+    vmin = -100
+    vmax = 70
+
+  return vmin, vmax
+
+# rangoColorbar
+
+#########################################
+#########################################
+#########################################
+
 def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, data_name, geos=False):
   
   # Dataset is the class behavior to open the file
@@ -42,6 +117,8 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
 
     channel = re.search('-M\d(.*?)_', ds_name).group(1)
     print channel
+
+    channelInfo(channel)
 
     name = channel + "_" + date
   # if name
@@ -105,7 +182,7 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
   # axes.set_xlim([min_lon, max_lon])
   # axes.set_ylim([min_lat, max_lat])
 
-  zona = 'sur'
+  zona = 'plata'
 
   if data_name == 'Band1': # para archivos nc ya proyectados a mercator
 
@@ -196,7 +273,9 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
     # parche para alinear la fotografía con las coordenadas geográficas
     # supongo que una vez esté calibrado el satélite hay que eliminar estas líneas
     X = map(lambda x: x+10000, X) # incremento X
-    Y = map(lambda y: y+10000, Y) # incremento Y
+    Y = map(lambda y: y+3000, Y) # incremento Y
+    # X = map(lambda x: x+10000, X) # incremento X
+    # Y = map(lambda y: y+10000, Y) # incremento Y
 
     print "min_Y: " + str(min_Y)
     print "max_Y: " + str(max_Y)
@@ -217,7 +296,7 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
     lons, lats     = projection(x_mesh, y_mesh, inverse=True)
     x, y           = ax1(lons, lats)
 
-  else: # proyecto con mercator en la región del río de la plata
+  elif zona == 'uy': # proyecto con mercator en la región del río de la plata
     print "Ventana Uruguay"
 
     # https://github.com/blaylockbk/pyBKB_v2/blob/master/BB_goes16/mapping_GOES16_data.ipynb
@@ -261,14 +340,12 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
   # Los datos de estan en kelvin, asi que los paso a Celsius
   data -= 273.15
 
-  vmin = numpy.amin(data)
-  vmax = numpy.amax(data)
-
-  # vmin = .0
-  # vmax = 50
-
-  # vmin = 200.
-  # vmax = 300.
+  # defino el min y max en funcion de la banda
+  if data_name == 'Band1':
+    vmin = numpy.amin(data)
+    vmax = numpy.amax(data)
+  else:
+    vmin, vmax = rangoColorbar(channel)
 
   print numpy.amin(data)
   print numpy.amax(data)
