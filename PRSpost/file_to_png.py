@@ -306,6 +306,7 @@ def fileToPng(file, metaPath, outPngPath):
 
   # guardo la imagen en la ruta destino
   plt.savefig(destFile, bbox_inches='tight', dpi=200, transparent=True)
+  plt.savefig(destFile, bbox_inches='tight', dpi=200, transparent=True)
   plt.close() # cierro el archivo
 
 # fileToPng
