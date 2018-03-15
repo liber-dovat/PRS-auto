@@ -4,6 +4,9 @@
 import matplotlib
 import netCDF4
 
+from os       import listdir
+from shutil   import copyfile
+
 # http://scipy-cookbook.readthedocs.io/items/Matplotlib_Loading_a_colormap_dynamically.html
 def gmtColormap(fileName,GMTPath = None, segmentos = 1024):
   import colorsys
@@ -159,3 +162,29 @@ def ncdump(url, verb=True):
     return nc_attrs, nc_dims, nc_vars
 
 # def ncdump
+
+# ---------------------------------------
+# ---------------------------------------
+# ---------------------------------------
+
+def copiar_frames(carpeta_base, carpeta_destino):
+
+  # habia usado 92 elems en las pruebas que eran cerca de tres dias
+  # tambien se puede pensar que son 44 por dia
+
+  dir_elemens = sorted(listdir(carpeta_base))
+  indice      = 44
+  if len(dir_elemens) < 44:
+    indice = len(dir_elemens)
+
+  ultimas = dir_elemens[-indice:]
+
+  i = 0
+
+  for f in ultimas:
+    copyfile(carpeta_base + '/' + f, carpeta_destino + '/' + f)
+    i += 1
+
+# ---------------------------------------
+# ---------------------------------------
+# ---------------------------------------
