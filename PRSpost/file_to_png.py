@@ -219,6 +219,14 @@ def fileToPng(file, metaPath, outPngPath):
   # y luego obtengo sus coordenadas en el mapa ax
   x, y = ax(lons2d,lats2d)
 
+  # Dibujo Estacion LES
+  les_lon = -57.92
+  les_lat = -31.28
+  les_x, les_y = ax(les_lon, les_lat)
+  print les_x
+  print les_y
+  ax.plot(les_x, les_y, 'bo', markersize=0.1, linewidth=0.0, color='white')
+
   # obtengo la extension del archivo para mapear la banda
   band = getExt(file)
 

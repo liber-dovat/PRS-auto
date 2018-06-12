@@ -139,7 +139,7 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
   if data_name == 'CMI' or data_name == 'Rad':
     # Satellite height
     sat_h = nc_fid.variables['goes_imager_projection'].perspective_point_height
-    sat_h += 25000
+    # sat_h += 25000 # parche de altura chr
     # Satellite longitude
     sat_lon = nc_fid.variables['goes_imager_projection'].longitude_of_projection_origin
     # Satellite sweep
@@ -185,8 +185,10 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
 
   # parche para alinear la fotografía con las coordenadas geográficas
   # supongo que una vez esté calibrado el satélite hay que eliminar estas líneas
-  X = map(lambda x: x*sat_h+5000, X) # incremento X
-  Y = map(lambda y: y*sat_h+5000, Y) # incremento Y
+  # X = map(lambda x: x*sat_h+5000, X) # incremento X
+  # Y = map(lambda y: y*sat_h+5000, Y) # incremento Y
+  X *= sat_h
+  Y *= sat_h
 
   # Región
   ax = Basemap(projection='merc',\

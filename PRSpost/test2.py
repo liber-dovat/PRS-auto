@@ -13,7 +13,7 @@ baseIR  = '/sat/PRS/dev/PRS-sat/PRSpost/test/imgs/'
 meta15  = '/sat/PRS/dev/PRS-sat/PRSpost/test/meta15'
 meta60  = '/sat/PRS/dev/PRS-sat/PRSpost/test/meta60'
 
-rootname = 'ART_2016301_174500'
+rootname = 'ART_2016285_133500'
 
 FRpath  = baseVIS + rootname + '.FR'
 RPpath  = baseVIS + rootname + '.RP'
@@ -42,7 +42,7 @@ file_path = '/sat/prd-sat/ART_G015x015GG_C015x015/B01-FR/'
 fileToPng(RPpath,  meta15, PATHpng)
 # fileToPng(B02path, meta60, PATHpng)
 # fileToPng(B03path, meta60, PATHpng)
-fileToPng(B04path, meta60, PATHpng)
+# fileToPng(B04path, meta60, PATHpng)
 # fileToPng(B06path, meta60, PATHpng)
 
 # B2 = ['ART_2016304_230800',
