@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "lib_PRSsat.h"
+#include "lib_PRS_R.h"
 
 #define FALSE 0
 #define TRUE !FALSE

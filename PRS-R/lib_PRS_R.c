@@ -72,7 +72,7 @@ int procesar_NetCDF_VIS_gri(double ** FRmat, double ** RPmat, double ** N1mat,
 	}
 
 	// PROCESAR LA IMAGEN
-	if (Band == 1){ // CANAL VISIBLE, PROCESO
+	if (Band == 2){ // CANAL VISIBLE ROJO, PROCESO
 		
 	 	// Elijo satelite para calibracion
 	 	elegir_satelite_VIS(&kste, ste);
@@ -299,8 +299,8 @@ int procesar_VIS_gri(double * FRmat, double * RPmat, double * CZmat, int * MSKma
 	double LATmax, double LATmin, double LONmax, double LONmin,
 	int Ct, int Ci, int Cj,
 	int * BXdata, double * LATdata, double * LONdata, int St,
-	int CALvis_iniYEA, int CALvis_iniDOY, double CALvis_Xspace,
-	double CALvis_M, double CALvis_K, double CALvis_alfa, double CALvis_beta,
+	// int CALvis_iniYEA, int CALvis_iniDOY, double CALvis_Xspace,
+	// double CALvis_M, double CALvis_K, double CALvis_alfa, double CALvis_beta,
 	double Fn, double DELTArad, double EcTmin,
 	int yea, int doy, int hra, int min, int sec){
 
@@ -316,8 +316,8 @@ int procesar_VIS_gri(double * FRmat, double * RPmat, double * CZmat, int * MSKma
 	hLONcel = dLONcel/2;
 
 	// FACTOR POST-LAUNCH fc
-	nDESDEfecha(CALvis_iniYEA, CALvis_iniDOY, yea, doy, &N);
-	fc = (CALvis_alfa*N/1000) + CALvis_beta;
+	// nDESDEfecha(CALvis_iniYEA, CALvis_iniDOY, yea, doy, &N);
+	// fc = (CALvis_alfa*N/1000) + CALvis_beta;
 
 	// RECORRO LA IMAGEN
 	for (h1=0;h1<(St);h1++){
@@ -347,8 +347,8 @@ int procesar_VIS_gri(double * FRmat, double * RPmat, double * CZmat, int * MSKma
 
 						// CALCULO DE PRODUCTOS
 						if (Braw > 0){
-							calculo_productos_VIS(Braw, cosz, Fn, fc, 
-								CALvis_Xspace, CALvis_M, CALvis_K, &fr, &rp);
+							// calculo_productos_VIS(Braw, cosz, Fn, fc, 
+							// 	CALvis_Xspace, CALvis_M, CALvis_K, &fr, &rp);
 							mk = 1;
 						}
 
@@ -386,16 +386,17 @@ int procesar_VIS_gri(double * FRmat, double * RPmat, double * CZmat, int * MSKma
 	*fracMK = ((double) sumaMK) / ((double) Ct); // calcular el cociente ZMK / Ct = cociente
 	asignar_tag(*fracMK, &*tag);
 	return 1;
-}
+} // procesar_VIS_gri
 
 int procesar_IRB_gri(double * TXmat, int * MSKmat,
 	int * CNT1mat, int * CNT2mat, int *tag, double *fracMK,
 	double dLATgri, double dLONgri, double dLATcel, double dLONcel,
 	double LATmax, double LATmin, double LONmax, double LONmin,
 	int Ct, int Ci, int Cj,
-	int * BXdata, double * LATdata, double * LONdata, int St,
+	int * BXdata, double * LATdata, double * LONdata, int St/*,
 	double CALirb_m, double CALirb_n, double CALirb_a,
-	double CALirb_b1, double CALirb_b2){
+	double CALirb_b1, double CALirb_b2*/
+  ){
 
 	int 	Braw;
 	int 	h1, h2, N, mk, sumaMK;
@@ -431,9 +432,9 @@ int procesar_IRB_gri(double * TXmat, int * MSKmat,
 
 						// CALCULO DE PRODUCTOS
 						if (Braw > 0){
-							calculo_productos_IRB(Braw,
-								CALirb_m, CALirb_n, CALirb_a,
-								CALirb_b1, CALirb_b2, &tx);
+							// calculo_productos_IRB(Braw,
+							// 	CALirb_m, CALirb_n, CALirb_a,
+							// 	CALirb_b1, CALirb_b2, &tx);
 							mk = 1;
 						}
 
@@ -465,7 +466,7 @@ int procesar_IRB_gri(double * TXmat, int * MSKmat,
 	*fracMK = ((double) sumaMK) / ((double) Ct); // calcular el cociente ZMK / Ct = cociente
 	asignar_tag(*fracMK, &*tag);
 	return 1;
-}
+} // procesar_IRB_gri
 
 int realizar_promedio(double * SUMA, int * CNT, int Ct){
 	int 	h1, cnt;
@@ -589,23 +590,23 @@ int calcular_nubosidad_GL(double * RPmat, double * N1mat, int Ct){
 	return 1;
 }
 
-int calculo_productos_IRB(int Braw,
-	double CALirb_m, double CALirb_n, double CALirb_a,
-	double CALirb_b1, double CALirb_b2, double *tx){
+// int calculo_productos_IRB(int Braw,
+// 	double CALirb_m, double CALirb_n, double CALirb_a,
+// 	double CALirb_b1, double CALirb_b2, double *tx){
 	
-	double lx, aux, Teff, C1, C2;
+// 	double lx, aux, Teff, C1, C2;
 
-	// Parametros de calibracion
-	C1 = 0.000011911;
-	C2 = 1.438833;
+// 	// Parametros de calibracion
+// 	C1 = 0.000011911;
+// 	C2 = 1.438833;
 
-	lx = ((Braw/32) - CALirb_b1)/CALirb_m; // Radiancia pre-launch
-	aux = 1 + (C1*CALirb_n*CALirb_n*CALirb_n/lx);
-	Teff = (C2 * CALirb_n)/log(aux);
-	*tx = CALirb_a + CALirb_b2*Teff;
+// 	lx = ((Braw/32) - CALirb_b1)/CALirb_m; // Radiancia pre-launch
+// 	aux = 1 + (C1*CALirb_n*CALirb_n*CALirb_n/lx);
+// 	Teff = (C2 * CALirb_n)/log(aux);
+// 	*tx = CALirb_a + CALirb_b2*Teff;
 
-	return 1;
-}
+// 	return 1;
+// }
 
 int generar_grilla(double ** LATmat, double ** LONmat,
 	double ** LATvec, double ** LONvec,
@@ -699,7 +700,7 @@ int cargar_calibracion_VIS(char RUTAcal[CMAXstr],
 		(*CALvis_beta)[h1] = beta;
 	}
 	return 1;
-}
+} // cargar_calibracion_VIS
 
 int cargar_calibracion_IRB(char RUTAcal[CMAXstr],
 	double ** CALvis_m, double ** CALvis_n, double ** CALvis_a,
@@ -760,7 +761,7 @@ int cargar_calibracion_IRB(char RUTAcal[CMAXstr],
 		}
 	}
 	return 1;
-}
+} // cargar_calibracion_IRB
 
 int mostrar_vector_double(double * vec, int cvec, int cmax){
 
@@ -930,7 +931,7 @@ int guardar_grilla(char RUTAsal[CMAXstr], int Ci, int Cj, int Ct,
 	free(SAVE_LONmat);
 
 	return 1;
-}
+} // guardar_grilla
 
 int generar_strings_temporales(int yea, int doy, int hra, int min, int sec,
 	char strTMP[COUTstr], char strYEA[4], char strDOY[3],
@@ -1061,7 +1062,7 @@ int guardar_imagen_VIS(char RUTAsal[CMAXstr], int Ct,
 
 	// FIN
 	return 1;
-}
+} // guardar_imagen_VIS
 
 int guardar_imagen_IRB(char RUTAsal[CMAXstr], int Ct,
 	int yea, int doy, int hra, int min, int sec, 
@@ -1138,7 +1139,7 @@ int guardar_imagen_IRB(char RUTAsal[CMAXstr], int Ct,
 
 	// FIN
 	return 1;
-}
+} // guardar_imagen_IRB
 
 int guardar_tag(char RUTAsal[CMAXstr], char strTMP[COUTstr], char strYEA[4], char strDOY[3], char strHRA[2],
 	char strMIN[2], char strSEC[2], char strBANDA[2], int tag, double fracMK){
