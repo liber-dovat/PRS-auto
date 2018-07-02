@@ -34,9 +34,10 @@ int procesar_NetCDF_VIS_gri(double ** FRmat, double ** RPmat, double ** N1mat,
 	double ** CZmat, int ** MSKmat, int ** CNT1mat, int ** CNT2mat, int *tag,
 	double dLATgri, double dLONgri, double dLATcel, double dLONcel,
 	double LATmax, double LATmin, double LONmax, double LONmin,
-	int Ct, int Ci, int Cj, char PATH[CMAXstr], char RUTAsal[CMAXstr],
-	int * CALvis_iniYEA, int * CALvis_iniDOY, double * CALvis_Xspace,
-	double * CALvis_M, double * CALvis_K, double * CALvis_alfa, double * CALvis_beta){
+	int Ct, int Ci, int Cj, char PATH[CMAXstr], char RUTAsal[CMAXstr]
+  /*,
+	int * CALvis_iniYEA, int * CALvis_iniDOY, double * CALvis_Xspace,                // chr 01
+	double * CALvis_M, double * CALvis_K, double * CALvis_alfa, double * CALvis_beta*/){
 
 	int		h1, Si, Sj, St, Band, yea, doy, hra, min, sec, ste, kste;
 	double	Fn, DELTArad, EcTmin, fracMK;
@@ -86,8 +87,8 @@ int procesar_NetCDF_VIS_gri(double ** FRmat, double ** RPmat, double ** N1mat,
 	 	 	dLATgri, dLONgri, dLATcel, dLONcel,
 	 	 	LATmax, LATmin, LONmax, LONmin,
 	 	 	Ct, Ci, Cj, &BXdata[0], &LATdata[0], &LONdata[0], St,
-	 	 	CALvis_iniYEA[kste], CALvis_iniDOY[kste], CALvis_Xspace[kste],
-	 	 	CALvis_M[kste], CALvis_K[kste], CALvis_alfa[kste], CALvis_beta[kste],
+	 	 	// CALvis_iniYEA[kste], CALvis_iniDOY[kste], CALvis_Xspace[kste], // chr 02
+	 	 	// CALvis_M[kste], CALvis_K[kste], CALvis_alfa[kste], CALvis_beta[kste],
 	 	 	Fn, DELTArad, EcTmin, yea, doy, hra, min, sec);
  		calcular_nubosidad_GL((*RPmat), (*N1mat), Ct);
 
@@ -115,9 +116,11 @@ int procesar_NetCDF_IRB_gri(double ** TXmat,
 	int ** MSKmat, int ** CNT1mat, int ** CNT2mat, int *tag,
 	double dLATgri, double dLONgri, double dLATcel, double dLONcel,
 	double LATmax, double LATmin, double LONmax, double LONmin,
-	int Ct, int Ci, int Cj, char PATH[CMAXstr], char RUTAsal[CMAXstr],
-	double * CALirb_m, double * CALirb_n, double * CALirb_a,
-	double * CALirb_b1, double * CALirb_b2){
+	int Ct, int Ci, int Cj, char PATH[CMAXstr], char RUTAsal[CMAXstr]
+  // ,
+	// double * CALirb_m, double * CALirb_n, double * CALirb_a, // chr 03
+	// double * CALirb_b1, double * CALirb_b2
+  ){
 
 	int		h1, Si, Sj, St, Band, yea, doy, hra, min, sec, ste, k;
 	double 	fracMK;
@@ -159,9 +162,11 @@ int procesar_NetCDF_IRB_gri(double ** TXmat,
 	 	  	(*MSKmat), (*CNT1mat), (*CNT2mat), &*tag, &fracMK,
 	 	  	dLATgri, dLONgri, dLATcel, dLONcel,
 	 	  	LATmax, LATmin, LONmax, LONmin,
-	 	  	Ct, Ci, Cj, &BXdata[0], &LATdata[0], &LONdata[0], St,
-	 	  	CALirb_m[k], CALirb_n[k], CALirb_a[k],
-	 	  	CALirb_b1[k], CALirb_b2[k]);
+	 	  	Ct, Ci, Cj, &BXdata[0], &LATdata[0], &LONdata[0], St
+        // ,
+	 	  	// CALirb_m[k], CALirb_n[k], CALirb_a[k], // chr 04
+	 	  	// CALirb_b1[k], CALirb_b2[k]
+        );
 
 	 	// GUARDAR IMAGEN
 	 	guardar_imagen_IRB(RUTAsal, Ct, yea, doy, hra, min, sec, 
@@ -316,7 +321,7 @@ int procesar_VIS_gri(double * FRmat, double * RPmat, double * CZmat, int * MSKma
 	hLONcel = dLONcel/2;
 
 	// FACTOR POST-LAUNCH fc
-	// nDESDEfecha(CALvis_iniYEA, CALvis_iniDOY, yea, doy, &N);
+	// nDESDEfecha(CALvis_iniYEA, CALvis_iniDOY, yea, doy, &N); // chr 05
 	// fc = (CALvis_alfa*N/1000) + CALvis_beta;
 
 	// RECORRO LA IMAGEN
@@ -347,7 +352,7 @@ int procesar_VIS_gri(double * FRmat, double * RPmat, double * CZmat, int * MSKma
 
 						// CALCULO DE PRODUCTOS
 						if (Braw > 0){
-							// calculo_productos_VIS(Braw, cosz, Fn, fc, 
+							// calculo_productos_VIS(Braw, cosz, Fn, fc,      // chr 06
 							// 	CALvis_Xspace, CALvis_M, CALvis_K, &fr, &rp);
 							mk = 1;
 						}
@@ -394,7 +399,7 @@ int procesar_IRB_gri(double * TXmat, int * MSKmat,
 	double LATmax, double LATmin, double LONmax, double LONmin,
 	int Ct, int Ci, int Cj,
 	int * BXdata, double * LATdata, double * LONdata, int St/*,
-	double CALirb_m, double CALirb_n, double CALirb_a,
+	double CALirb_m, double CALirb_n, double CALirb_a, // chr 07
 	double CALirb_b1, double CALirb_b2*/
   ){
 
@@ -432,7 +437,7 @@ int procesar_IRB_gri(double * TXmat, int * MSKmat,
 
 						// CALCULO DE PRODUCTOS
 						if (Braw > 0){
-							// calculo_productos_IRB(Braw,
+							// calculo_productos_IRB(Braw,    // chr 08
 							// 	CALirb_m, CALirb_n, CALirb_a,
 							// 	CALirb_b1, CALirb_b2, &tx);
 							mk = 1;
@@ -555,7 +560,7 @@ int asignar_tag(double fracMK, int *tag){
 }
 
 int calculo_productos_VIS(int Braw, double cosz, double Fn, double fc,
-	double CALvis_Xspace, double CALvis_M, double CALvis_K,
+	double CALvis_Xspace, double CALvis_M, double CALvis_K, // chr 09
 	double *fr, double *rp){
 			
 	double 	ls;
@@ -590,6 +595,7 @@ int calcular_nubosidad_GL(double * RPmat, double * N1mat, int Ct){
 	return 1;
 }
 
+// chr 10
 // int calculo_productos_IRB(int Braw,
 // 	double CALirb_m, double CALirb_n, double CALirb_a,
 // 	double CALirb_b1, double CALirb_b2, double *tx){

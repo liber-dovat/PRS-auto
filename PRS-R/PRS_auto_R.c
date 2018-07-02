@@ -42,12 +42,12 @@ int main(int argc, char *argv[]){
 	double * CZmat;
 	double * LATmat; double * LONmat;
 	double * LATvec; double * LONvec;
-	int * CALvis_iniYEA; int * CALvis_iniDOY;
-	double * CALvis_Xspace;
-	double * CALvis_M;
-	double * CALvis_K;
-	double * CALvis_alfa;
-	double * CALvis_beta;
+	// int * CALvis_iniYEA; int * CALvis_iniDOY; // chr 01
+	// double * CALvis_Xspace;
+	// double * CALvis_M;
+	// double * CALvis_K;
+	// double * CALvis_alfa;
+	// double * CALvis_beta;
 
 	// IMAGEN A PROCESAR
 	strncpy(DATAfolders, argv[1], CMAXstr);
@@ -124,9 +124,9 @@ int main(int argc, char *argv[]){
 	OK = guardar_grilla(RUTAsal, Ci, Cj, Ct, LATmax, dLATgri, LONmin, dLONgri,
 		&LATvec[0], &LONvec[0], &LATmat[0], &LONmat[0]);
 	printf("Grillas grabadas.  OK = [%d]\n", OK);
-	OK = cargar_calibracion_VIS(RUTAcal, &CALvis_iniYEA, &CALvis_iniDOY, &CALvis_Xspace,
-		&CALvis_M, &CALvis_K, &CALvis_alfa, &CALvis_beta);
-	printf("Calibracion VIS.   OK = [%d]\n", OK);
+	// OK = cargar_calibracion_VIS(RUTAcal, &CALvis_iniYEA, &CALvis_iniDOY, &CALvis_Xspace, // chr 02
+	// 	&CALvis_M, &CALvis_K, &CALvis_alfa, &CALvis_beta);
+	// printf("Calibracion VIS.   OK = [%d]\n", OK);
 	printf("-----------------------------------------------------------------------------------\n");	
 	printf("---- Imagenes procesadas ----------------------------------------------------------\n");
 	
@@ -142,9 +142,10 @@ int main(int argc, char *argv[]){
 		OK = procesar_NetCDF_VIS_gri(&FRmat, &RPmat, &N1mat, &CZmat,
 	 		&MSKmat, &CNT1mat, &CNT2mat, &tag,
 	   		dLATgri, dLONgri, dLATcel, dLONcel, LATmax, LATmin, LONmax, LONmin,
-	   		Ct, Ci, Cj, PATHimg, RUTAsal, 
-	   		CALvis_iniYEA, CALvis_iniDOY, CALvis_Xspace,
-	  		CALvis_M, CALvis_K, CALvis_alfa, CALvis_beta);
+	   		Ct, Ci, Cj, PATHimg, RUTAsal
+	   		/*, 
+	   		CALvis_iniYEA, CALvis_iniDOY, CALvis_Xspace,  // chr 03
+	  		CALvis_M, CALvis_K, CALvis_alfa, CALvis_beta*/);
 
 		printf("IMAGEN : %s. TAG = [%d]. OK = [%d].\n", &PATHimg[0], tag, OK);
 	}
