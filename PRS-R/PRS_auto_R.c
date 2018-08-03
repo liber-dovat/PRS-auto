@@ -52,7 +52,7 @@ int main(int argc, char *argv[]){
 	// IMAGEN A PROCESAR
 	strncpy(DATAfolders, argv[1], CMAXstr);
 	strncpy(DATAspatial, argv[2], CMAXstr);
-	strncpy(DATAimglist, argv[3], CMAXstr);
+	strncpy(DATAimglist, argv[3], CMAXstr); // lista de imagenes
 
 	// ABRO ARCHIVO FOLDERS:
 	data = fopen(DATAfolders, "ro");
@@ -148,7 +148,9 @@ int main(int argc, char *argv[]){
 	  		CALvis_M, CALvis_K, CALvis_alfa, CALvis_beta*/);
 
 		printf("IMAGEN : %s. TAG = [%d]. OK = [%d].\n", &PATHimg[0], tag, OK);
-	}
+	} // for
+
+
 	printf("-----------------------------------------------------------------------------------\n");
 	printf("---- Lista de imagenes ------------------------------------------------------------\n");
 	for (h1=0; h1<Cimgs; h1++){
