@@ -9,7 +9,6 @@
 
 #define FALSE 0
 #define TRUE !FALSE
-#define CMAXstr 200
 #define CINPstr 42
 #define CSPTstr 24
 #define Cste 3

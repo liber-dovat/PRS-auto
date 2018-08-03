@@ -7,11 +7,10 @@
 #include <math.h>
 #include <netcdf.h>
 
+#include "lib_PRS_R.h"
+
 #define FALSE 0
 #define TRUE !FALSE
-#define CMAXstr 200
-#define CINPstr 42
-#define CSPTstr 23
 #define Cste 3
 #define Cirb 4
 #define PI 3.1415926
@@ -30,6 +29,58 @@ static int IRBS[Cirb]={2,3,4,6};
 
 // Versión 1.0, 10/2016 -- Rodrigo Alonso Suárez.
 
+// FORDWARD DECLARATION
+
+int open_NetCDF_file(char PATH[CMAXstr],
+	int ** BXdata, double ** LATdata, double ** LONdata,
+	int *Si, int *Sj, int *St, int *Band,
+	int *yea, int *doy, int *hra, int *min, int *sec, int *ste,
+	char FileName[CFLNstr]);
+
+int elegir_satelite_VIS(int *kste, int ste);
+int elegir_satelite_IRB(int *k, int ste, int band);
+int calculo_solar_diario(int yea, int doy, double *Fn, double *DELTArad, double *EcTmin);
+int calcular_nubosidad_GL(double * RPmat, double * N1mat, int Ct);
+int calculo_cosz_INS(double DELTArad, double EcTmin, int horaUTC, int minu, int sec, double LATdeg, double LONdeg, double *cosz);
+int realizar_promedio(double * SUMA, int * CNT, int Ct);
+int enmascarar_por_CZ(double * VAR, double * CZ, int Ct, double thr);
+int generar_mascara(int * CNT1, int * CNT2, int Ct, int * MSK, int *sumaMK);
+int asignar_tag(double fracMK, int *tag);
+int guardar_tag(char RUTAsal[CMAXstr], char strTMP[COUTstr], char strYEA[4], char strDOY[3], char strHRA[2],
+	char strMIN[2], char strSEC[2], char strBANDA[2], int tag, double fracMK);
+int is_leap_year(int yea);
+
+int procesar_VIS_gri(double * FRmat, double * RPmat, double * CZmat, int * MSKmat,
+	int * CNT1mat, int * CNT2mat, int *tag, double *fracMK,
+	double dLATgri, double dLONgri, double dLATcel, double dLONcel,
+	double LATmax, double LATmin, double LONmax, double LONmin,
+	int Ct, int Ci, int Cj,
+	int * BXdata, double * LATdata, double * LONdata, int St,
+	double Fn, double DELTArad, double EcTmin,
+	int yea, int doy, int hra, int min, int sec);
+
+int procesar_IRB_gri(double * TXmat, int * MSKmat,
+	int * CNT1mat, int * CNT2mat, int *tag, double *fracMK,
+	double dLATgri, double dLONgri, double dLATcel, double dLONcel,
+	double LATmax, double LATmin, double LONmax, double LONmin,
+	int Ct, int Ci, int Cj,
+	int * BXdata, double * LATdata, double * LONdata, int St);
+
+int guardar_imagen_VIS(char RUTAsal[CMAXstr], int Ct,
+	int yea, int doy, int hra, int min, int sec, 
+	double * FRmat, double * RPmat, double * N1mat, int * MKmat,
+	int tag, double fracMK, int Band);
+
+int guardar_imagen_IRB(char RUTAsal[CMAXstr], int Ct,
+	int yea, int doy, int hra, int min, int sec, 
+	double * TXmat, int * MKmat, int tag, double fracMK, int Band);
+
+int hallar_limites_en_grilla(int Ci, int Cj, double lat, double lon,
+	double dLATgri, double dLONgri, double hLATcel, double hLONcel,
+	double LATmin, double LONmin, int *nI, int *nS, int *mI, int *mS);
+
+//#####################
+
 int procesar_NetCDF_VIS_gri(double ** FRmat, double ** RPmat, double ** N1mat,
 	double ** CZmat, int ** MSKmat, int ** CNT1mat, int ** CNT2mat, int *tag,
 	double dLATgri, double dLONgri, double dLATcel, double dLONcel,
@@ -42,7 +93,7 @@ int procesar_NetCDF_VIS_gri(double ** FRmat, double ** RPmat, double ** N1mat,
 	int		h1, Si, Sj, St, Band, yea, doy, hra, min, sec, ste, kste;
 	double	Fn, DELTArad, EcTmin, fracMK;
 	char FileName[CFLNstr];
-	double * BXdata;
+	int    * BXdata;
 	double * LATdata;
 	double * LONdata;
 
@@ -69,9 +120,9 @@ int procesar_NetCDF_VIS_gri(double ** FRmat, double ** RPmat, double ** N1mat,
 	for (h1=0; h1<Ct; h1++){
 	 	(*FRmat)[h1] = 0; (*RPmat)[h1] = 0; (*N1mat)[h1] = 0;
 	 	(*CZmat)[h1] = 0;
-	  	(*MSKmat)[h1] = 0;
-	  	(*CNT1mat)[h1] = 0;
-	  	(*CNT2mat)[h1] = 0;
+	  (*MSKmat)[h1] = 0;
+	  (*CNT1mat)[h1] = 0;
+	  (*CNT2mat)[h1] = 0;
 	}
 
 	// PROCESAR LA IMAGEN
@@ -127,7 +178,7 @@ int procesar_NetCDF_IRB_gri(double ** TXmat,
 	int		 h1, Si, Sj, St, Band, yea, doy, hra, min, sec, ste, k;
 	double 	 fracMK;
 	char 	 FileName[CFLNstr];
-	double * BXdata;
+	int    * BXdata;
 	double * LATdata;
 	double * LONdata;
 
@@ -217,7 +268,7 @@ int elegir_satelite_IRB(int *k, int ste, int band){
 }
 
 int open_NetCDF_file(char PATH[CMAXstr],
-	double ** BXdata, double ** LATdata, double ** LONdata,
+	int ** BXdata, double ** LATdata, double ** LONdata,
 	int *Si, int *Sj, int *St, int *Band,
 	int *yea, int *doy, int *hra, int *min, int *sec, int *ste,
 	char FileName[CFLNstr]){
@@ -228,14 +279,14 @@ int open_NetCDF_file(char PATH[CMAXstr],
 	int       nc_status, ncid, id_x, id_y, id_data, id_band, id_date, id_time;
 	int       h1;
 	size_t    xi, xj;
-	size_t    start_data[] = {0,0,0}; // Formato {banda, isI, isJ}
-	size_t    count_data[] = {1,0,0}; // Formato {banda, isI, isJ} ¡El '1' es muy importante!
-	// size_t    start_geo[]  = {0,0}; // Formato {isI, isJ}
-	// size_t    count_geo[]  = {0,0}; // Formato {isI, isJ}
-	// size_t    start_data[] = {0,0}; // Formato {isI, isJ}
-	// size_t    count_data[] = {0,0}; // Formato {isI, isJ}
+	// size_t    start_data[] = {0,0,0}; // Formato {banda, isI, isJ}
+	// size_t    count_data[] = {1,0,0}; // Formato {banda, isI, isJ} ¡El '1' es muy importante!
+	size_t    start_data[] = {0,0}; // Formato {banda, isI, isJ}
+	size_t    count_data[] = {0,0}; // Formato {banda, isI, isJ} ¡El '1' es muy importante!
 	size_t    start_geo[]  = {0}; // Formato {isI}
 	size_t    count_geo[]  = {0}; // Formato {isJ}
+	size_t    start_time[] = {0}; // Formato {isJ}
+	size_t    count_time[] = {0}; // Formato {isJ}
 	char      strSTE[1];
 	char    * str2token;
 	char    * token;
@@ -243,20 +294,24 @@ int open_NetCDF_file(char PATH[CMAXstr],
 	int     * DATE;
 	int     * TIME;
 
-	// printf("%s\n",PATH);
+	printf("%s\n",PATH);
 
 	// ABRO LA IMAGEN
 	nc_status = nc_open(PATH, 0, &ncid);
 	nc_status = nc_inq_dimlen(ncid, 1, &xi);
 	nc_status = nc_inq_dimlen(ncid, 0, &xj);
-	nc_status = nc_inq_varid (ncid, "band", &id_band);
+	nc_status = nc_inq_varid (ncid, "band_id", &id_band);
 	nc_status = nc_inq_varid (ncid, "CMI", &id_data);
 	nc_status = nc_inq_varid (ncid, "x", &id_x);
 	nc_status = nc_inq_varid (ncid, "y", &id_y);
 	nc_status = nc_inq_attid (ncid, NC_GLOBAL, "time_coverage_start", &id_date);
-	// nc_status = nc_inq_varid (ncid, "time_coverage_start", &id_date);
-	// nc_status = nc_inq_varid (ncid, "imageTime", &id_time);
-	if (nc_status != NC_NOERR){printf("No se encontro imagen. Cerrando.\n"); return 0;}
+	if (nc_status != NC_NOERR){printf("No se encontro imagen. Cerrando. Err: %i\n",nc_status); return 0;}
+
+	printf("id_band: %d\n", id_band);
+	printf("id_data: %d\n", id_data);
+	printf("id_x:    %d\n", id_x);
+	printf("id_y:    %d\n", id_y);
+	printf("id_date: %d\n", id_date);
 
 	// SIZE DE LA IMAGEN: Misterioso por NC
 	*Si           = (int) xi; // cast de size_y a int
@@ -264,41 +319,55 @@ int open_NetCDF_file(char PATH[CMAXstr],
 	*St           = (*Si)*(*Sj);
 	count_geo[0]  = *Si;
 	count_geo[1]  = *Sj;
-	count_data[1] = *Si;
-	count_data[2] = *Sj;
+	count_data[0] = *Si;
+	count_data[1] = *Sj;
 
 	printf("%i\n", *Si);
 	printf("%i\n", *Sj);
 	printf("%i\n", *St);
 
-    printf("%s\n", "ALOCAR MEMORIA para imagenes");
+  printf("%s\n", "ALOCAR MEMORIA para imagenes");
+
+	// https://github.com/Unidata/netcdf-c/blob/8de0b3cf3c359f5e859a698a7208aa3fb6f7a1a6/nc_test4/tst_types.c
+	// https://github.com/Unidata/netcdf-c/blob/98dd736a40a9ffae67e2ba9d13ae8bd1b38ce3bd/libdispatch/dcopy.c
+  // unsigned char * TimeCoverage; // 2018-02-22T17:00:39.2Z
+
+  // determino el tipo del atributo global "time_coverage_start"
+	nc_type xtypep;
+  nc_inq_atttype(ncid, NC_GLOBAL, "time_coverage_start", &xtypep); // NC_CHAR = 2
+ 	printf("xtypep: %d\n", (int)xtypep);
+
+  // calculo el tamaño del atributo global "time_coverage_start"
+  size_t len_time = malloc(sizeof(size_t));
+  nc_inq_attlen(ncid, NC_GLOBAL, "time_coverage_start", &len_time);
+ 	printf("len_time: %d\n", (int)len_time);
+  char * TimeCoverage[(int)len_time];
 
 	// ALOCAR MEMORIA para imagenes
-	if (!(BAND = (int *) malloc(1  * sizeof(int *)))){return 0;}
-	if (!(TIME = (int *) malloc(10 * sizeof(int *)))){return 0;}
-	if (!(DATE = (int *) malloc(10 * sizeof(int *)))){return 0;}
-	if (!(*BXdata  = (double *) malloc(*St * sizeof(double *)))){return 0;}
-	if (!(Xdata    = (double *) malloc(*Si * sizeof(double *)))){return 0;}
-	if (!(Ydata    = (double *) malloc(*Sj * sizeof(double *)))){return 0;}
-    if (!(str2token = (char *) malloc(CMAXstr * sizeof(char *)))){return 0;}
+	if (!(BAND 				 = (int *)    			 malloc(1       * sizeof(int *))           )){return 0;}
+	if (!(TIME 				 = (int *)    			 malloc(10      * sizeof(int *))           )){return 0;}
+	if (!(DATE 				 = (int *)    			 malloc(10      * sizeof(int *))           )){return 0;}
+	if (!(Xdata        = (double *) 			 malloc(*Si     * sizeof(double *))        )){return 0;}
+	if (!(Ydata        = (double *) 			 malloc(*Sj     * sizeof(double *))        )){return 0;}
+	if (!(BXdata       = (int *)    			 malloc(*St     * sizeof(int *))           )){return 0;}
+  if (!(str2token    = (char *)   			 malloc(CMAXstr * sizeof(char *))          )){return 0;}
 
 	printf("%s\n", "OBTENGO DATOS DE LA IMAGEN");
 	// OBTENGO DATOS DE LA IMAGEN
-	nc_status = nc_get_var_int    (ncid, id_band, BAND);
-	nc_status = nc_get_vara_double(ncid, id_data, start_data, count_data, *BXdata);
+	nc_status = nc_get_var_int    (ncid, id_band, BAND); //	printf("BAND: %d\n", *BAND);
 	nc_status = nc_get_vara_double(ncid, id_x,    start_geo,  count_geo,  Xdata);
 	nc_status = nc_get_vara_double(ncid, id_y,    start_geo,  count_geo,  Ydata);
-	// nc_status = nc_get_var_int(ncid, id_date, DATE);
-	// nc_status = nc_get_var_int(ncid, id_time, TIME);
-	if (nc_status != NC_NOERR){printf("No se pudo obtener lons. Cerrando.\n"); return 0;}
+	nc_status = nc_get_vara_int   (ncid, id_data, start_data, count_data, BXdata);
+	nc_status = nc_get_att_text  (ncid, NC_GLOBAL, "time_coverage_start", TimeCoverage); printf("%s", TimeCoverage);
+	if (nc_status != NC_NOERR){printf("No se pudo obtener lons. Cerrando. Err: %i\n",nc_status); return 0;}
 
-	for (h1=0; h1<*St; h1++){
-	  printf("%d\n", h1);
-      printf("%f\n", *BXdata[h1]);
-	} // for
-	
+	// for (h1=0; h1<*St; h1++){
+	//   printf("%d\n", h1);
+	//   printf("%d\n", BXdata[h1]);
+	// } // for
+
 	// CIERRO LA IMAGEN!
-    printf("%s\n", "Cierro el archivo NC");
+  printf("%s\n", "Cierro el archivo NC");
 	nc_close(ncid);
 
 	// DATOS VARIOS NECESARIOS

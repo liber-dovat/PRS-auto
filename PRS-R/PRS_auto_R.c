@@ -9,13 +9,12 @@
 
 #define FALSE 0
 #define TRUE !FALSE
-#define CMAXstr 200
-#define CINPstr 42
-#define CSPTstr 24
+#define CINPstr 250 // largo maximo de los nombres de archivo
+#define CSPTstr 23
 #define Cste 3
 
 // SATELITES
-static int GOES[Cste]={8,12,13};
+// static int GOES[Cste]={8,12,13};
 
 // Versión 1.0, 09/2016 -- Rodrigo Alonso Suárez.
 
@@ -135,8 +134,11 @@ int main(int argc, char *argv[]){
 
 		printf("-----------------------------------------------------------------------------------\n");	
 
+		printf("RUTAent: %s\n", RUTAent);
+
 		// RUTA A LA IMAGEN
-		strncpy(PATHimg, RUTAent, CMAXstr); strcat(PATHimg, array_imgs[h1]);
+		strncpy(PATHimg, RUTAent, CMAXstr); // copio en PATHimg la ruta
+		strcat(PATHimg, array_imgs[h1]);    // agrego al final de PATHimg el nombre del archivo
 
 		// PROCESO IMAGEN
 		OK = procesar_NetCDF_VIS_gri(&FRmat, &RPmat, &N1mat, &CZmat,
