@@ -55,6 +55,17 @@ def channelInfo(channelNumber):
 #########################################
 #########################################
 
+def isBrightTemp(channel):
+
+  if channel == 'C01' or channel == 'C02' or channel == 'C04':
+    return False
+  else:
+    return True
+
+#########################################
+#########################################
+#########################################
+
 def rangoColorbar(channel):
 
   # defino los rangos del colorbar en funcion del tipo de banda
@@ -162,7 +173,7 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
 
   print "Realizando pasaje a K en C13 y truncamiento en los otros"
 
-  if channel == 'C13':
+  if isBrightTemp(channel):
     # Los datos estan en kelvin, asi que los paso a Celsius
     data -= 273.15
   else:
@@ -232,14 +243,24 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
   # cmap = gmtColormap(colormapName, colormapPath, 2048)
 
   # defino el colormap  y la disposicion de los ticks segun la banda
-  if channel == 'C01' or channel == 'C02' or channel == 'C04':
-    ticks       = [0, 20, 40, 60, 80, 100]
-    ticksLabels = ticks
-  else:
+  # if channel == 'C01' or channel == 'C02' or channel == 'C04':
+  #   ticks       = [0, 20, 40, 60, 80, 100]
+  #   ticksLabels = ticks
+  # else:
+  #   ticks = [-80, -75.2, -70.2, -65.2, -60.2, -55.2, -50.2, -45.2, -40.2, -35.2, -30.2,-20,-10,0,10,20,30,40,50,60,70]
+  #   # defino las etiquetas del colorbar
+  #   ticksLabels = [-80, -75, -70, -65, -60, -55, -50, -45, -40, -35, -30,-20,-10,0,10,20,30,40,50,60,70]
+  # # if c == 1 | 2 | 4
+
+  # defino el colormap  y la disposicion de los ticks segun la banda
+  if isBrightTemp(channel):
     ticks = [-80, -75.2, -70.2, -65.2, -60.2, -55.2, -50.2, -45.2, -40.2, -35.2, -30.2,-20,-10,0,10,20,30,40,50,60,70]
     # defino las etiquetas del colorbar
     ticksLabels = [-80, -75, -70, -65, -60, -55, -50, -45, -40, -35, -30,-20,-10,0,10,20,30,40,50,60,70]
-  # if c == 1 | 2 | 4
+  else:
+    ticks       = [0, 20, 40, 60, 80, 100]
+    ticksLabels = ticks
+  # if FR o RP
 
   cmap = gmtColormap(colormapName, colormapPath, 2048)
   cs   = ax.pcolormesh(x, y, data, vmin=vmin, vmax=vmax, cmap=cmap)
@@ -250,7 +271,7 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
   # agrego el colorbar
   cbar = ax.colorbar(cs, location='bottom', pad='3%', ticks=ticks)
 
-  if channel == 'C13':
+  if isBrightTemp(channel):
     cbar.ax.xaxis.labelpad = 0
     cbar.ax.set_xlabel("Temperatura de brillo ($^\circ$C)", fontsize=7, color='white')
     cbar.ax.set_xticklabels(ticksLabels, rotation=45, fontsize=7, color='white')

@@ -3,15 +3,15 @@
 #Versión 1.0. 10/2016. Rodrigo Alonso Suárez
 
 # PROGRAMAS
-main='/home/ldovat/dev/PRS-sat/PRS-R/PRS_auto_R';
-libs='/home/ldovat/dev/PRS-sat/PRS-R/lib_PRSsat';
+main='/home/chrono/Escritorio/graficas/PRS-R/PRS_auto_R';
+libs='/home/chrono/Escritorio/graficas/PRS-R/lib_PRSsat';
 #main='/sat/PRS/libs/PRS-sat/PRSbase/PRSsat_auto_VIS';
 #libs='/sat/PRS/libs/PRS-sat/PRSbase/lib_PRSsat';
 
 # PARAMETROS
-folders='/home/ldovat/dev/PRS-sat/PRS-R/data/job_folders_ALL1';
-spatial='/home/ldovat/dev/PRS-sat/PRS-R/data/job_spatial_VIS1';
-imglist='/home/ldovat/dev/PRS-sat/PRS-R/data/job_imglist_VIS1';
+folders='/home/chrono/Escritorio/graficas/PRS-R/data/job_folders_ALL1';
+spatial='/home/chrono/Escritorio/graficas/PRS-R/data/job_spatial_VIS1';
+imglist='/home/chrono/Escritorio/graficas/PRS-R/data/job_imglist_VIS1';
 #folders='/sat/PRS/libs/PRS-sat/data/job_folders_ALL1';
 #spatial='/sat/PRS/libs/PRS-sat/data/job_spatial_VIS1';
 #imglist='/sat/PRS/libs/PRS-sat/data/job_imglist_VIS1';
@@ -19,7 +19,7 @@ imglist='/home/ldovat/dev/PRS-sat/PRS-R/data/job_imglist_VIS1';
 # PRODUCTOS
 product=('/B01-FR/' '/B01-RP/' '/B01-N1/' '/B01-MK/');
 
-echo 'OR_ABI-L2-CMIPF-M3C04_G16_s20180531700392_e20180531711159_c20180531711219.nc' >> $imglist; # EMULO DESCARGA NOAA
+echo 'band13.nc' >> $imglist; # EMULO DESCARGA NOAA
 # echo '2016/10/goes13.2016.277.084518.BAND_01.nc' >> $imglist; # EMULO DESCARGA NOAA
 # echo '2016/10/goes13.2016.279.123506.BAND_01.nc' >> $imglist; # EMULO DESCARGA NOAA
 # echo '2016/10/goes13.2016.275.143506.BAND_01.nc' >> $imglist; # EMULO DESCARGA NOAA
@@ -58,8 +58,8 @@ if [ ! -d $RUTAdes'/zCRR/' ]; then
 	mkdir -p $RUTAdes'/zCRR/';
 fi
 for line in $(<$imglist); do
-	year=${line:15:4};
-	#echo $year;
+	year=${line:27:4};
+	echo $year;
 	for prod in ${product[*]}
 	do
 		#echo $RUTAdes$prod$year;
@@ -71,6 +71,8 @@ for line in $(<$imglist); do
 			mkdir -p $RUTAdes'/zIMP'$prod$year;
 		fi
 	done
+	echo $line;
+	
 done
 
 # echo '=== Compilacion ==============================================================';

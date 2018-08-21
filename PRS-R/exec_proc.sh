@@ -3,15 +3,15 @@
 #Versión 1.0. 10/2016. Rodrigo Alonso Suárez
 
 # PROGRAMAS
-main='/home/ldovat/dev/PRS-sat/PRS-R/PRSsat_auto_VIS';
-libs='/home/ldovat/dev/PRS-sat/PRS-R/lib_PRSsat';
+main='/home/chrono/Escritorio/graficas/PRS-R/PRSsat_auto_VIS';
+libs='/home/chrono/Escritorio/graficas/PRS-R/lib_PRSsat';
 #main='/sat/PRS/libs/PRS-sat/PRSbase/PRSsat_auto_VIS';
 #libs='/sat/PRS/libs/PRS-sat/PRSbase/lib_PRSsat';
 
 # PARAMETROS
-folders='/home/ldovat/dev/PRS-sat/PRS-R/data/job_folders_ALL1';
-spatial='/home/ldovat/dev/PRS-sat/PRS-R/data/job_spatial_VIS1';
-imglist='/home/ldovat/dev/PRS-sat/PRS-R/data/job_imglist_VIS1';
+folders='/home/chrono/Escritorio/graficas/PRS-R/data/job_folders_ALL1';
+spatial='/home/chrono/Escritorio/graficas/PRS-R/data/job_spatial_VIS1';
+imglist='/home/chrono/Escritorio/graficas/PRS-R/data/job_imglist_VIS1';
 #folders='/sat/PRS/libs/PRS-sat/data/job_folders_ALL1';
 #spatial='/sat/PRS/libs/PRS-sat/data/job_spatial_VIS1';
 #imglist='/sat/PRS/libs/PRS-sat/data/job_imglist_VIS1';
