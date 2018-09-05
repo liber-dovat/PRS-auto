@@ -209,7 +209,7 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
 
   x_mesh, y_mesh = numpy.meshgrid(X,Y)
 
-  projection = Proj(proj='geos', h=sat_h, lon_0=sat_lon, sweep=sat_sweep)
+  projection = Proj(proj='geos', h=sat_h, lon_0=sat_lon, sweep=sat_sweep, datum='WGS84')
   lons, lats = projection(x_mesh, y_mesh, inverse=True)
   x, y       = ax(lons, lats)
 
