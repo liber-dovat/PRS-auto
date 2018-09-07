@@ -19,7 +19,11 @@ imglist='/home/chrono/Escritorio/graficas/PRS-R/data/job_imglist_VIS1';
 # PRODUCTOS
 product=('/B01-FR/' '/B01-RP/' '/B01-N1/' '/B01-MK/');
 
-echo 'band13.nc' >> $imglist; # EMULO DESCARGA NOAA
+# echo 'OR_ABI-L2-CMIPF-M4C02_G16_s20171971905222_e20171971910023_c20171971910090-114300_0.nc' > $imglist;
+
+echo 'band04.nc' > $imglist; # EMULO DESCARGA NOAA
+# echo '2018-08-band02.sm.nc' > $imglist; # EMULO DESCARGA NOAA
+
 # echo '2016/10/goes13.2016.277.084518.BAND_01.nc' >> $imglist; # EMULO DESCARGA NOAA
 # echo '2016/10/goes13.2016.279.123506.BAND_01.nc' >> $imglist; # EMULO DESCARGA NOAA
 # echo '2016/10/goes13.2016.275.143506.BAND_01.nc' >> $imglist; # EMULO DESCARGA NOAA
@@ -58,7 +62,8 @@ if [ ! -d $RUTAdes'/zCRR/' ]; then
 	mkdir -p $RUTAdes'/zCRR/';
 fi
 for line in $(<$imglist); do
-	year=${line:27:4};
+	# year=${line:27:4};
+	year=${line:0:4};
 	echo $year;
 	for prod in ${product[*]}
 	do
