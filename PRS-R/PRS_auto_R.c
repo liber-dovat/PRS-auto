@@ -13,10 +13,8 @@
 #define CSPTstr 23
 #define Cste 3
 
-// SATELITES
-// static int GOES[Cste]={8,12,13};
-
 // Versión 1.0, 09/2016 -- Rodrigo Alonso Suárez.
+// Versión 1.1, 09/2018 -- Liber Dovat & Rodrigo Alonso Suárez.
 
 int main(int argc, char *argv[]){
 
@@ -38,15 +36,8 @@ int main(int argc, char *argv[]){
 	double * FRmat;
 	double * RPmat;
 	double * N1mat;
-	double * CZmat;
 	double * LATmat; double * LONmat;
 	double * LATvec; double * LONvec;
-	// int * CALvis_iniYEA; int * CALvis_iniDOY; // chr 01
-	// double * CALvis_Xspace;
-	// double * CALvis_M;
-	// double * CALvis_K;
-	// double * CALvis_alfa;
-	// double * CALvis_beta;
 
 	// IMAGEN A PROCESAR
 	strncpy(DATAfolders, argv[1], CMAXstr);
@@ -123,9 +114,6 @@ int main(int argc, char *argv[]){
 	OK = guardar_grilla(RUTAsal, Ci, Cj, Ct, LATmax, dLATgri, LONmin, dLONgri,
 		&LATvec[0], &LONvec[0], &LATmat[0], &LONmat[0]);
 	printf("Grillas grabadas.  OK = [%d]\n", OK);
-	// OK = cargar_calibracion_VIS(RUTAcal, &CALvis_iniYEA, &CALvis_iniDOY, &CALvis_Xspace, // chr 02
-	// 	&CALvis_M, &CALvis_K, &CALvis_alfa, &CALvis_beta);
-	// printf("Calibracion VIS.   OK = [%d]\n", OK);
 	printf("-----------------------------------------------------------------------------------\n");	
 	printf("---- Imagenes procesadas ----------------------------------------------------------\n");
 	
@@ -141,13 +129,9 @@ int main(int argc, char *argv[]){
 		strcat(PATHimg, array_imgs[h1]);    // agrego al final de PATHimg el nombre del archivo
 
 		// PROCESO IMAGEN
-		OK = procesar_NetCDF_VIS_gri(&FRmat, &RPmat, &N1mat, &CZmat,
-	 		&MSKmat, &CNT1mat, &CNT2mat, &tag,
+		OK = procesar_NetCDF_VIS_gri(&FRmat, &RPmat, &N1mat, &MSKmat, &CNT1mat, &CNT2mat, &tag,
 	   		dLATgri, dLONgri, dLATcel, dLONcel, LATmax, LATmin, LONmax, LONmin,
-	   		Ct, Ci, Cj, PATHimg, RUTAsal
-	   		/*, 
-	   		CALvis_iniYEA, CALvis_iniDOY, CALvis_Xspace,  // chr 03
-	  		CALvis_M, CALvis_K, CALvis_alfa, CALvis_beta*/);
+	   		Ct, Ci, Cj, PATHimg, RUTAsal);
 
 		printf("IMAGEN : %s. TAG = [%d]. OK = [%d].\n", &PATHimg[0], tag, OK);
 	} // for
@@ -165,14 +149,6 @@ int main(int argc, char *argv[]){
 	//mostrar_vector_double(LATvec, Ci, 10);
 	//printf("LONGITUDES:\n");
 	//mostrar_vector_double(LONvec, Cj, 10);
-	//printf("CALIBRACION:\n");
-	//mostrar_vector_int(CALvis_iniYEA, Cste, 10);
-	//mostrar_vector_int(CALvis_iniDOY, Cste, 10);
-	//mostrar_vector_double(CALvis_Xspace, Cste, 10);
-	//mostrar_vector_double(CALvis_M, Cste, 10);
-	//mostrar_vector_double(CALvis_K, Cste, 10);
-	//mostrar_vector_double(CALvis_alfa, Cste, 10);
-	//mostrar_vector_double(CALvis_beta, Cste, 10);
 	//mostrar_vector_double(FRmat, Ct, Cj);
 	//mostrar_vector_double(CZmat, Ct, Cj);
 	//mostrar_vector_double(RPmat, Ct, Cj);

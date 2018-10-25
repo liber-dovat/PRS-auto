@@ -19,10 +19,13 @@ imglist='/home/chrono/Escritorio/graficas/PRS-R/data/job_imglist_VIS1';
 # PRODUCTOS
 product=('/B01-FR/' '/B01-RP/' '/B01-N1/' '/B01-MK/');
 
-# echo 'OR_ABI-L2-CMIPF-M4C02_G16_s20171971905222_e20171971910023_c20171971910090-114300_0.nc' > $imglist;
+rm '/home/chrono/Escritorio/graficas/PRS-R/data/prd/ART_G015x015GG_C015x015/B01-FR/2018/ART_2018242_173029.FR'
+rm '/home/chrono/Escritorio/graficas/PRS-R/data/prd/ART_G015x015GG_C015x015/B01-RP/2018/ART_2018242_173029.RP'
 
-echo 'band04.nc' > $imglist; # EMULO DESCARGA NOAA
-# echo '2018-08-band02.sm.nc' > $imglist; # EMULO DESCARGA NOAA
+# echo '2018-08-band02_small.nc' > $imglist; # EMULO DESCARGA NOAA
+echo '2018-28502.nc' > $imglist; # EMULO DESCARGA NOAA
+
+# echo '2018-OR_ABI-L2-CMIPC-M3C02_G16_s20182630017147_e20182630019520_c20182630020040.nc' > $imglist; # EMULO DESCARGA NOAA
 
 # echo '2016/10/goes13.2016.277.084518.BAND_01.nc' >> $imglist; # EMULO DESCARGA NOAA
 # echo '2016/10/goes13.2016.279.123506.BAND_01.nc' >> $imglist; # EMULO DESCARGA NOAA

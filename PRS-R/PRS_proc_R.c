@@ -138,8 +138,7 @@ int main(int argc, char *argv[]){
 		strncpy(PATHimg, RUTAent, CMAXstr); strcat(PATHimg, array_imgs[h1]);
 
 		// PROCESO IMAGEN
-		OK = procesar_NetCDF_VIS_gri(&FRmat, &RPmat, &N1mat, &CZmat,
-	 		&MSKmat, &CNT1mat, &CNT2mat, &tag,
+		OK = procesar_NetCDF_VIS_gri(&FRmat, &RPmat, &N1mat, &MSKmat, &CNT1mat, &CNT2mat, &tag,
 	   		dLATgri, dLONgri, dLATcel, dLONcel, LATmax, LATmin, LONmax, LONmin,
 	   		Ct, Ci, Cj, PATHimg, RUTAsal
 	   		// , CALvis_iniYEA, CALvis_iniDOY, CALvis_Xspace,

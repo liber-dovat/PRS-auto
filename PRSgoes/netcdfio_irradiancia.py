@@ -5,6 +5,7 @@ import matplotlib
 matplotlib.use('Agg')
 
 import matplotlib.pyplot as plt
+import datetime
 import struct
 import netCDF4
 import numpy
@@ -140,7 +141,9 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
   mm = date[14:16]
   ss = date[17:19]
 
-  name     = channel + " " + dd + "-" + mt + "-" + yl + " " + hh + ":" + mm + " UTC"
+  str_date = str(dd) + '/' + str(mt) + '/' + str(yl) + " " + str(hh) + ":" + str(mm)
+  date     = datetime.datetime.strptime(str_date, '%d/%m/%Y %H:%M') - datetime.timedelta(hours=3)
+  name     = channel + " " + date.strftime('%d-%m-%Y %H:%M')
   filename = channel + "_" + yy + mt + dd + "_" + hh + mm + ss
   # print "name: " + name
 
@@ -209,7 +212,10 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
 
   x_mesh, y_mesh = numpy.meshgrid(X,Y)
 
-  projection = Proj(proj='geos', h=sat_h, lon_0=sat_lon, sweep=sat_sweep, ellps='WGS84')
+  # projection = Proj(proj='geos', h=sat_h, lon_0=sat_lon, sweep=sat_sweep, ellps='WGS84', nadgrids='@null')
+  proj_string = "+proj=geos +h=" + str(sat_h) + " +lon_0=" + str(sat_lon) + " +sweep=" + str(sat_sweep) + " +nadgrids=@null"
+  print proj_string
+  projection = Proj(proj_string)
   lons, lats = projection(x_mesh, y_mesh, inverse=True)
   x, y       = ax(lons, lats)
 
@@ -307,7 +313,7 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
   print outPath
 
   # genero el pie de la imagen, con el logo y la info del archivo
-  plt.annotate(name, (0,0), (106, -60), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=14, family='monospace', color='white')
+  plt.annotate(name, (0,0), (137, -60), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=14, family='monospace', color='white')
 
   # genero un dpi dinamico segun la imagen que quiero procesar
   # if channel == 'C04':
@@ -318,14 +324,14 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
   # else:
   #   dpi = 200
 
-  plt.savefig(outPath, bbox_inches='tight', dpi=300, transparent=True) # , facecolor='#4F7293'
+  plt.savefig(outPath, bbox_inches='tight', dpi=400, transparent=True) # , facecolor='#4F7293'
 
   # copio la ultima imagen de cada carpeta en la raiz PNG para subir a la web
   # plt.savefig(dirDest + channel + '.png', bbox_inches='tight', dpi=300, transparent=True) # , facecolor='#4F7293'
   copyfile(outPath, dirDest + channel + '.png')
   plt.close()
 
-  if channel == 'C01':
+  if channel == 'C02':
     return yl+mt+dd+hh+mm+ss
 
 # def netcdf2png

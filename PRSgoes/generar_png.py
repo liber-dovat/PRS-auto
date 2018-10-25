@@ -12,7 +12,7 @@ cmapPath = '/sat/PRS/dev/PRS-sat/PRSgoes/cmaps/'
 # sincronizo los archivos para procesar
 subprocess.call("/sat/PRS/dev/PRS-sat/PRSgoes/descargar_tmp.sh", shell=True)
 
-files = ['band01.nc','band02.nc','band04.nc','band13.nc']
+files = ['band02.nc','band13.nc']
 
 tmp = 'none'
 
@@ -28,7 +28,7 @@ for i in files:
   
   tmp = netcdf2png(file, cmapPath, cmap, dirDest, 'y', 'x','CMI')
 
-  if i == 'band01.nc':
+  if i == 'band02.nc':
     timestamp = tmp
 
 print timestamp
@@ -45,7 +45,7 @@ subprocess.call("/sat/PRS/dev/PRS-sat/PRSgoes/rmframes.sh", shell=True)
 
 print 'copio los frames'
 copiar_frames(dirDest + 'C02/'    + '2018', dirDest + 'C02/mp4')
-copiar_frames(dirDest + 'C04/'    + '2018', dirDest + 'C04/mp4')
+#copiar_frames(dirDest + 'C04/'    + '2018', dirDest + 'C04/mp4')
 copiar_frames(dirDest + 'C13/'    + '2018', dirDest + 'C13/mp4')
 
 subprocess.call("/sat/PRS/dev/PRS-sat/PRSgoes/videoandcopy.sh", shell=True)

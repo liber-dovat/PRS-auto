@@ -482,7 +482,8 @@ int open_NetCDF_file(char PATH[CMAXstr],
 	strcat(pj_geos_param, "+proj=geos +h="); strcat(pj_geos_param, char_sat_h);
 	strcat(pj_geos_param, " +lon_0="); strcat(pj_geos_param, char_sat_lon);
 	// strcat(pj_geos_param, " +inv +x_0=-6000.0 +y_0=-4000.0");
-	strcat(pj_geos_param, " +inv +sweep=x +nadgrids");
+	// strcat(pj_geos_param, " +inv +sweep=x +nadgrids");
+	strcat(pj_geos_param, " +inv +sweep=x +nadgrids=@null");
 
 	printf("pj_geos_param: %s\n", pj_geos_param);
 
