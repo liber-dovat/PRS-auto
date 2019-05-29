@@ -1,0 +1,37 @@
+There are two additional undocumented environment variables: PROJ_LIBDIR and PROJ_INCDIR.
+
+PROJ_LIBDIR - this is the path PROJ_DIR + '/lib' and PROJ_DIR + '/lib64'
+PROJ_INCDIR - this is the path PROJ_DIR + '/include'
+
+If set in the environment, that setting will be used over the defaults.
+
+If you want to see where pyproj data files are installed, print the variable: pyproj.pyproj_datadir
+
+https://github.com/blaylockbk/pyBKB_v2/blob/master/BB_goes16/mapping_GOES16_data.ipynb
+http://edc.occ-data.org/goes16/python/
+
+True Color Recipe
+
+Since the Veggie channel is not a true visble green, we have to interpolate the value. I followed the instructions here for applying a gamma correction and calculating the "true green" value.
+Red
+
+    0.64 µm (Band 2)
+    reflectance range [0-1]
+    gamma correction
+
+Green
+
+    0.86 µm (Band 3 )
+    reflectance range [0-1]
+    gamma correction
+
+Blue
+
+    0.47 µm (Band 1 )
+    reflectance range [0-1]
+    gamma correction
+
+True Green
+
+    0.48358168xR + 0.45706946xB + 0.06038137xG
+
