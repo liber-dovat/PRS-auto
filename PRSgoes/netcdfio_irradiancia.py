@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3.6
 # -*- coding: utf-8 -*-
 
 import matplotlib
@@ -34,21 +34,21 @@ def truncUno(d):
 
 def channelInfo(channelNumber):
   if channelNumber == 'C01':
-    print "ABI L2+ "
-    print "Range: 0.0166056 to 0.9999 1"
-    print "Wavelength: 0.45~0.49 um"
+    print("ABI L2+ ")
+    print("Range: 0.0166056 to 0.9999 1")
+    print("Wavelength: 0.45~0.49 um")
   elif channelNumber == 'C02':
-    print "ABI L2+ "
-    print "Range: 206.647 to 313.627 K"
-    print "Wavelength: 0.60~0.68 um"
+    print("ABI L2+ ")
+    print("Range: 206.647 to 313.627 K")
+    print("Wavelength: 0.60~0.68 um")
   elif channelNumber == 'C04':
-    print "ABI L2+ "
-    print "Range: 206.647 to 313.627 K"
-    print "Wavelength: 1.36~1.38 um"
+    print("ABI L2+ ")
+    print("Range: 206.647 to 313.627 K")
+    print("Wavelength: 1.36~1.38 um")
   elif channelNumber == 'C13':
-    print "ABI L2+ "
-    print "Range: 206.647 to 313.627 K"
-    print "Wavelength: 10.2~10.5 um"
+    print("ABI L2+ ")
+    print("Range: 206.647 to 313.627 K")
+    print("Wavelength: 10.2~10.5 um")
 
 # end channelInfo
 
@@ -80,7 +80,7 @@ def rangoColorbar(channel):
     vmin = 0
     vmax = 100
   elif channel == 'C07':
-    vmin = -80.3
+    vmin = -100
     vmax = 70
   elif channel == 'C08':
     vmin = -60
@@ -89,13 +89,13 @@ def rangoColorbar(channel):
     vmin = -60
     vmax = 0
   elif channel == 'C13':
-    vmin = -80.3
+    vmin = -100
     vmax = 70
   elif channel == 'C14':
-    vmin = -80.3
+    vmin = -100
     vmax = 70
   elif channel == 'C15':
-    vmin = -80.3
+    vmin = -100
     vmax = 70
 
   return vmin, vmax
@@ -126,10 +126,10 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
   # print ds_name
 
   date = re.search('\'(.*?)\'', t_coverage).group(1)
-  print date
+  print(date)
 
   channel = re.search('-M\d(.*?)_', ds_name).group(1)
-  print channel
+  print(channel)
 
   channelInfo(channel)
 
@@ -153,19 +153,12 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
   if data_name == 'CMI' or data_name == 'Rad':
     # Satellite height
     sat_h = nc_fid.variables['goes_imager_projection'].perspective_point_height
-    # sat_h += 25000 # parche de altura chr
     # Satellite longitude
     sat_lon = nc_fid.variables['goes_imager_projection'].longitude_of_projection_origin
     # Satellite sweep
     sat_sweep = nc_fid.variables['goes_imager_projection'].sweep_angle_axis
     X = nc_fid.variables[lon_name][:] # longitud, eje X
     Y = nc_fid.variables[lat_name][:] # latitud, eje Y
-
-    # print "sat_h: "   + str(sat_h)
-    # print "Sat_lon: " + str(sat_lon);
-
-    # print "len X:" + str(len(X))
-    # print "len Y:" + str(len(Y))
 
     scene_id_val = repr(nc_fid.getncattr('scene_id'))
     scene_id     = re.search('\'(.*?)\'', scene_id_val).group(1)
@@ -174,7 +167,7 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
     
   nc_fid.close()
 
-  print "Realizando pasaje a K en C13 y truncamiento en los otros"
+  print("Realizando pasaje a K en C13 y truncamiento en los otros")
 
   if isBrightTemp(channel):
     # Los datos estan en kelvin, asi que los paso a Celsius
@@ -193,14 +186,10 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
   #:::::::::::::::::::::::::::::
   # Basemap
 
-  print "Ventana Río de la Plata"
+  print("Ventana Río de la Plata")
 
   # https://github.com/blaylockbk/pyBKB_v2/blob/master/BB_goes16/mapping_GOES16_data.ipynb
 
-  # parche para alinear la fotografía con las coordenadas geográficas
-  # supongo que una vez esté calibrado el satélite hay que eliminar estas líneas
-  # X = map(lambda x: x*sat_h+5000, X) # incremento X
-  # Y = map(lambda y: y*sat_h+5000, Y) # incremento Y
   X *= sat_h
   Y *= sat_h
 
@@ -212,10 +201,10 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
 
   x_mesh, y_mesh = numpy.meshgrid(X,Y)
 
-  # projection = Proj(proj='geos', h=sat_h, lon_0=sat_lon, sweep=sat_sweep, ellps='WGS84', nadgrids='@null')
-  proj_string = "+proj=geos +h=" + str(sat_h) + " +lon_0=" + str(sat_lon) + " +sweep=" + str(sat_sweep) + " +nadgrids=@null"
-  print proj_string
-  projection = Proj(proj_string)
+  projection = Proj(proj='geos', h=sat_h, lon_0=sat_lon, sweep=sat_sweep, ellps='WGS84')
+  # proj_string = "+proj=geos +h=" + str(sat_h) + " +lon_0=" + str(sat_lon) + " +sweep=" + str(sat_sweep) + " +nadgrids=@null"
+  # print proj_string
+  # projection = Proj(proj_string)
   lons, lats = projection(x_mesh, y_mesh, inverse=True)
   x, y       = ax(lons, lats)
 
@@ -228,14 +217,14 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
   gc.collect()
 
   # agrego los vectores de las costas, departamentos/estados/provincias y paises
-  ax.drawcoastlines(linewidth=0.50)
-  ax.drawcountries(linewidth=0.50)
-  ax.drawstates(linewidth=0.25)
+  ax.drawcoastlines(linewidth=0.40)
+  ax.drawcountries(linewidth=0.40)
+  ax.drawstates(linewidth=0.20)
 
   if not geos:
     # dibujo los valores de latitudes y longitudes al margen de la imagen
-    par = ax.drawparallels(numpy.arange(-45, -20, 5), labels=[1,0,0,0], linewidth=0.0, fontsize=10, color='white')
-    mer = ax.drawmeridians(numpy.arange(-70, -45, 5), labels=[0,0,1,0], linewidth=0.0, fontsize=10, color='white')
+    par = ax.drawparallels(numpy.arange(-45, -20, 5), labels=[1,0,0,0], linewidth=0.0, fontsize=7, color='white')
+    mer = ax.drawmeridians(numpy.arange(-70, -45, 5), labels=[0,0,1,0], linewidth=0.0, fontsize=7, color='white')
     setcolor(par,'white')
     setcolor(mer,'white')
 
@@ -260,9 +249,11 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
 
   # defino el colormap  y la disposicion de los ticks segun la banda
   if isBrightTemp(channel):
-    ticks = [-80, -75.2, -70.2, -65.2, -60.2, -55.2, -50.2, -45.2, -40.2, -35.2, -30.2,-20,-10,0,10,20,30,40,50,60,70]
+    # ticks = [-80, -75.2, -70.2, -65.2, -60.2, -55.2, -50.2, -45.2, -40.2, -35.2, -30.2,-20,-10,0,10,20,30,40,50,60,70]
     # defino las etiquetas del colorbar
-    ticksLabels = [-80, -75, -70, -65, -60, -55, -50, -45, -40, -35, -30,-20,-10,0,10,20,30,40,50,60,70]
+    # ticksLabels = [-80, -75, -70, -65, -60, -55, -50, -45, -40, -35, -30,-20,-10,0,10,20,30,40,50,60,70]
+    ticks = [-100, -90, -80, -70, -60, -50, -40,-30, -20, -10,0,10,20,30,40,50,60,70]
+    ticksLabels = ticks
   else:
     ticks       = [0, 20, 40, 60, 80, 100]
     ticksLabels = ticks
@@ -275,19 +266,19 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
   plt.clim(vmin, vmax)
 
   # agrego el colorbar
-  cbar = ax.colorbar(cs, location='bottom', pad='3%', ticks=ticks)
+  cbar = ax.colorbar(cs, location='bottom', ticks=ticks) # , pad='3%'
 
   if isBrightTemp(channel):
     cbar.ax.xaxis.labelpad = 0
-    cbar.ax.set_xlabel("Temperatura de brillo ($^\circ$C)", fontsize=7, color='white')
-    cbar.ax.set_xticklabels(ticksLabels, rotation=45, fontsize=7, color='white')
+    cbar.ax.set_xlabel("Temperatura de brillo ($^\circ$C)", fontsize=6, color='white')
+    cbar.ax.set_xticklabels(ticksLabels, rotation=45, fontsize=6, color='white')
   else:
-    cbar.ax.set_xlabel("Factor de reflectancia (%)", fontsize=7, color='white')
-    cbar.ax.set_xticklabels(ticksLabels, fontsize=7, color='white')
+    cbar.ax.set_xlabel("Factor de reflectancia (%)", fontsize=6, color='white')
+    cbar.ax.set_xticklabels(ticksLabels, fontsize=6, color='white')
 
   # agrego el logo en el documento
   logo = plt.imread('/sat/PRS/dev/PRS-sat/PRSgoes/logo_300_bw.png')
-  plt.figimage(logo, 5, 5)
+  plt.figimage(logo, xo=5, yo=5)
 
   # si no existe la carpeta asociada a la banda la creo
   if not os.path.isdir(dirDest + channel):
@@ -310,17 +301,20 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
   # llamo al garbage collector para que borre los elementos que ya no se van a usar
   gc.collect()
 
-  print outPath
+  print(outPath)
+
+  # if numpy.sum(data) == 0.:
+  #   plt.annotate("NOCHE", (0,0), (245, 15), color='white', xycoords='axes fraction', textcoords='offset points', va='top', fontsize=10, family='monospace')
+  # # print "es noche"
 
   # genero el pie de la imagen, con el logo y la info del archivo
-  plt.annotate(name, (0,0), (137, -60), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=14, family='monospace', color='white')
+  plt.annotate(name + " UY", (0,0), (85, -53), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=11, family='monospace', color='white')
 
   # genero un dpi dinamico segun la imagen que quiero procesar
   # if channel == 'C04':
   #   dpi = 200
   # elif channel == 'C01' or channel == 'C02':
-  #   dpi = 900
-  #   # dpi = 300
+  #   dpi = 300
   # else:
   #   dpi = 200
 

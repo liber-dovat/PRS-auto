@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3.6
 # -*- coding: utf-8 -*-
 
 import subprocess
@@ -22,7 +22,7 @@ for i in files:
   file = ncpath + i
   # ncdump(file)
   if i == 'band13.nc':
-    cmap = 'inumet'
+    cmap = 'cptec2'
   else:
     cmap = 'jet'
   
@@ -31,7 +31,7 @@ for i in files:
   if i == 'band02.nc':
     timestamp = tmp
 
-print timestamp
+print(timestamp)
 timestamp_html = open(dirDest + 'timestamp.html', 'w')
 timestamp_html.write(timestamp)
 timestamp_html.close()
@@ -43,9 +43,11 @@ subprocess.call("/sat/PRS/dev/PRS-sat/PRSgoes/rmframes.sh", shell=True)
 # en función del nombre de las imagenes genero el timestamp
 # luego llamo a videoandcopy para generar los videos y copiar todo a la web
 
-print 'copio los frames'
-copiar_frames(dirDest + 'C02/'    + '2018', dirDest + 'C02/mp4')
+print('copio los frames')
+copiar_frames(dirDest + 'C02/'    + '2019', dirDest + 'C02/mp4')
 #copiar_frames(dirDest + 'C04/'    + '2018', dirDest + 'C04/mp4')
-copiar_frames(dirDest + 'C13/'    + '2018', dirDest + 'C13/mp4')
+copiar_frames(dirDest + 'C13/'    + '2019', dirDest + 'C13/mp4')
+
+# subprocess.call(["ls", "-l"])
 
 subprocess.call("/sat/PRS/dev/PRS-sat/PRSgoes/videoandcopy.sh", shell=True)

@@ -129,7 +129,7 @@ int main(int argc, char *argv[]){
 		strcat(PATHimg, array_imgs[h1]);    // agrego al final de PATHimg el nombre del archivo
 
 		// PROCESO IMAGEN
-		OK = procesar_NetCDF_VIS_gri(&FRmat, &RPmat, &N1mat, &MSKmat, &CNT1mat, &CNT2mat, &tag,
+		OK = procesar_NetCDF_VIS_gri(&FRmat, &RPmat, &MSKmat, &CNT1mat, &CNT2mat, &tag,
 	   		dLATgri, dLONgri, dLATcel, dLONcel, LATmax, LATmin, LONmax, LONmin,
 	   		Ct, Ci, Cj, PATHimg, RUTAsal);
 

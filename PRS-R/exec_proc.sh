@@ -17,7 +17,7 @@ imglist='/home/chrono/Escritorio/graficas/PRS-R/data/job_imglist_VIS1';
 #imglist='/sat/PRS/libs/PRS-sat/data/job_imglist_VIS1';
 
 # PRODUCTOS
-product=('/B01-FR/' '/B01-RP/' '/B01-N1/' '/B01-MK/');
+product=('/C02-FR/' '/C02-RP/' '/C02-N1/' '/C02-MK/');
 
 echo '2016/10/goes13.2016.275.143506.BAND_01.nc' >> $imglist; # EMULO DESCARGA NOAA
 echo '2016/10/goes13.2016.277.084518.BAND_01.nc' >> $imglist; # EMULO DESCARGA NOAA

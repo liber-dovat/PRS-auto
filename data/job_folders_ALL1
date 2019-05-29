@@ -1,6 +1,18 @@
-/rolo/Wsatelite/tmp/PRS-test/input/
-/rolo/Wsatelite/tmp/PRS-test/output/
-/rolo/Wsatelite/PRS/server-sat-01/libs/cal/
+/sat/goesv-sat/
+/sat/art-sat/
+/sat/PRS/libs/cal/
+
+% /home/ldovat/dev/PRS-sat/PRS-R/data/raw/
+% /home/ldovat/dev/PRS-sat/PRS-R/data/prd/
+% /home/ldovat/dev/PRS-sat/PRS-R/data/cal/
+
+% /sat/raw-sat/
+% /sat/prd-sat/
+% /sat/PRS/libs/cal/
+
+% /rolo/Wsatelite/tmp/PRS-test/input/
+% /rolo/Wsatelite/tmp/PRS-test/output/
+% /rolo/Wsatelite/PRS/server-sat-01/libs/cal/
 
 % ENTRADA
 % SALIDA

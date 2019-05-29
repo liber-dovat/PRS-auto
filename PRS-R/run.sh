@@ -12,6 +12,11 @@
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
+export PROJ_LIB=/usr/local/share/proj
+export PROJ_DEBUG=0
+
 echo -e "Ejecutando: ${RED}time make clean && make && ./exec_auto.sh && ./plot/convertir_imgs.py${NC}"
 
-time make clean && make && ./exec_auto.sh && ./plot/convertir_imgs.py
+# rm /home/ldovat/dev/PRS-sat/PRS-R/plot/png/B01-FR/2018/ART_2018302_180037.png
+# time make clean && make && ./exec_auto.sh && ./plot/convertir_imgs.py
+make clean && time make && time ./exec_auto.sh
