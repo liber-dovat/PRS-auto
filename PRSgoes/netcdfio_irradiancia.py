@@ -19,6 +19,20 @@ from os.path              import basename
 from pyproj               import Proj
 from utils                import gmtColormap, ncdump
 from shutil               import copyfile
+from matplotlib.patches   import Polygon
+
+#########################################
+#########################################
+#########################################
+
+def paraguay_poly(m):
+  lats = [-24.2682,-24.0929, -24.0124,-24.0458,-24.0201,-23.9499,-23.9536,-23.9536,-23.899, -23.9028,-23.872, -23.8708,-23.8155,-23.8155,-23.6867,-23.6137,-23.5552,-23.5583,-23.4519,-23.4185,-23.2805,-23.2836,-23.1593,-23.0854,-22.9944,-22.9944,-22.7274,-22.607, -22.5449,-22.4523,-22.4523,-22.1314,-22.0004]
+  lons = [-59.5878, -59.8933, -60.0393, -60.1948, -60.3761, -60.4845, -60.5875, -60.5875, -60.6191, -60.6905, -60.7297, -60.8574, -60.9501, -60.9858, -61.0826, -61.0943, -61.1801, -61.2206, -61.3586, -61.487, -61.6024, -61.6738, -61.7679, -61.8729, -62.0048, -62.0048, -62.1751,  -62.252, -62.2245, -62.3941, -62.3941, -62.8073, -62.8061]
+
+  x, y = m( lons, lats )
+  xy   = zip(x,y)
+  poly = Polygon( list(xy), closed=False, edgecolor='k', linewidth=0.4, facecolor='none', fill=False)
+  plt.gca().add_patch(poly)
 
 #########################################
 #########################################
@@ -221,6 +235,8 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
   ax.drawcountries(linewidth=0.40)
   ax.drawstates(linewidth=0.20)
 
+  paraguay_poly(ax)
+
   if not geos:
     # dibujo los valores de latitudes y longitudes al margen de la imagen
     par = ax.drawparallels(numpy.arange(-45, -20, 5), labels=[1,0,0,0], linewidth=0.0, fontsize=7, color='white')
@@ -270,11 +286,11 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
 
   if isBrightTemp(channel):
     cbar.ax.xaxis.labelpad = 0
-    cbar.ax.set_xlabel("Temperatura de brillo ($^\circ$C)", fontsize=6, color='white')
-    cbar.ax.set_xticklabels(ticksLabels, rotation=45, fontsize=6, color='white')
+    cbar.ax.set_xlabel("Temperatura de brillo ($^\circ$C)", fontsize=7, color='white')
+    cbar.ax.set_xticklabels(ticksLabels, rotation=45, fontsize=7, color='white')
   else:
-    cbar.ax.set_xlabel("Factor de reflectancia (%)", fontsize=6, color='white')
-    cbar.ax.set_xticklabels(ticksLabels, fontsize=6, color='white')
+    cbar.ax.set_xlabel("Factor de reflectancia (%)", fontsize=7, color='white')
+    cbar.ax.set_xticklabels(ticksLabels, fontsize=7, color='white')
 
   # agrego el logo en el documento
   logo = plt.imread('/sat/PRS/dev/PRS-sat/PRSgoes/logo_300_bw.png')

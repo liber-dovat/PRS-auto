@@ -1,0 +1,47 @@
+-22.00
+-42.94
+-45.00
+-67.00
+0.060
+0.060
+0.060
+0.060
+ART_G060x060GG_C060x060
+
+% LATmax
+% LATmin
+% LONmax
+% LONmin
+% dLATgri
+% dLONgri
+% dLATcel
+% dLONcel
+% CODIGO
+
+% VENTANA SUDAMERICA (SU)
++10.00
+-40.00
+-30.00
+-85.00
+
+% VENTANA GRANDE (GG)
+-22.00
+-42.94
+-45.00
+-67.00
+
+% VENTANA EXTENDIDA (MM)
+-28.00
+-39.75
+-51.00
+-66.00
+
+$ VENTANA URUGUAY (UY)
+-30.00
+-35.00
+-53.00
+-59.00
+
+TALLES: S M G X
+UY = SS
+MM - GG - XX

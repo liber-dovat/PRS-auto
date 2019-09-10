@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 744.09448819 1052.3622047"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="cmp.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="22.490415"
+     inkscape:cx="246.57729"
+     inkscape:cy="391.58506"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer2"
+     showgrid="false"
+     inkscape:window-width="1600"
+     inkscape:window-height="876"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     sodipodi:insensitive="true"
+     style="display:inline">
+    <image
+       sodipodi:absref="/home/chrono/Escritorio/graficas/PRS-R/plot/png/B01-FR/2018/ART_2018242_173029.01.png"
+       xlink:href="ART_2018242_173029.01.png"
+       style="opacity:0.5"
+       width="435.375"
+       height="526.72498"
+       preserveAspectRatio="none"
+       id="image4295"
+       x="154.35974"
+       y="262.8186" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Capa 2"
+     sodipodi:insensitive="true"
+     style="display:inline">
+    <image
+       sodipodi:absref="/home/chrono/Escritorio/graficas/PRS-R/plot/png/B01-FR/2018/ART_2018242_173029.png"
+       xlink:href="ART_2018242_173029.png"
+       style="opacity:0.5"
+       width="435.375"
+       height="526.72498"
+       preserveAspectRatio="none"
+       id="image4357"
+       x="154.35974"
+       y="262.8186" />
+  </g>
+</svg>

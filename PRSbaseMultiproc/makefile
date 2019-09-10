@@ -1,7 +1,8 @@
 CC       = gcc
 CPPFLAGS = -Wall -Werror -Wextra -ansi -pedantic -O2
 XTRFLAGS = -ggdb
-FLAGS    = -lnetcdf -lm -lproj
+FLAGS    = -lnetcdf -lm
+# FLAGS    = -lnetcdf -lm -lprj
 Obj      = lib_PRSsat.o
 SrcDir   = ./
 ObjDir   = ./

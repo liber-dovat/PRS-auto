@@ -33,14 +33,14 @@ programa = '/sat/PRS/dev/PRS-sat/PRSbaseMultiproc/PRSsat_auto_VIS'
 # programa = '/sat/PRS/dev/PRS-sat/PRSbaseMultiproc/nop.sh'
 
 RUTAent, RUTAbase, RUTAcal =\
-readFolders('/sat/PRS/dev/PRS-sat/data/job_folders_ALL1')
+readFolders('/sat/PRS/dev/PRS-sat/PRSbaseMultiproc/data/job_folders_ALL1')
 
 # print(RUTAent)
 # print(RUTAbase)
 # print(RUTAcal)
 
 LATmax, LATmin, LONmax, LONmin, dLATgri, dLONgri, dLATcel, dLONcel, CODEspatial =\
-readSpatial('/sat/PRS/dev/PRS-sat/data/job_spatial_VIS1')
+readSpatial('/sat/PRS/dev/PRS-sat/PRSbaseMultiproc/data/job_spatial_VIS1')
 
 # print(LATmax)
 # print(LATmin)

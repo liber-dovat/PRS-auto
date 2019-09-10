@@ -12,7 +12,7 @@ cmapPath = '/sat/PRS/dev/PRS-sat/PRSgoes/cmaps/'
 # sincronizo los archivos para procesar
 # subprocess.call("/sat/PRS/dev/PRS-sat/PRSgoes/descargar_tmp.sh", shell=True)
 
-files = ['band02.nc','band13.nc']
+files = ['band13.nc']
 
 tmp = 'none'
 

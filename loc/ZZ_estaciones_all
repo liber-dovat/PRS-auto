@@ -1,0 +1,316 @@
+ACTUALIZACIÓN: 18/03/2018.
+311 estaciones satelitales.
+
+LE les -31.28 -57.92  56  Laboratorio de Energía Solar    LES
+SA sai -31.27 -57.89  47  Salto INIA                      LES/INIA
+RO rom -34.49 -54.31  20  Rocha INUMET                    LES/INUMET
+RC rcl -34.49 -54.32  20  Rocha CURE                      LES
+TT tti -33.28 -54.17  35  TYT INIA Paso de la Laguna      LES/INIA
+PP ppi -33.26 -54.49  26  TYT INIA Palo a Pique           LES/INIA
+AZ azt -34.92 -56.17  58  AZOTEA FING                     LES
+LB lbi -34.67 -56.34  38  Las Brujas                      LES/INIA
+ZU zue -34.34 -57.69  70  Estanzuela INIA                 LES/INIA
+AR arm -30.40 -56.51 136  Artigas INUMET                  LES/INUMET
+SS ssi -31.39 -57.71  xx  Salto San Antonio INIA          INIA
+TA tai -31.71 -55.83 142  Tacuarembó La Magnolia INIA     INIA
+GC gci -32.00 -57.13 111  Glencoe INIA                    INIA
+CA cam -34.83 -56.01  33  Carrasco INUMET                 INUMET
+CO com -34.45 -57.77  20  Colonia INUMET                  INUMET
+DM dmm -33.35 -56.50  93  Durazno INUMET                  INUMET
+FL flm -34.09 -56.19  68  Florida INUMET                  INUMET
+ML mlm -32.37 -54.19 100  Melo INUMET                     INUMET
+MR mrm -33.25 -58.07  17  Mercedes INUMET                 INUMET
+PT ptm -32.80 -56.53  75  Paso de los Toros INUMET        INUMET
+PM pmm -32.35 -58.04  61  Paysandu INUMET                 INUMET
+PE pem -34.97 -54.95  16  Punta del Este INUMET           INUMET
+RI rim -30.90 -55.54 242  Rivera INUMET                   INUMET
+TM tmm -33.22 -54.39  46  Treinta y Tres INUMET           INUMET
+SM smm -31.44 -57.98  41  Salto INUMET                    INUMET
+RA rar -33.82 -56.58  xx  Rincón de Arias                 UTE
+BB bbu -31.75 -57.87  xx  Baltazar Brum                   UTE
+RB rbo -32.80 -56.42  xx  Rincón del Bonete               UTE
+BU bue -31.06 -55.60  xx  Buena Unión                     UTE
+JI jo1 -34.86 -54.73  xx  José Ignacio                    UTE
+JI jo2 -34.84 -54.74  xx  José Ignacio 2                  UTE
+PA paf -34.68 -55.58  xx  Piedras de Afilar               UTE
+MM mme -34.64 -56.70  xx  McMeekan 100                    UTE
+RM rme -34.34 -57.58  xx  Rosendo Mendoza 100             UTE
+RR rru -34.09 -53.65  xx  Rocha UTE                       UTE
+VA val -33.26 -55.10  xx  Valentines                      UTE
+CR cru -31.24 -57.47  xx  Colonia Rubio                   UTE
+EU eul -33.28 -57.52  xx  Colonia Eulacio                 UTE
+OT ota -32.14 -54.42  xx  Otamendi                        UTE
+-- are -31.64 -56.55  xx  Arerungua                       UTE
+IT ita -51.50 -57.95  xx  Itapebi (Salto)                 UTE
+LV liv -30.80 -55.60  xx  Livramento INMET                Hist.
+ME mel -34.77 -56.28  xx  Melilla UTE DNC                 Hist.
+-- ang -36.54 -63.99 165  Anguil INTA                     GERSolar
+-- bal -37.76 -58.30 130  Balcarce INTA                   GERSolar
+-- azu -36.77 -59.88 132  Azul, U.N. del Centro           GERSolar
+LU luj -34.59 -59.06  30  Luján, U.N. de Luján            GERSolar
+-- per -33.94 -60.57  65  Pergamino INTA                  GERSolar
+-- pna -31.85 -60.54 110  Paraná INTA                     GERSolar
+-- mju -32.57 -62.08 105  Marcos Juárez INTA              GERSolar
+-- gvi -34.87 -62.78 110  General Villegas INTA           GERSolar
+-- cou -32.48 -58.23  15  Concepción del Uruguay          GERSolar
+-- baw -38.32 -60.24  xx  Barrow INTA                     GERSolar
+BG bgb -31.35 -54.01 230  INMET-A827 Bagé                 UNIPAMPA
+DP dpe -30.99 -54.82 170  INMET-A881 Dom Pedrito          UNIPAMPA
+JA jao -32.53 -53.38  47  INMET-A836 Jaguarao             UNIPAMPA
+CH chu -33.74 -53.37  26  INMET-A899 Chui                 UNIPAMPA
+SL sli -30.75 -55.40 196  INMET-A804 Sant. do Livr.       UNIPAMPA
+QU qua -30.37 -56.44 124  INMET-A831 Quarai               UNIPAMPA
+UR uru -29.84 -57.08  62  INMET-A809 Uruguaiana           UNIPAMPA
+MS sms -29.44 -53.82 489  Sao Martinho da Serra           SONDA
+-- mpv -34.43 -55.18  xx  Planta PV Minas                 MIEM/DNE
+-- upm -33.12 -58.25  xx  Planta UPM                      UPM
+-- ge1 -34.39 -57.85  xx  Gerardo Echeverria 1            Piedra de los Indios/El Caño
+-- ge2 -34.12 -56.94  xx  Gerardo Echeverria 2            Mal Abrigo/Sierra de Mahoma
+-- ge3 -34.61 -56.25  xx  Gerardo Echeverria 3            Juanicó
+-- ge4 -34.66 -55.80  xx  Gerardo Echeverria 4            Atlantida
+-- ge5 -34.88 -56.32  xx  Gerardo Echeverria 5            Punta Yeguas
+-- ge6 -34.74 -55.02  xx  Gerardo Echeverria 6            Alto la Ballena/Guardia Vieja
+-- ge7 -33.25 -55.93  xx  Gerardo Echeverria 7            Durazno. El Carmen.
+-- ge8 -31.43 -57.95  xx  Gerardo Echeverria 8            Salto.
+-- pam -32.25 -56.22  xx  Parque Eólico Pampa.
+-- mp1 -33.27 -55.07  xx  María Pia Olave (DNE) 1 - Treinta y Tres.
+-- mp2 -33.31 -55.01  xx  María Pia Olave (DNE) 2 - Treinta y Tres.
+-- mp3 -32.35 -55.56  xx  María Pia Olave (DNE) 3 - Tacuarembó.
+-- mp4 -32.21 -55.57  xx  María Pia Olave (DNE) 4 - Tacuarembó.
+-- ap1 -32.71 -57.66  xx  Agronegocios del Plata (Young, 150 MW)
+-- ap2 -33.54 -58.23  xx  Agronegocios del Plata (Dolores, 150 MW)
+-- bdo -32.29 -58.03  xx  Nominal: 33.25 MW. Bola de Oro TecnoGroup. 6 parques conectados. Check.
+-- P01 -31.28 -57.92  xx  Nominal:  0.50 MW. ASAHI. MIEM/DNE. Check.
+JA P02 -31.43 -57.91  xx  Nominal: 50.00 MW. La Jacinta. Salto. FRV (Fotowatio). Check.
+-- P03 -30.42 -57.46  xx  Nominal: 20.00 MW. Alto Cielo. Tomás Gomensoro, Artigas. SolarPack. 26.4 MWp.
+-- P04 -32.39 -58.13  xx  Nominal:  8.00 MW. Raditon. Casablanca, Paysandú. Check.
+-- P05 -32.30 -58.03  xx  Nominal: 11.25 MW. Dicano. Bola de Oro. TecnoGroup.
+-- P06 -32.30 -58.02  xx  Nominal:  9.50 MW. Fenima. Bola de Oro. TecnoGroup.
+-- P07 -32.30 -58.01  xx  Nominal:  9.50 MW. Petilcoran. Bola de Oro. TecnoGroup.
+-- P08 -32.29 -58.03  xx  Nominal:  1.00 MW. Lafemir. Bola de Oro. TecnoGroup.
+-- P09 -32.29 -58.02  xx  Nominal:  1.00 MW. Vingano. Bola de Oro. TecnoGroup.
+-- P10 -32.28 -58.03  xx  Nominal:  1.00 MW. AC Constructora. Bola de Oro. TecnoGroup.
+-- P11 -31.26 -57.86  xx  Nominal: 50.00 MW. Naranjal. SunEdison.
+-- P12 -31.44 -57.87  xx  Nominal: 16.00 MW. Del Litoral. SunEdison.
+-- P13 -32.61 -57.44  xx  Nominal: 20.00 MW. Menafra Solar. Young, Rio Negro. TecnoGroup. Check.
+-- P14 -30.87 -57.45  xx  Nominal: 10.00 MW. Arapey Solar. Arapey, Salto. TecnoGroup. Check.
+-- P15 -33.26 -57.99  xx  Nominal:  9.50 MW. Natelu. Mercedes, Soriano. TecnoGroup. Check.
+-- P16 -32.69 -57.61  xx  Nominal:  9.50 MW. Yarnel. Young, Rio Negro. TecnoGroup. Check.
+-- P17 -32.21 -58.00  xx  Nominal:  1.80 MW. Casalko. La Constancia, Paysandu. TecnoGroup. Check.
+-- ln1 -30.78 -57.92  xx  LES NORTE 1
+-- ln2 -30.28 -57.92  xx  LES NORTE 2
+-- le1 -31.28 -57.42  xx  LES ESTE 1
+-- le2 -31.28 -56.92  xx  LES ESTE 2
+-- ls1 -31.78 -57.92  xx  LES SUR 1
+-- ls2 -32.28 -57.92  xx  LES SUR 2
+-- lo1 -31.28 -58.42  xx  LES OESTE 1
+-- lo2 -31.28 -58.92  xx  LES OESTE 2
+-- Car -30.40 -56.47  xx  Capital Artigas
+-- Cca -34.52 -56.28  xx  Capital Canelones
+-- Cco -34.46 -57.83  xx  Capital Colonia
+-- Cdu -33.38 -56.52  xx  Capital Durazno
+-- Cfb -33.13 -58.29  xx  Capital Fray Bentos
+-- Cfl -34.10 -56.21  xx  Capital Florida
+-- Cma -34.90 -54.95  xx  Capital Maldonado
+-- Cmi -34.38 -55.24  xx  Capital Minas
+-- Cml -32.37 -54.17  xx  Capital Melo
+-- Cmr -33.25 -58.03  xx  Capital Mercedes
+-- Cmv -34.88 -56.16  xx  Capital Montevideo
+-- Cpa -32.32 -58.08  xx  Capital Paysandú
+-- Cri -30.90 -55.54  xx  Capital Rivera
+-- Cro -34.48 -54.33  xx  Capital Rocha
+-- Csa -31.39 -57.95  xx  Capital Salto	
+-- Csj -34.40 -56.71  xx  Capital San José
+-- Cta -31.72 -55.98  xx  Capital Tacuarembo
+-- Ctr -33.52 -56.90  xx  Capital Trinidad
+-- Ctt -33.23 -54.38  xx  Capital TyT
+-- Mar -30.60 -57.00  xx  Medio Artigas
+-- Mca -34.50 -56.00  xx  Medio Canelones
+-- Mco -34.15 -57.65  xx  Medio Colonia
+-- Mdu -33.10 -56.00  xx  Medio Durazno
+-- Mmr -32.70 -57.45  xx  Medio Mercedes
+-- Mfl -33.80 -55.96  xx  Medio Florida
+-- Mma -34.65 -54.90  xx  Medio Maldonado
+-- Mla -33.90 -55.00  xx  Medio Lavalleja
+-- Mcl -32.30 -54.35  xx  Medio Cerro Largo
+-- Mso -33.50 -57.80  xx  Medio Soriano
+-- Mmv -34.80 -56.15  xx  Medio Montevideo
+-- Mpa -32.05 -57.30  xx  Medio Paysandu
+-- Mri -31.50 -55.20  xx  Medio Rivera
+-- Mro -33.90 -54.00  xx  Medio Rocha
+-- Msa -31.35 -57.10  xx  Medio Salto
+-- Msj -34.25 -56.75  xx  Medio San José
+-- Mta -32.15 -55.80  xx  Medio Tacuarembó
+-- Mfs -33.55 -56.90  xx  Medio Flores
+-- Mtt -33.05 -54.30  xx  Medio Treinta y Tres
+-- A01 -28.50 -60.50  xx  Argentina 01
+-- A02 -29.50 -60.50  xx  Argentina 02
+-- A03 -30.50 -60.50  xx  Argentina 03
+-- A04 -31.50 -60.50  xx  Argentina 04
+-- A05 -32.50 -60.50  xx  Argentina 05
+-- A06 -33.50 -60.50  xx  Argentina 06
+-- A07 -34.50 -60.50  xx  Argentina 07
+-- A08 -35.50 -60.50  xx  Argentina 08
+-- A09 -36.50 -60.50  xx  Argentina 09
+-- A10 -28.50 -59.50  xx  Argentina 10
+-- A11 -29.50 -59.50  xx  Argentina 11
+-- A12 -30.50 -59.50  xx  Argentina 12
+-- A13 -31.50 -59.50  xx  Argentina 13
+-- A14 -32.50 -59.50  xx  Argentina 14
+-- A15 -33.50 -59.50  xx  Argentina 15
+-- A16 -34.50 -59.50  xx  Argentina 16
+-- A17 -35.50 -59.50  xx  Argentina 17
+-- A18 -36.50 -59.50  xx  Argentina 18
+-- A19 -28.50 -58.50  xx  Argentina 19
+-- A20 -29.50 -58.50  xx  Argentina 20
+-- A21 -30.50 -58.50  xx  Argentina 21
+-- A22 -31.50 -58.50  xx  Argentina 22
+-- A23 -32.50 -58.50  xx  Argentina 23
+-- A24 -34.50 -58.50  xx  Argentina 24
+-- A25 -35.50 -58.50  xx  Argentina 25
+-- A26 -36.50 -58.50  xx  Argentina 26
+-- A27 -28.50 -57.50  xx  Argentina 27
+-- A28 -29.50 -57.50  xx  Argentina 28
+-- A29 -35.50 -57.50  xx  Argentina 29
+-- A30 -36.50 -57.50  xx  Argentina 30
+-- A31 -28.50 -56.50  xx  Argentina 31
+-- B01 -29.50 -56.50  xx  Brasil 01
+-- B02 -28.50 -55.50  xx  Brasil 02
+-- B03 -29.50 -55.50  xx  Brasil 03
+-- B04 -30.50 -55.50  xx  Brasil 04
+-- B05 -28.50 -54.50  xx  Brasil 05
+-- B06 -29.50 -54.50  xx  Brasil 06
+-- B07 -30.50 -54.50  xx  Brasil 07
+-- B08 -28.50 -53.50  xx  Brasil 08
+-- B09 -29.50 -53.50  xx  Brasil 09
+-- B10 -30.50 -53.50  xx  Brasil 10
+-- B11 -31.50 -53.50  xx  Brasil 11
+-- B12 -28.50 -52.50  xx  Brasil 12
+-- B13 -29.50 -52.50  xx  Brasil 13
+-- B14 -30.50 -52.50  xx  Brasil 14
+-- B15 -31.50 -52.50  xx  Brasil 15
+-- B16 -32.50 -52.50  xx  Brasil 16
+-- B17 -28.50 -51.50  xx  Brasil 17
+-- B18 -29.50 -51.50  xx  Brasil 18
+-- B19 -30.50 -51.50  xx  Brasil 19
+-- U01 -30.50 -57.50  xx  Uruguay 01
+-- U02 -31.50 -57.50  xx  Uruguay 02
+-- U03 -32.50 -57.50  xx  Uruguay 03
+-- U04 -33.50 -57.50  xx  Uruguay 04
+-- U05 -30.50 -56.50  xx  Uruguay 05
+-- U06 -31.50 -56.50  xx  Uruguay 06
+-- U07 -32.50 -56.50  xx  Uruguay 07
+-- U08 -33.50 -56.50  xx  Uruguay 08
+-- U09 -34.50 -56.50  xx  Uruguay 09
+-- U10 -31.50 -55.50  xx  Uruguay 10
+-- U11 -32.50 -55.50  xx  Uruguay 11
+-- U12 -33.50 -55.50  xx  Uruguay 12
+-- U13 -34.50 -55.50  xx  Uruguay 13
+-- U14 -31.50 -54.50  xx  Uruguay 14
+-- U15 -32.50 -54.50  xx  Uruguay 15
+-- U16 -33.50 -54.50  xx  Uruguay 16
+-- U17 -34.50 -54.50  xx  Uruguay 17
+-- U18 -32.50 -53.50  xx  Uruguay 18
+-- W01 -33.50 -58.50  xx  Agua 01
+-- W02 -34.50 -57.50  xx  Agua 02
+-- W03 -35.50 -56.50  xx  Agua 03
+-- W04 -36.50 -56.50  xx  Agua 04
+-- W05 -35.50 -55.50  xx  Agua 05
+-- W06 -36.50 -55.50  xx  Agua 06
+-- W07 -35.50 -54.50  xx  Agua 07
+-- W08 -36.50 -54.50  xx  Agua 08
+-- W09 -33.50 -53.50  xx  Agua 09
+-- W10 -34.50 -53.50  xx  Agua 10
+-- W11 -35.50 -53.50  xx  Agua 11
+-- W12 -36.50 -53.50  xx  Agua 12
+-- W13 -33.50 -52.50  xx  Agua 13
+-- W14 -34.50 -52.50  xx  Agua 14
+-- W15 -35.50 -52.50  xx  Agua 15
+-- W16 -36.50 -52.50  xx  Agua 16
+-- W17 -31.50 -51.50  xx  Agua 17
+-- W18 -32.50 -51.50  xx  Agua 18
+-- W19 -33.50 -51.50  xx  Agua 19
+-- W20 -34.50 -51.50  xx  Agua 20
+-- W21 -35.50 -51.50  xx  Agua 21
+-- W22 -36.50 -51.50  xx  Agua 22
+-- C00 -31.40 -57.90  xx  Cruzeta origen (cerca de La Jacinta)
+-- C01 -31.30 -57.90  xx  Cruzeta Norte 01
+-- C02 -31.20 -57.90  xx  Cruzeta Norte 02
+-- C03 -31.10 -57.90  xx  Cruzeta Norte 03
+-- C04 -31.00 -57.90  xx  Cruzeta Norte 04
+-- C05 -30.90 -57.90  xx  Cruzeta Norte 05
+-- C06 -30.80 -57.90  xx  Cruzeta Norte 06
+-- C07 -30.70 -57.90  xx  Cruzeta Norte 07
+-- C08 -30.60 -57.90  xx  Cruzeta Norte 08
+-- C09 -30.50 -57.90  xx  Cruzeta Norte 09
+-- C10 -30.40 -57.90  xx  Cruzeta Norte 10
+-- C11 -30.30 -57.90  xx  Cruzeta Norte 11
+-- C12 -30.20 -57.90  xx  Cruzeta Norte 12
+-- C13 -30.10 -57.90  xx  Cruzeta Norte 13
+-- C14 -30.00 -57.90  xx  Cruzeta Norte 14
+-- C15 -29.90 -57.90  xx  Cruzeta Norte 15
+-- C16 -29.80 -57.90  xx  Cruzeta Norte 16
+-- C17 -29.70 -57.90  xx  Cruzeta Norte 17
+-- C18 -29.60 -57.90  xx  Cruzeta Norte 18
+-- C19 -29.50 -57.90  xx  Cruzeta Norte 19
+-- C20 -29.40 -57.90  xx  Cruzeta Norte 20
+-- C21 -31.40 -57.80  xx  Cruzeta Este 01
+-- C22 -31.40 -57.70  xx  Cruzeta Este 02
+-- C23 -31.40 -57.60  xx  Cruzeta Este 03
+-- C24 -31.40 -57.50  xx  Cruzeta Este 04
+-- C25 -31.40 -57.40  xx  Cruzeta Este 05
+-- C26 -31.40 -57.30  xx  Cruzeta Este 06
+-- C27 -31.40 -57.20  xx  Cruzeta Este 07
+-- C28 -31.40 -57.10  xx  Cruzeta Este 08
+-- C29 -31.40 -57.00  xx  Cruzeta Este 09
+-- C30 -31.40 -56.90  xx  Cruzeta Este 10
+-- C31 -31.40 -56.80  xx  Cruzeta Este 11
+-- C32 -31.40 -56.70  xx  Cruzeta Este 12
+-- C33 -31.40 -56.60  xx  Cruzeta Este 13
+-- C34 -31.40 -56.50  xx  Cruzeta Este 14
+-- C35 -31.40 -56.40  xx  Cruzeta Este 15
+-- C36 -31.40 -56.30  xx  Cruzeta Este 16
+-- C37 -31.40 -56.20  xx  Cruzeta Este 17
+-- C38 -31.40 -56.10  xx  Cruzeta Este 18
+-- C39 -31.40 -56.00  xx  Cruzeta Este 19
+-- C40 -31.40 -55.90  xx  Cruzeta Este 20
+-- C41 -31.50 -57.90  xx  Cruzeta Sur 01
+-- C42 -31.60 -57.90  xx  Cruzeta Sur 02
+-- C43 -31.70 -57.90  xx  Cruzeta Sur 03
+-- C44 -31.80 -57.90  xx  Cruzeta Sur 04
+-- C45 -31.90 -57.90  xx  Cruzeta Sur 05
+-- C46 -32.00 -57.90  xx  Cruzeta Sur 06
+-- C47 -32.10 -57.90  xx  Cruzeta Sur 07
+-- C48 -32.20 -57.90  xx  Cruzeta Sur 08
+-- C49 -32.30 -57.90  xx  Cruzeta Sur 09
+-- C50 -32.40 -57.90  xx  Cruzeta Sur 10
+-- C51 -32.50 -57.90  xx  Cruzeta Sur 11
+-- C52 -32.60 -57.90  xx  Cruzeta Sur 12
+-- C53 -32.70 -57.90  xx  Cruzeta Sur 13
+-- C54 -32.80 -57.90  xx  Cruzeta Sur 14
+-- C55 -32.90 -57.90  xx  Cruzeta Sur 15
+-- C56 -33.00 -57.90  xx  Cruzeta Sur 16
+-- C57 -33.10 -57.90  xx  Cruzeta Sur 17
+-- C58 -33.20 -57.90  xx  Cruzeta Sur 18
+-- C59 -33.30 -57.90  xx  Cruzeta Sur 19
+-- C60 -33.40 -57.90  xx  Cruzeta Sur 20
+-- C61 -31.40 -58.00  xx  Cruzeta Oeste 01
+-- C62 -31.40 -58.10  xx  Cruzeta Oeste 02
+-- C63 -31.40 -58.20  xx  Cruzeta Oeste 03
+-- C64 -31.40 -58.30  xx  Cruzeta Oeste 04
+-- C65 -31.40 -58.40  xx  Cruzeta Oeste 05
+-- C66 -31.40 -58.50  xx  Cruzeta Oeste 06
+-- C67 -31.40 -58.60  xx  Cruzeta Oeste 07
+-- C68 -31.40 -58.70  xx  Cruzeta Oeste 08
+-- C69 -31.40 -58.80  xx  Cruzeta Oeste 09
+-- C70 -31.40 -58.90  xx  Cruzeta Oeste 10
+-- C71 -31.40 -59.00  xx  Cruzeta Oeste 11
+-- C72 -31.40 -59.10  xx  Cruzeta Oeste 12
+-- C73 -31.40 -59.20  xx  Cruzeta Oeste 13
+-- C74 -31.40 -59.30  xx  Cruzeta Oeste 14
+-- C75 -31.40 -59.40  xx  Cruzeta Oeste 15
+-- C76 -31.40 -59.50  xx  Cruzeta Oeste 16
+-- C77 -31.40 -59.60  xx  Cruzeta Oeste 17
+-- C78 -31.40 -59.70  xx  Cruzeta Oeste 18
+-- C79 -31.40 -59.80  xx  Cruzeta Oeste 19
+-- C80 -31.40 -59.90  xx  Cruzeta Oeste 20
