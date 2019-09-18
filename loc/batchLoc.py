@@ -5,13 +5,13 @@ import os
 import glob
 import sys
 import numpy
-from loc_types import *
 
+from loc_types       import *
 from os.path         import basename
 from multiprocessing import Process, Manager
 from threading       import Lock
 from makeLoc         import calculateLoc
-from funciones       import locValueArray2Array, locDateArray2Array, getCsvLocs, getJILess, getJILessShared
+from funciones       import locValueArray2Array, locDateArray2Array, getCsvLocs, getIJArray
 
 #########################################
 #########################################
@@ -20,33 +20,34 @@ from funciones       import locValueArray2Array, locDateArray2Array, getCsvLocs,
 CORES_DISPONIBLES = 30
 
 if len(sys.argv) <= 1:
-  print("Se nececitan los parámetros: path_base path_salida path_loc_file resolution start_year end_year")
+  print("Se nececitan los parámetros: path_base path_salida path_loc_file spatial_lat spatial_lon start_year end_year")
   raise SystemExit()
 
 path_base     = sys.argv[1]
 path_salida   = sys.argv[2]
 path_loc_file = sys.argv[3]
-loc_res       = float(sys.argv[4])
-start_year    = int(sys.argv[5])
-end_year      = int(sys.argv[6])
+spatial_lat   = float(sys.argv[4])
+spatial_lon   = float(sys.argv[5])
+start_year    = int(sys.argv[6])
+end_year      = int(sys.argv[7])
 
 mutex = Lock()
 
 ##################
 
 # abro el archivo meta y guardo los datos
-fid = open(path_base + 'meta/' + 'T000gri.META', 'r')
+fid  = open(path_base + 'meta/' + 'T000gri.META', 'r')
 meta = numpy.fromfile(fid, dtype='float32')
 fid.close()
 
 # abro el archivo T000gri.LATvec y guardo los datos
-fid = open(path_base + 'meta/' + 'T000gri.LATvec', 'r')
+fid        = open(path_base + 'meta/' + 'T000gri.LATvec', 'r')
 LATdeg_vec = numpy.fromfile(fid, dtype='float32')
 LATdeg_vec = LATdeg_vec[::-1] # invierto el arreglo porque quedaba invertido verticalmente
 fid.close()
 
 # abro el archivo T000gri.LONvec y guardo los datos
-fid = open(path_base + 'meta/' + 'T000gri.LONvec', 'r')
+fid        = open(path_base + 'meta/' + 'T000gri.LONvec', 'r')
 LONdeg_vec = numpy.fromfile(fid, dtype='float32')
 fid.close()
 
@@ -66,54 +67,18 @@ for key in locs_dic_csv:
   value   = locs_dic_csv[key]
   loc_lat = value[0]
   loc_lon = value[1]
-  j_less, j_great, i_less, i_great = getJILess(loc_lat, loc_lon, loc_res, LATdeg_vec, LONdeg_vec)
-  locs_dic_coord[key] = [loc_lat, loc_lon, j_less, j_great, i_less, i_great]
+  coord_i, coord_j    = getIJArray(loc_lat, loc_lon, spatial_lat, spatial_lon, LATdeg_vec, LONdeg_vec)
+  locs_dic_coord[key] = [loc_lat, loc_lon, coord_i, coord_j]
 
-# while len(locs_dic_csv) >= 1:
-
-#   processes = []
-
-#   # defino el total de procesos a lanzar por ves
-#   launch_proc = min(CORES_DISPONIBLES, len(locs_dic_csv))
-
-#   for m in range(0, launch_proc):
-#     mutex.acquire() # mutoexcluyo para hacer el pop sin coliciones
-#     key  = list(locs_dic_csv.keys())[0]
-#     data = locs_dic_csv.pop(key)
-#     mutex.release() # libero el mutex
-
-#     loc_lat = data[0]
-#     loc_lon = data[1]
-
-#     parametros = [key, loc_lat, loc_lon, loc_res, LATdeg_vec, LONdeg_vec]
-
-#     p = Process(target=getJILessShared, args=(locs_dic_coord, parametros))
-#     processes.append(p)
-#     p.start()
-#   # for
-
-#   # print("Num procesos: " + str(len(processes)))
-
-#   for p in processes:
-#     p.join()
-#     # print("Join proc")
-#   # for
-#   # print("End Join")
-
-#   del processes # vacío el array de procesos
-# # end while
-
-# for key in locs_dic_coord:
-#   print(type(key))
+  if len(coord_i) == 0:
+    print("LOC %s con tamaño 0"%key)
 
 ##################
 ##################
 
 # si no existe, crar carpeta base (segun la resolucion) donde colocar los locs: T000loc_C01x01
-resolution_basename = str(loc_res)[2:] + "x" + str(loc_res)[2:]
+resolution_basename = str(spatial_lat)[2:] + "x" + str(spatial_lon)[2:]
 loc_prefix = "T000loc_C" + resolution_basename + "/"
-
-# print("resolution_basename: " + resolution_basename)
 
 path_salida_loc = path_salida + loc_prefix
 os.makedirs(path_salida_loc, mode=0o775, exist_ok=True)

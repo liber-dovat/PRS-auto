@@ -80,36 +80,34 @@ def calculateLoc(locs_acumulado, parameters):
 
     loc_data = locs_dic_coord[loc]
 
-    loc_lat  = loc_data[0]
-    loc_lon  = loc_data[1]
-    j_less   = loc_data[2]
-    j_great  = loc_data[3]
-    i_less   = loc_data[4]
-    i_great  = loc_data[5]
+    loc_lat = loc_data[0]
+    loc_lon = loc_data[1]
+    coord_i = loc_data[2]
+    coord_j = loc_data[3]
 
     mean  = 0.0
     cnt   = 0.0
     ERROR = False
 
     try:
-      IMG_small = IMG[i_less:i_great,j_less:j_great]
-      CNT_small = CNT[i_less:i_great,j_less:j_great]
+      IMG_small = IMG[coord_i,coord_j]
+      CNT_small = CNT[coord_i,coord_j]
 
-      if IMG_small.shape != (0,0):
+      if len(IMG_small) != 0:
         mean = numpy.mean(IMG_small)
-        cnt = numpy.sum(CNT_small)
+        cnt  = numpy.sum(CNT_small)
       # else:
       #   print(numpy.shape(IMG_small))
       #  print("CNT: %d"%cnt)
 
     except OSError as err:
-      print("OS error: {0}".format(err))
+      # print("OS error: {0}".format(err))
       ERROR = True
     except ValueError:
-      print("Could not convert data to an integer.")
+      # print("Could not convert data to an integer.")
       ERROR = True
     except:
-      print("Unexpected error:", sys.exc_info()[0])
+      # print("Unexpected error:", sys.exc_info()[0])
       raise
 
     csza = cosSolarZenithAngle(loc_lat, loc_lon, date)

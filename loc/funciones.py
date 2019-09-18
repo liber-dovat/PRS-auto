@@ -166,6 +166,38 @@ def getJILess(loc_lat, loc_lon, loc_res, LATdeg_vec, LONdeg_vec):
 
 # getJILess
 
+def getIJArray(loc_lat, loc_lon, spatial_lat, spatial_lon, LATdeg_vec, LONdeg_vec):
+
+  min_lat = loc_lat - float(spatial_lat/2.0)
+  max_lat = loc_lat + float(spatial_lat/2.0)
+  min_lon = loc_lon - float(spatial_lon/2.0)
+  max_lon = loc_lon + float(spatial_lon/2.0)
+
+  coord_i = []
+  coord_j = []
+
+  # print("min_lon: %f"%(min_lon))
+  # print("max_lon: %f"%(max_lon))
+  # print("min_lat: %f"%(min_lat))
+  # print("max_lat: %f"%(max_lat))
+
+  # genero un meshgrid a partir de LonVec y LatVec
+  lons2d, lats2d = numpy.meshgrid(LONdeg_vec, LATdeg_vec)
+
+  for i in range(0,len(lons2d)):      # recorro verticalmente
+    for j in range(0,len(lons2d[0])): # recorro horizontalmente
+      if (lons2d[i][j] > min_lon) and\
+         (lons2d[i][j] < max_lon) and\
+         (lats2d[i][j] > min_lat) and\
+         (lats2d[i][j] < max_lat):     # si estoy dentro de la ventana
+        coord_i.append(i)
+        coord_j.append(j)
+
+  # print('x,%d,%d y,%d,%d' % (j_less, j_great, i_less, i_great))
+  return coord_i, coord_j
+
+# getJIArray
+
 def getJILessShared(locs_dic_coord, parametros):
 
   key        = parametros[0]
