@@ -122,7 +122,7 @@ for year in range(start_year, end_year+1):
 
       # array de datos de loc: coordenadas, resolucion
       # https://docs.python.org/2/library/multiprocessing.html
-      parametros = [locs_date, path_file, file, path_fileCNT, locs_dic_coord, LATdeg_vec, LONdeg_vec, Ci, Cj, loc_res, launch_proc]
+      parametros = [locs_date, path_file, file, path_fileCNT, locs_dic_coord, LATdeg_vec, LONdeg_vec, Ci, Cj]
 
       # https://stackoverflow.com/questions/2046603/is-it-possible-to-run-function-in-a-subprocess-without-threading-or-writing-a-se
 

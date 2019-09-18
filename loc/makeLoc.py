@@ -39,7 +39,6 @@ def calculateLoc(locs_acumulado, parameters):
   LONdeg_vec     = parameters[6]
   Ci             = int(parameters[7])
   Cj             = int(parameters[8])
-  loc_res        = float(parameters[9])
 
   Ct = Ci*Cj
 
@@ -48,7 +47,7 @@ def calculateLoc(locs_acumulado, parameters):
   epoch = datetime.datetime.strptime('2000 01 00 00 00', '%Y %j %H %M %S')
 
   # file = abrir archivo
-  fid = open(path_file + file, 'r')
+  fid  = open(path_file + file, 'r')
   data = numpy.fromfile(fid, dtype='float32') # FR
   fid.close()
 
@@ -57,7 +56,7 @@ def calculateLoc(locs_acumulado, parameters):
 
   # MSK
   fileCNT = file[:-2] + "CNT"
-  fid = open(path_fileCNT + fileCNT, 'r')
+  fid     = open(path_fileCNT + fileCNT, 'r')
   dataCNT = numpy.fromfile(fid, dtype='int16') # CNT
   fid.close()
 
@@ -68,7 +67,7 @@ def calculateLoc(locs_acumulado, parameters):
   year, doy, hh, mm, ss = getDate(file)
 
   time_data = str(year) + " " + str(doy) + " " + str(hh)  + " " + str(mm)  + " " + str(ss)
-  date = datetime.datetime.strptime(time_data, '%Y %j %H %M %S')
+  date      = datetime.datetime.strptime(time_data, '%Y %j %H %M %S')
 
   ite = float((date-epoch).total_seconds())/(24.0*60.0*60.0) # segundos desde el 2000-01-00:00:00 dividido total de secs en un dia
 
