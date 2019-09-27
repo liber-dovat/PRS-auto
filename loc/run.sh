@@ -4,7 +4,7 @@ SCRIPT='/sat/PRS/dev/PRS-sat/loc/batchLoc.py'
 ESTACIONES='/sat/loc-sat/meta/ZZ_estaciones_all'
 DIR_SALIDA='/sat/loc-sat/'
 
-VENTANAS=('0.017' '0.034')
+VENTANAS=('0.015' '0.025' '0.050' '0.060' '0.100' '0.150' '0.200' '0.250' '0.300' '0.350' '0.400' '0.450' '0.500' '0.600' '0.700' '0.800' '0.900')
 
 for val in "${VENTANAS[@]}"
 do

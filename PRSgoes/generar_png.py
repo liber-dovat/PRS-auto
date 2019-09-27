@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import subprocess
+import datetime
 from netcdfio_irradiancia import netcdf2png, ncdump
 from utils import copiar_frames
 
@@ -43,10 +44,11 @@ subprocess.call("/sat/PRS/dev/PRS-sat/PRSgoes/rmframes.sh", shell=True)
 # en función del nombre de las imagenes genero el timestamp
 # luego llamo a videoandcopy para generar los videos y copiar todo a la web
 
+year = str(datetime.datetime.now().year)
+
 print('copio los frames')
-copiar_frames(dirDest + 'C02/'    + '2019', dirDest + 'C02/mp4')
-#copiar_frames(dirDest + 'C04/'    + '2018', dirDest + 'C04/mp4')
-copiar_frames(dirDest + 'C13/'    + '2019', dirDest + 'C13/mp4')
+copiar_frames(dirDest + 'C02/' + year, dirDest + 'C02/mp4')
+copiar_frames(dirDest + 'C13/' + year, dirDest + 'C13/mp4')
 
 # subprocess.call(["ls", "-l"])
 

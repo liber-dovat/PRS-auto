@@ -169,11 +169,11 @@ def ncdump(url, verb=True):
 def copiar_frames(carpeta_base, carpeta_destino):
 
   # habia usado 92 elems en las pruebas que eran cerca de tres dias
-  # tambien se puede pensar que son 44 por dia
+  # tambien se puede pensar que son 88 por dia, 44 normales y 44 con fondo blanco
 
   dir_elemens = sorted(listdir(carpeta_base))
-  indice      = 44
-  if len(dir_elemens) < 44:
+  indice      = 88
+  if len(dir_elemens) < 88:
     indice = len(dir_elemens)
 
   ultimas = dir_elemens[-indice:]

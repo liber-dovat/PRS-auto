@@ -222,6 +222,7 @@ int open_NetCDF_file(char PATH[CMAXstr],
 	size_t start_geo[] = {0,0}; // Formato {isI, isJ}
 	size_t count_geo[] = {0,0}; // Formato {isI, isJ}
 	char * str2token;
+	char * str2token_ref;
 	char strSTE[1];
 	char * token;
 	int * BAND;
@@ -282,6 +283,7 @@ int open_NetCDF_file(char PATH[CMAXstr],
 
 	// NOMBRE DE ARCHIVO y SATELITE
 	strncpy(str2token, PATH, CMAXstr);
+	str2token_ref = str2token;
 	while ((token = strsep(&str2token, "/"))){
 		strncpy(FileName, token, CFLNstr);
 	}
@@ -290,7 +292,7 @@ int open_NetCDF_file(char PATH[CMAXstr],
 
 	// LIBERO MEMORIA
 	free(BAND); free(DATE); free(TIME);
-	free(str2token);
+	free(str2token_ref);
 	return 1;
 }
 

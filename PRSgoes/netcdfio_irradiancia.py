@@ -34,6 +34,21 @@ def paraguay_poly(m):
   poly = Polygon( list(xy), closed=False, edgecolor='k', linewidth=0.4, facecolor='none', fill=False)
   plt.gca().add_patch(poly)
 
+def rincon_de_artigas_poly(m):
+  # lats = [-24.2682,-24.0929, -24.0124,-24.0458,-24.0201,-23.9499,-23.9536,-23.9536,-23.899, -23.9028,-23.872, -23.8708,-23.8155,-23.8155,-23.6867,-23.6137,-23.5552,-23.5583,-23.4519,-23.4185,-23.2805,-23.2836,-23.1593,-23.0854,-22.9944,-22.9944,-22.7274,-22.607, -22.5449,-22.4523,-22.4523,-22.1314,-22.0004]
+  # lons = [-59.5878, -59.8933, -60.0393, -60.1948, -60.3761, -60.4845, -60.5875, -60.5875, -60.6191, -60.6905, -60.7297, -60.8574, -60.9501, -60.9858, -61.0826, -61.0943, -61.1801, -61.2206, -61.3586, -61.487, -61.6024, -61.6738, -61.7679, -61.8729, -62.0048, -62.0048, -62.1751,  -62.252, -62.2245, -62.3941, -62.3941, -62.8073, -62.8061]
+
+#  -30.860356,-30.861315,-30.864404,-30.866197,-30.870132,-30.871853,-30.875624,-30.880319,-30.881093,-30.882187,-30.882871,-30.883732,-30.885569,-30.885561,-30.885439,-30.885780,
+#  -55.989623,-55.988742,-55.988404,-55.987319,-55.985519,-55.984077,-55.981228,-55.982087,-55.981873,-55.981169,-55.980992,-55.980590,-55.978431,-55.977917,-55.977570,-55.977288
+
+  lats = [-30.860356,-30.875717,-30.880738,-30.885301,-30.886929,-30.899633,-30.928487,-30.927683,-30.943269,-30.949146,-30.976499,-30.999585,-31.015717,-31.018317,-31.028864,-31.032830,-31.035805,-31.037892]
+  lons = [-55.989623,-55.980950,-55.981923,-55.978590,-55.973631,-55.962734,-55.953920,-55.944455,-55.937084,-55.920244,-55.885560,-55.841968,-55.832672,-55.825678,-55.824735,-55.827045,-55.826857,-55.825022]
+
+  x, y = m( lons, lats )
+  xy   = zip(x,y)
+  poly = Polygon( list(xy), closed=False, edgecolor='k', linewidth=0.4, facecolor='none', fill=False)
+  plt.gca().add_patch(poly)
+
 #########################################
 #########################################
 #########################################
@@ -236,6 +251,7 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
   ax.drawstates(linewidth=0.20)
 
   paraguay_poly(ax)
+  rincon_de_artigas_poly(ax)
 
   if not geos:
     # dibujo los valores de latitudes y longitudes al margen de la imagen
@@ -312,7 +328,8 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
   if geos:
     outPath = outPath + filename + '_geos.png' # determino el nombre del archivo a escribir
   else:
-    outPath = outPath + filename + '.png' # determino el nombre del archivo a escribir
+    whitePath = outPath + filename + '_white.png' # determino el nombre del archivo a escribir
+    outPath   = outPath + filename + '.png' # determino el nombre del archivo a escribir
 
   # llamo al garbage collector para que borre los elementos que ya no se van a usar
   gc.collect()
@@ -336,9 +353,34 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
 
   plt.savefig(outPath, bbox_inches='tight', dpi=400, transparent=True) # , facecolor='#4F7293'
 
+  ####################
+  ## WHITE
+
+  if isBrightTemp(channel):
+    cbar.ax.xaxis.labelpad = 0
+    cbar.ax.set_xlabel("Temperatura de brillo ($^\circ$C)", fontsize=7, color='black')
+    cbar.ax.set_xticklabels(ticksLabels, rotation=45, fontsize=7, color='black')
+  else:
+    cbar.ax.set_xlabel("Factor de reflectancia (%)", fontsize=7, color='black')
+    cbar.ax.set_xticklabels(ticksLabels, fontsize=7, color='black')
+
+  setcolor(par,'black')
+  setcolor(mer,'black')
+
+  logo = plt.imread('/sat/PRS/dev/PRS-sat/PRSgoes/logo_300_color.png')
+  plt.figimage(logo, xo=5, yo=5)
+
+  plt.annotate(name + " UY", (0,0), (85, -53), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=11, family='monospace', color='black')
+
+  plt.savefig(whitePath, bbox_inches='tight', dpi=400, transparent=False , facecolor='white') # , facecolor='#4F7293'
+
+  ####################
+  ####################
+
   # copio la ultima imagen de cada carpeta en la raiz PNG para subir a la web
   # plt.savefig(dirDest + channel + '.png', bbox_inches='tight', dpi=300, transparent=True) # , facecolor='#4F7293'
-  copyfile(outPath, dirDest + channel + '.png')
+  copyfile(outPath,   dirDest + channel + '.png')
+  copyfile(whitePath, dirDest + channel + '_white.png')
   plt.close()
 
   if channel == 'C02':
