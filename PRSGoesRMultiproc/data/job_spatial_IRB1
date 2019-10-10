@@ -1,17 +1,17 @@
-37.624
-35.624
--115.019
--117.019
-0.015
-0.015
-0.015
-0.015
-G015x015AH_C015x015
+-22.00
+-42.94
+-45.00
+-67.00
+0.060
+0.060
+0.060
+0.060
+ART_G060x060GG_C060x060
 
-% LATmax   // top    lat
-% LATmin   // bottom lat
-% LONmax   // right  lon
-% LONmin   // left   lon
+% LATmax
+% LATmin
+% LONmax
+% LONmin
 % dLATgri
 % dLONgri
 % dLATcel
@@ -23,12 +23,6 @@ G015x015AH_C015x015
 -40.00
 -30.00
 -85.00
-
-$ VENTANA URUGUAY (RR)
--18.00
--43.00
--43.00
--73.00
 
 % VENTANA GRANDE (GG)
 -22.00
@@ -51,5 +45,3 @@ $ VENTANA URUGUAY (UY)
 TALLES: S M G X
 UY = SS
 MM - GG - XX
-
-ART_G015x015RR_C015x015

@@ -5,11 +5,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "lib_PRSsat.h"
+#include "lib_PRS_R.h"
 
 #define FALSE   0
 #define TRUE    !FALSE
-#define CMAXstr 200
 #define CINPstr 42
 #define CSPTstr 23
 
@@ -33,12 +32,6 @@ int main(int argc, char *argv[]){
 	double * FRmat;
 	double * LATmat; double * LONmat;
 	double * LATvec; double * LONvec;
-	int      CALvis_iniYEA; int CALvis_iniDOY;
-	double   CALvis_Xspace;
-	double   CALvis_M;
-	double   CALvis_K;
-	double   CALvis_alfa;
-	double   CALvis_beta;
 
 	// printf("PRSsat_auto_VIS running, num param: %d\n", argc);
 
@@ -61,15 +54,6 @@ int main(int argc, char *argv[]){
   Ct            = atoi(argv[14]);
 
 	strncpy(CODEspatial, argv[15], CSPTstr); CODEspatial[CSPTstr] = '\0';
-
-	CALvis_iniYEA = atoi(argv[16]);
-	CALvis_iniDOY = atoi(argv[17]);
-
-	CALvis_Xspace = atof(argv[18]);
-	CALvis_M      = atof(argv[19]);
-	CALvis_K      = atof(argv[20]);
-	CALvis_alfa   = atof(argv[21]);
-	CALvis_beta   = atof(argv[22]);
 
 	// INIT
 	OK = 0;
@@ -102,9 +86,7 @@ int main(int argc, char *argv[]){
 	// PROCESO IMAGEN
 	OK = procesar_NetCDF_VIS_gri(&FRmat, &MSKmat, &CNT1mat, &CNT2mat, &tag,
    		dLATgri, dLONgri, dLATcel, dLONcel, LATmax, LATmin, LONmax, LONmin,
-   		Ct, Ci, Cj, PATHimg, RUTAsal, 
-   		CALvis_iniYEA, CALvis_iniDOY, CALvis_Xspace,
-  		CALvis_M, CALvis_K, CALvis_alfa, CALvis_beta);
+   		Ct, Ci, Cj, PATHimg, RUTAsal);
 
 		// OK = procesar_NetCDF_VIS_gri(&FRmat, &RPmat, &MSKmat, &CNT1mat, &CNT2mat, &tag,
 	 //   		dLATgri, dLONgri, dLATcel, dLONcel, LATmax, LATmin, LONmax, LONmin,

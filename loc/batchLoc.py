@@ -26,8 +26,8 @@ if len(sys.argv) <= 1:
 path_base     = sys.argv[1]
 path_salida   = sys.argv[2]
 path_loc_file = sys.argv[3]
-spatial_lat   = float(sys.argv[4])
-spatial_lon   = float(sys.argv[5])
+spatial_lat   = sys.argv[4]
+spatial_lon   = sys.argv[5]
 start_year    = int(sys.argv[6])
 end_year      = int(sys.argv[7])
 
@@ -54,6 +54,15 @@ fid.close()
 Ci = int(meta[0])
 Cj = int(meta[1])
 
+# si no existe, crar carpeta base (segun la resolucion) donde colocar los locs: T000loc_C01x01
+resolution_basename = spatial_lat[2:] + "x" + spatial_lon[2:]
+loc_prefix = "T000loc_C" + resolution_basename + "/"
+
+path_salida_loc = path_salida + loc_prefix
+os.makedirs(path_salida_loc, mode=0o775, exist_ok=True)
+
+print(path_salida_loc)
+
 ##################
 ##################
 
@@ -67,7 +76,7 @@ for key in locs_dic_csv:
   value   = locs_dic_csv[key]
   loc_lat = value[0]
   loc_lon = value[1]
-  coord_i, coord_j    = getIJArray(loc_lat, loc_lon, spatial_lat, spatial_lon, LATdeg_vec, LONdeg_vec)
+  coord_i, coord_j    = getIJArray(loc_lat, loc_lon, float(spatial_lat), float(spatial_lon), LATdeg_vec, LONdeg_vec)
   locs_dic_coord[key] = [loc_lat, loc_lon, coord_i, coord_j]
 
   if len(coord_i) == 0:
@@ -75,13 +84,6 @@ for key in locs_dic_csv:
 
 ##################
 ##################
-
-# si no existe, crar carpeta base (segun la resolucion) donde colocar los locs: T000loc_C01x01
-resolution_basename = str(spatial_lat)[2:] + "x" + str(spatial_lon)[2:]
-loc_prefix = "T000loc_C" + resolution_basename + "/"
-
-path_salida_loc = path_salida + loc_prefix
-os.makedirs(path_salida_loc, mode=0o775, exist_ok=True)
 
 # Loop principal
 for year in range(start_year, end_year+1):

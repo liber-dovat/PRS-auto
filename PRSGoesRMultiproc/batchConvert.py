@@ -29,28 +29,13 @@ print(start_year)
 print(end_month)
 print(end_year)
 
-programa = '/sat/PRS/dev/PRS-sat/PRSbaseMultiproc/PRSsat_auto_VIS'
-# programa = '/sat/PRS/dev/PRS-sat/PRSbaseMultiproc/nop.sh'
+programa = '/solar/sat/PRS/dev/PRS-sat/PRSGoesRMultiproc/PRS_auto_R'
 
 RUTAent, RUTAbase, RUTAcal =\
-readFolders('/sat/PRS/dev/PRS-sat/PRSbaseMultiproc/data/job_folders_ALL1')
-
-# print(RUTAent)
-# print(RUTAbase)
-# print(RUTAcal)
+readFolders('/solar/sat/PRS/dev/PRS-sat/PRSGoesRMultiproc/data/job_folders_ALL1')
 
 LATmax, LATmin, LONmax, LONmin, dLATgri, dLONgri, dLATcel, dLONcel, CODEspatial =\
-readSpatial('/sat/PRS/dev/PRS-sat/PRSbaseMultiproc/data/job_spatial_VIS1')
-
-# print(LATmax)
-# print(LATmin)
-# print(LONmax)
-# print(LONmin)
-# print(dLATgri)
-# print(dLONgri)
-# print(dLATcel)
-# print(dLONcel)
-# print(CODEspatial)
+readSpatial('/solar/sat/PRS/dev/PRS-sat/PRSGoesRMultiproc/data/job_spatial_VIS1')
 
 RUTAsal = RUTAbase + CODEspatial + "/"
 print(RUTAsal)
@@ -65,16 +50,7 @@ generar_grilla(LATmax, LATmin, LONmax, LONmin, dLATgri, dLONgri)
 guardar_grilla(RUTAsal, Ci, Cj, LATmax, dLATgri, LONmin, dLONgri, LATvec, LONvec, LATmat, LONmat)
 
 # PRODUCTOS
-product = ['B01-FR/', 'B01-MK/', 'B01-CNT/']
-sats    = ['08', '12', '13']
-
-satCal_dict = dict()
-
-for sat in sats:
-  iniYEA, iniDOY, Xspace, M, K, alfa, beta = cargar_calibracion_VIS(RUTAcal, sat)
-  satCal_dict[sat] = [iniYEA, iniDOY, Xspace, M, K, alfa, beta]
-
-print(satCal_dict)
+product = ['B02-FR/', 'B02-MK/', 'B02-CNT/']
 
 mutex = Lock()
 
@@ -106,14 +82,10 @@ for year in range(start_year, end_year+1):
 
     print("Mes: " + str(month))
 
-    path = RUTAent + str(year) + "/" + str(month).zfill(2) + "/"
+    path = RUTAent + str(year) + "/" + str(month).zfill(2) + "/C02/"
 
-    files = sorted(glob.glob(path+"/*BAND_01*"))
+    files = sorted(glob.glob(path+"/*G16*.nc"))
     files = list(map(basename,files))
-
-    # print(files[0])
-
-    # print(satelite)
 
     while len(files)>=1:
 
@@ -121,7 +93,7 @@ for year in range(start_year, end_year+1):
 
       processes = []
 
-      numproc = 30
+      numproc = 1
       if len(files) < numproc:
         numproc = len(files)
 
@@ -129,15 +101,6 @@ for year in range(start_year, end_year+1):
         mutex.acquire() # mutoexcluyo para hacer el pop sin coliciones
         file = files.pop()
         mutex.release() # libero el mutex
-
-        satelite = file.split(".")[0][4:6]
-        iniYEA   = satCal_dict[satelite][0]
-        iniDOY   = satCal_dict[satelite][1]
-        Xspace   = satCal_dict[satelite][2]
-        M        = satCal_dict[satelite][3]
-        K        = satCal_dict[satelite][4]
-        alfa     = satCal_dict[satelite][5]
-        beta     = satCal_dict[satelite][6]
 
         parametros =path         + " " +\
                     RUTAsal      + " " +\
@@ -153,14 +116,7 @@ for year in range(start_year, end_year+1):
                     str(Ci)      + " " +\
                     str(Cj)      + " " +\
                     str(Ct)      + " " +\
-                    CODEspatial  + " " +\
-                    str(iniYEA)  + " " +\
-                    str(iniDOY)  + " " +\
-                    str(Xspace)  + " " +\
-                    str(M)       + " " +\
-                    str(K)       + " " +\
-                    str(alfa)    + " " +\
-                    str(beta)
+                    CODEspatial
 
         # print(parametros)
 
