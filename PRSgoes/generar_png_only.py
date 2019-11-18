@@ -2,7 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import subprocess
-from netcdfio_irradiancia import netcdf2png, ncdump
+import datetime
+from netcdfio import fr2png, ncdump
+from netcdfio_irr import fr2ghi2png
 from utils import copiar_frames
 
 ncpath   = '/sat/PRS/dev/PRS-sat/PRSgoes/tmp/'
@@ -10,9 +12,9 @@ dirDest  = '/sat/prd-sat/PNGs/'
 cmapPath = '/sat/PRS/dev/PRS-sat/PRSgoes/cmaps/'
 
 # sincronizo los archivos para procesar
-# subprocess.call("/sat/PRS/dev/PRS-sat/PRSgoes/descargar_tmp.sh", shell=True)
+subprocess.call("/sat/PRS/dev/PRS-sat/PRSgoes/descargar_tmp.sh", shell=True)
 
-files = ['band13.nc']
+files = ['band02.nc','band13.nc']
 
 tmp = 'none'
 
@@ -26,10 +28,12 @@ for i in files:
   else:
     cmap = 'jet'
   
-  tmp = netcdf2png(file, cmapPath, cmap, dirDest, 'y', 'x','CMI')
+  tmp = fr2png(file, cmapPath, cmap, dirDest, 'y', 'x','CMI')
 
   if i == 'band02.nc':
     timestamp = tmp
+
+fr2ghi2png(ncpath + 'band02_uy.nc', cmapPath, cmap, dirDest, 'y', 'x','CMI')
 
 print(timestamp)
 timestamp_html = open(dirDest + 'timestamp.html', 'w')

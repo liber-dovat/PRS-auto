@@ -20,6 +20,7 @@ from pyproj               import Proj
 from utils                import gmtColormap, ncdump
 from shutil               import copyfile
 from matplotlib.patches   import Polygon
+from funciones            import cosSolarZenithAngle, FnFunc
 
 #########################################
 #########################################
@@ -44,8 +45,8 @@ def rincon_de_artigas_poly(m):
   # lats = [-30.860356,-30.875717,-30.880738,-30.885301,-30.886929,-30.899633,-30.928487,-30.927683,-30.943269,-30.949146,-30.976499,-30.999585,-31.015717,-31.018317,-31.028864,-31.032830,-31.035805,-31.037892]
   # lons = [-55.989623,-55.980950,-55.981923,-55.978590,-55.973631,-55.962734,-55.953920,-55.944455,-55.937084,-55.920244,-55.885560,-55.841968,-55.832672,-55.825678,-55.824735,-55.827045,-55.826857,-55.825022]
 
-  lats = [-30.858550,-30.957062,-31.000216,-31.037937]
-  lons = [-55.989755,-55.912115,-55.842423,-55.825022]
+  lats = [-30.858550,-30.957062,-31.000216,-31.040658]
+  lons = [-55.979755,-55.912115,-55.842423,-55.820785]
 
   x, y = m( lons, lats )
   xy   = zip(x,y)
@@ -145,7 +146,7 @@ def setcolor(x, color):
 #########################################
 #########################################
 
-def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, data_name, geos=False):
+def fr2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, data_name, geos=False):
   
   # Dataset is the class behavior to open the file
   # and create an instance of the ncCDF4 class
@@ -177,7 +178,6 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
   date     = datetime.datetime.strptime(str_date, '%d/%m/%Y %H:%M') - datetime.timedelta(hours=3)
   name     = channel + " " + date.strftime('%d-%m-%Y %H:%M')
   filename = channel + "_" + yy + mt + dd + "_" + hh + mm + ss
-  # print "name: " + name
 
   # extract/copy the data
   data = nc_fid.variables[data_name][:]
@@ -195,8 +195,6 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
     scene_id_val = repr(nc_fid.getncattr('scene_id'))
     scene_id     = re.search('\'(.*?)\'', scene_id_val).group(1)
 
-  # if data_name == 'CMI'
-    
   nc_fid.close()
 
   print("Realizando pasaje a K en C13 y truncamiento en los otros")
@@ -209,11 +207,6 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
       d = truncUno(d)
     data *= 100
   # if if channel == 'C13':
-
-  # seteo los minimos y maximos de la imagen en funcion de los min y max de lat y long
-  # axes = plt.gca()
-  # axes.set_xlim([min_lon, max_lon])
-  # axes.set_ylim([min_lat, max_lat])
 
   #:::::::::::::::::::::::::::::
   # Basemap
@@ -234,9 +227,6 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
   x_mesh, y_mesh = numpy.meshgrid(X,Y)
 
   projection = Proj(proj='geos', h=sat_h, lon_0=sat_lon, sweep=sat_sweep, ellps='WGS84')
-  # proj_string = "+proj=geos +h=" + str(sat_h) + " +lon_0=" + str(sat_lon) + " +sweep=" + str(sat_sweep) + " +nadgrids=@null"
-  # print proj_string
-  # projection = Proj(proj_string)
   lons, lats = projection(x_mesh, y_mesh, inverse=True)
   x, y       = ax(lons, lats)
 
@@ -268,25 +258,8 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
 
   data = numpy.ma.masked_where(numpy.isnan(data), data)
 
-  # dibujo img en las coordenadas x e y calculadas
-
-  # cmap = gmtColormap(colormapName, colormapPath, 2048)
-
-  # defino el colormap  y la disposicion de los ticks segun la banda
-  # if channel == 'C01' or channel == 'C02' or channel == 'C04':
-  #   ticks       = [0, 20, 40, 60, 80, 100]
-  #   ticksLabels = ticks
-  # else:
-  #   ticks = [-80, -75.2, -70.2, -65.2, -60.2, -55.2, -50.2, -45.2, -40.2, -35.2, -30.2,-20,-10,0,10,20,30,40,50,60,70]
-  #   # defino las etiquetas del colorbar
-  #   ticksLabels = [-80, -75, -70, -65, -60, -55, -50, -45, -40, -35, -30,-20,-10,0,10,20,30,40,50,60,70]
-  # # if c == 1 | 2 | 4
-
   # defino el colormap  y la disposicion de los ticks segun la banda
   if isBrightTemp(channel):
-    # ticks = [-80, -75.2, -70.2, -65.2, -60.2, -55.2, -50.2, -45.2, -40.2, -35.2, -30.2,-20,-10,0,10,20,30,40,50,60,70]
-    # defino las etiquetas del colorbar
-    # ticksLabels = [-80, -75, -70, -65, -60, -55, -50, -45, -40, -35, -30,-20,-10,0,10,20,30,40,50,60,70]
     ticks = [-100, -90, -80, -70, -60, -50, -40,-30, -20, -10,0,10,20,30,40,50,60,70]
     ticksLabels = ticks
   else:
@@ -312,8 +285,8 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
     cbar.ax.set_xticklabels(ticksLabels, fontsize=7, color='white')
 
   # agrego el logo en el documento
-  logo = plt.imread('/sat/PRS/dev/PRS-sat/PRSgoes/logo_300_bw.png')
-  plt.figimage(logo, xo=5, yo=5)
+  logo_bw = plt.imread('/sat/PRS/dev/PRS-sat/PRSgoes/logo_300_bw.png')
+  plt.figimage(logo_bw, xo=5, yo=5)
 
   # si no existe la carpeta asociada a la banda la creo
   if not os.path.isdir(dirDest + channel):
@@ -339,20 +312,18 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
 
   print(outPath)
 
-  # if numpy.sum(data) == 0.:
-  #   plt.annotate("NOCHE", (0,0), (245, 15), color='white', xycoords='axes fraction', textcoords='offset points', va='top', fontsize=10, family='monospace')
-  # # print "es noche"
+  print("numpy.sum(data): %f" %(numpy.sum(data)))
+
+  Noche = numpy.sum(data) <= 0.
+
+  if Noche: # print "es noche"
+    plt.annotate("NOCHE", (0,0), (180, 15), color='white', xycoords='axes fraction', textcoords='offset points', va='top', fontsize=10, family='monospace')
+
+  x_coord = 85
+  y_coord = -53
 
   # genero el pie de la imagen, con el logo y la info del archivo
-  plt.annotate(name + " UY", (0,0), (85, -53), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=11, family='monospace', color='white')
-
-  # genero un dpi dinamico segun la imagen que quiero procesar
-  # if channel == 'C04':
-  #   dpi = 200
-  # elif channel == 'C01' or channel == 'C02':
-  #   dpi = 300
-  # else:
-  #   dpi = 200
+  plt.annotate(name + " UY", (0,0), (x_coord, y_coord), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=11, family='monospace', color='white')
 
   plt.savefig(outPath, bbox_inches='tight', dpi=400, transparent=True) # , facecolor='#4F7293'
 
@@ -370,10 +341,10 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
   setcolor(par,'black')
   setcolor(mer,'black')
 
-  logo = plt.imread('/sat/PRS/dev/PRS-sat/PRSgoes/logo_300_color.png')
-  plt.figimage(logo, xo=5, yo=5)
+  logo_color = plt.imread('/sat/PRS/dev/PRS-sat/PRSgoes/logo_300_color.png')
+  plt.figimage(logo_color, xo=5, yo=5)
 
-  plt.annotate(name + " UY", (0,0), (85, -53), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=11, family='monospace', color='black')
+  plt.annotate(name + " UY", (0,0), (x_coord, y_coord), xycoords='axes fraction', textcoords='offset points', va='top', fontsize=11, family='monospace', color='black')
 
   plt.savefig(whitePath, bbox_inches='tight', dpi=400, transparent=False , facecolor='white') # , facecolor='#4F7293'
 
@@ -382,8 +353,10 @@ def netcdf2png(url, colormapPath, colormapName, dirDest, lat_name, lon_name, dat
 
   # copio la ultima imagen de cada carpeta en la raiz PNG para subir a la web
   # plt.savefig(dirDest + channel + '.png', bbox_inches='tight', dpi=300, transparent=True) # , facecolor='#4F7293'
+
   copyfile(outPath,   dirDest + channel + '.png')
   copyfile(whitePath, dirDest + channel + '_white.png')
+
   plt.close()
 
   if channel == 'C02':

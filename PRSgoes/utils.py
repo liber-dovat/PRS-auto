@@ -3,19 +3,21 @@
 
 import matplotlib
 import netCDF4
+import glob
 
-from os       import listdir
-from shutil   import copyfile
+from os.path import basename
+from os      import listdir
+from shutil  import copyfile
 
 # http://scipy-cookbook.readthedocs.io/items/Matplotlib_Loading_a_colormap_dynamically.html
-def gmtColormap(fileName,GMTPath = None, segmentos = 1024):
+def gmtColormap(fileName, GMTPath = None, segmentos = 1024):
   import colorsys
   import numpy
   N = numpy
   if type(GMTPath) == type(None):
-      filePath = "/usr/local/cmaps/"+ fileName+".cpt"
+      filePath = "/usr/local/cmaps/"+ fileName + ".cpt"
   else:
-      filePath = GMTPath+"/"+ fileName +".cpt"
+      filePath = GMTPath+"/"+ fileName + ".cpt"
   try:
       f = open(filePath)
   except:
@@ -171,7 +173,10 @@ def copiar_frames(carpeta_base, carpeta_destino):
   # habia usado 92 elems en las pruebas que eran cerca de tres dias
   # tambien se puede pensar que son 88 por dia, 44 normales y 44 con fondo blanco
 
-  dir_elemens = sorted(listdir(carpeta_base))
+  # dir_elemens = sorted(listdir(carpeta_base))
+  dir_elemens = sorted(glob.glob(carpeta_base + "/*.png"))
+  dir_elemens = list(map(basename,dir_elemens))
+
   indice      = 88
   if len(dir_elemens) < 88:
     indice = len(dir_elemens)
